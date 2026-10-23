@@ -3,15 +3,20 @@
   "compilerOptions": {
     "strict": true,
     "skipLibCheck": true,
+    "baseUrl": ".",
     "paths": {
       "@nexora/shared": [
         "../../packages/shared/src/index.ts"
+      ],
+      "@nexora/shared/*": [
+        "../../packages/shared/src/*"
       ]
     }
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    "src"
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts"
   ]
 }

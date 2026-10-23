@@ -10,7 +10,6 @@ import {
   Modal,
   Dimensions,
   Platform,
-  Animated,
 } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
@@ -21,7 +20,6 @@ import {
   MOCK_USERS,
   ContentItem,
   Channel,
-  ContinueWatchingItem,
 } from '@nexora/shared';
 
 import { AnimatedHeader } from './src/components/AnimatedHeader';
@@ -378,6 +376,51 @@ export default function App() {
               <MoviePosterCard
                 key={s.id}
                 item={s}
+                width={(width - 44) / 2}
+                height={240}
+                onPress={(item) => setSelectedItem(item)}
+              />
+            ))}
+          </View>
+        </View>
+      );
+    }
+
+    if (selectedCategory === 'Sports') {
+      return (
+        <View style={styles.paddingSection}>
+          <SectionHeader
+            title={`Live & Apex Sports (${sports.length})`}
+            badge="4K 60FPS"
+          />
+          <View style={styles.moviesGrid}>
+            {sports.map((sp) => (
+              <MoviePosterCard
+                key={sp.id}
+                item={sp}
+                width={(width - 44) / 2}
+                height={240}
+                badgeType="4K"
+                onPress={(item) => setSelectedItem(item)}
+              />
+            ))}
+          </View>
+        </View>
+      );
+    }
+
+    if (selectedCategory === 'Kids') {
+      return (
+        <View style={styles.paddingSection}>
+          <SectionHeader
+            title={`Kids & Family Spotlight (${kids.length})`}
+            badge="ALL AGES"
+          />
+          <View style={styles.moviesGrid}>
+            {kids.map((k) => (
+              <MoviePosterCard
+                key={k.id}
+                item={k}
                 width={(width - 44) / 2}
                 height={240}
                 onPress={(item) => setSelectedItem(item)}

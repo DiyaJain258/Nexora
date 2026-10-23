@@ -1,0 +1,16 @@
+{
+  "name": "NexoraTV",
+  "displayName": "NEXORA TV",
+  "version": "1.0.0",
+  "android": {
+    "package": "com.nexora.tv",
+    "versionCode": 1,
+    "isTV": true,
+    "permissions": [
+      "android.permission.INTERNET",
+      "android.permission.ACCESS_NETWORK_STATE",
+      "android.permission.WAKE_LOCK",
+      "android.permission.RECEIVE_BOOT_COMPLETED"
+    ]
+  }
+}

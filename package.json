@@ -11,6 +11,8 @@
     "dev:admin": "npm --workspace=@nexora/web-admin run dev",
     "dev:mobile": "npm --workspace=@nexora/mobile run dev",
     "dev:tv": "npm --workspace=@nexora/tv run dev",
+    "start:mobile": "npm --workspace=@nexora/mobile run start",
+    "expo:mobile": "npm --workspace=@nexora/mobile run start",
     "build:admin": "npm --workspace=@nexora/web-admin run build",
     "build:mobile": "npm --workspace=@nexora/mobile run build",
     "build:tv": "npm --workspace=@nexora/tv run build",
