@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Tv, Globe, ChevronDown, Eye, EyeOff, ArrowRight, ArrowLeft, Check, ShieldCheck, Monitor, HelpCircle } from 'lucide-react';
-import { MOCK_CONTENT } from '@nexora/shared';
+import React, { useState } from 'react';
+import { Tv, Globe, ChevronDown, Eye, EyeOff, ArrowRight, ArrowLeft, Check, ShieldCheck, Monitor } from 'lucide-react';
 
 interface AdminLoginViewProps {
   onLoginSuccess: () => void;
@@ -100,8 +99,8 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
             window.location.hash = '#/';
           }
         }
-      }, 1200);
-    }, 1400);
+      }, 1000);
+    }, 1200);
   };
 
   const handleBack = () => {
@@ -115,29 +114,31 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
   return (
     <div
       style={{
-        minHeight: '100vh',
-        position: 'relative',
+        height: '100vh',
+        width: '100vw',
+        position: 'fixed',
+        inset: 0,
         backgroundColor: '#050507',
         color: '#ffffff',
         fontFamily: "'Montserrat', sans-serif",
-        overflowX: 'hidden',
-        overflowY: 'auto',
+        overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
+        userSelect: 'none',
       }}
     >
       <style>{`
         @keyframes slowZoom {
           from { transform: scale(1.08) rotate(-2deg); }
-          to { transform: scale(1.16) rotate(-2deg); }
+          to { transform: scale(1.15) rotate(-2deg); }
         }
         @keyframes heroEntry {
-          from { opacity: 0; transform: translateY(30px); }
+          from { opacity: 0; transform: translateY(20px); }
           to { opacity: 1; transform: translateY(0); }
         }
         @keyframes cardEntry {
-          from { opacity: 0; transform: translateY(24px) scale(0.97); }
+          from { opacity: 0; transform: translateY(18px) scale(0.98); }
           to { opacity: 1; transform: translateY(0) scale(1); }
         }
         @keyframes spin {
@@ -171,16 +172,16 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
       `}</style>
 
       {/* ── CINEMATIC POSTER WALL ── */}
-      <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }}>
+      <div style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none', overflow: 'hidden' }}>
         {/* 7x3 Collage Grid */}
         <div
           style={{
             position: 'absolute',
-            inset: 0,
+            inset: '-5%',
             display: 'grid',
             gridTemplateColumns: 'repeat(7, 1fr)',
             gridTemplateRows: 'repeat(3, 1fr)',
-            gap: '6px',
+            gap: '4px',
             transform: 'scale(1.08) rotate(-2deg)',
             animation: 'slowZoom 25s ease-in-out infinite alternate',
           }}
@@ -192,7 +193,7 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
                 backgroundImage: `url(${src})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
-                filter: 'brightness(0.55) saturate(1.25)',
+                filter: 'brightness(0.5) saturate(1.25)',
               }}
             />
           ))}
@@ -205,10 +206,10 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
             inset: 0,
             background: `
               linear-gradient(to bottom,
-                rgba(5, 5, 8, 0.75) 0%,
-                rgba(5, 5, 8, 0.25) 30%,
-                rgba(5, 5, 8, 0.35) 60%,
-                rgba(5, 5, 8, 0.95) 100%
+                rgba(5, 5, 8, 0.78) 0%,
+                rgba(5, 5, 8, 0.28) 25%,
+                rgba(5, 5, 8, 0.38) 65%,
+                rgba(5, 5, 8, 0.96) 100%
               ),
               linear-gradient(to right,
                 rgba(5, 5, 8, 0.75) 0%,
@@ -235,28 +236,29 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
         style={{
           position: 'relative',
           zIndex: 50,
-          padding: '24px 48px',
+          padding: '14px 40px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           background: 'linear-gradient(to bottom, rgba(5, 5, 8, 0.85) 0%, transparent 100%)',
+          flexShrink: 0,
         }}
       >
         {/* Brand Logo */}
         <div
           onClick={handleBack}
-          style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '12px' }}
+          style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px' }}
           title="Return to NEXORA"
         >
           <div
             style={{
-              fontSize: '32px',
+              fontSize: '26px',
               fontWeight: 900,
-              letterSpacing: '5px',
+              letterSpacing: '4px',
               background: 'linear-gradient(135deg, #e50914, #ff4d4d)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-              filter: 'drop-shadow(0 0 24px rgba(229, 9, 20, 0.6))',
+              filter: 'drop-shadow(0 0 20px rgba(229, 9, 20, 0.55))',
             }}
           >
             NEXORA
@@ -264,7 +266,7 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
         </div>
 
         {/* Nav Right Controls */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <button
             onClick={handleBack}
             style={{
@@ -272,10 +274,10 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
               alignItems: 'center',
               gap: '6px',
               backgroundColor: 'rgba(255, 255, 255, 0.08)',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
+              border: '1px solid rgba(255, 255, 255, 0.18)',
               borderRadius: '6px',
-              padding: '8px 14px',
-              fontSize: '13px',
+              padding: '6px 12px',
+              fontSize: '12px',
               fontWeight: 600,
               color: '#ffffff',
               cursor: 'pointer',
@@ -285,7 +287,7 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
             onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.15)')}
             onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.08)')}
           >
-            <ArrowLeft size={14} />
+            <ArrowLeft size={13} />
             <span>Back to Home</span>
           </button>
 
@@ -295,10 +297,10 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
-              border: '1px solid rgba(255, 255, 255, 0.35)',
+              border: '1px solid rgba(255, 255, 255, 0.3)',
               borderRadius: '6px',
-              padding: '8px 14px',
-              fontSize: '13px',
+              padding: '6px 12px',
+              fontSize: '12px',
               fontWeight: 600,
               color: '#ffffff',
               cursor: 'pointer',
@@ -307,16 +309,16 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
               transition: 'border-color 0.2s',
             }}
             onMouseEnter={(e) => (e.currentTarget.style.borderColor = '#ffffff')}
-            onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.35)')}
+            onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.3)')}
           >
-            <Globe size={14} />
+            <Globe size={13} />
             <span>English</span>
-            <ChevronDown size={14} />
+            <ChevronDown size={13} />
           </button>
         </div>
       </nav>
 
-      {/* ── HERO & SIGN IN CARD ── */}
+      {/* ── CENTER HERO & COMPACT SIGN-IN CARD ── */}
       <div
         style={{
           position: 'relative',
@@ -325,66 +327,66 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          padding: '20px 20px 40px',
+          padding: '0 20px',
           width: '100%',
-          maxWidth: '1200px',
+          maxWidth: '1100px',
           margin: '0 auto',
+          flex: 1,
         }}
       >
-        {/* Hero Title */}
-        <div style={{ textAlign: 'center', marginBottom: '32px', animation: 'heroEntry 0.9s 0.2s cubic-bezier(0.16, 1, 0.3, 1) both' }}>
+        {/* Compact Hero Headline */}
+        <div style={{ textAlign: 'center', marginBottom: '12px', animation: 'heroEntry 0.8s 0.15s cubic-bezier(0.16, 1, 0.3, 1) both' }}>
           <h1
             style={{
-              fontSize: 'clamp(34px, 4.5vw, 56px)',
+              fontSize: 'clamp(24px, 2.6vw, 34px)',
               fontWeight: 900,
-              lineHeight: 1.12,
-              textShadow: '0 4px 24px rgba(0, 0, 0, 0.85)',
-              marginBottom: '12px',
-              letterSpacing: '-0.5px',
+              lineHeight: 1.15,
+              textShadow: '0 4px 20px rgba(0, 0, 0, 0.85)',
+              marginBottom: '4px',
+              letterSpacing: '-0.3px',
             }}
           >
-            Unlimited Movies,<br />
-            Shows <span style={{ color: '#e50914' }}>&amp; More.</span>
+            Unlimited Movies, Shows <span style={{ color: '#e50914' }}>&amp; More.</span>
           </h1>
-          <div style={{ fontSize: 'clamp(15px, 1.8vw, 20px)', fontWeight: 500, color: 'rgba(255, 255, 255, 0.9)', textShadow: '0 2px 12px rgba(0, 0, 0, 0.6)', marginBottom: '6px' }}>
+          <div style={{ fontSize: '13px', fontWeight: 500, color: 'rgba(255, 255, 255, 0.9)', textShadow: '0 2px 10px rgba(0, 0, 0, 0.6)' }}>
             Stream anywhere. Cancel anytime.
           </div>
-          <div style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.65)', letterSpacing: '0.5px' }}>
+          <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.55)', letterSpacing: '0.4px', marginTop: '2px' }}>
             4K Ultra HD · Dolby Audio · 1,400+ Live Channels
           </div>
         </div>
 
-        {/* ── SIGN-IN CARD ── */}
+        {/* ── PROPORTIONED SIGN-IN CARD ── */}
         <div
           style={{
             width: '100%',
-            maxWidth: '430px',
-            background: 'rgba(5, 5, 8, 0.84)',
+            maxWidth: '380px',
+            background: 'rgba(5, 5, 8, 0.86)',
             borderRadius: '12px',
-            padding: '40px 38px 34px',
+            padding: '24px 28px 20px',
             backdropFilter: 'blur(24px) saturate(1.5)',
             WebkitBackdropFilter: 'blur(24px) saturate(1.5)',
             border: '1px solid rgba(255, 255, 255, 0.1)',
-            boxShadow: '0 32px 80px rgba(0, 0, 0, 0.85), 0 0 80px rgba(229, 9, 20, 0.1)',
-            animation: 'cardEntry 0.8s 0.35s cubic-bezier(0.16, 1, 0.3, 1) both',
+            boxShadow: '0 24px 60px rgba(0, 0, 0, 0.85), 0 0 60px rgba(229, 9, 20, 0.1)',
+            animation: 'cardEntry 0.8s 0.25s cubic-bezier(0.16, 1, 0.3, 1) both',
           }}
         >
-          <div style={{ fontSize: '28px', fontWeight: 800, marginBottom: '22px', letterSpacing: '-0.3px', color: '#ffffff' }}>
+          <div style={{ fontSize: '22px', fontWeight: 800, marginBottom: '14px', letterSpacing: '-0.3px', color: '#ffffff' }}>
             Sign In
           </div>
 
           {/* Tabs: Subscriber vs Admin Console */}
-          <div style={{ display: 'flex', borderBottom: '2px solid rgba(255, 255, 255, 0.1)', marginBottom: '24px' }}>
+          <div style={{ display: 'flex', borderBottom: '2px solid rgba(255, 255, 255, 0.1)', marginBottom: '16px' }}>
             <button
               onClick={() => handleTabSwitch('sub')}
               type="button"
               style={{
                 flex: 1,
-                padding: '10px 0',
+                padding: '7px 0',
                 background: 'transparent',
                 border: 'none',
                 color: activeTab === 'sub' ? '#ffffff' : 'rgba(255, 255, 255, 0.55)',
-                fontSize: '13px',
+                fontSize: '12px',
                 fontWeight: 700,
                 cursor: 'pointer',
                 letterSpacing: '0.03em',
@@ -400,11 +402,11 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
               type="button"
               style={{
                 flex: 1,
-                padding: '10px 0',
+                padding: '7px 0',
                 background: 'transparent',
                 border: 'none',
                 color: activeTab === 'adm' ? '#ffffff' : 'rgba(255, 255, 255, 0.55)',
-                fontSize: '13px',
+                fontSize: '12px',
                 fontWeight: 700,
                 cursor: 'pointer',
                 letterSpacing: '0.03em',
@@ -421,7 +423,7 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
             {/* Email Field with Floating Label */}
             <div
               style={{
-                marginBottom: '14px',
+                marginBottom: '10px',
                 position: 'relative',
                 animation: shakingField === 'email' ? 'shake 0.4s ease' : 'none',
               }}
@@ -433,12 +435,12 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
                 placeholder=" "
                 style={{
                   width: '100%',
-                  padding: '20px 16px 8px',
+                  padding: '16px 14px 6px',
                   background: 'rgba(255, 255, 255, 0.08)',
                   border: '1px solid rgba(255, 255, 255, 0.14)',
                   borderRadius: '6px',
                   color: '#ffffff',
-                  fontSize: '15px',
+                  fontSize: '14px',
                   outline: 'none',
                   transition: 'all 0.2s',
                 }}
@@ -456,10 +458,10 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
               <label
                 style={{
                   position: 'absolute',
-                  left: '16px',
-                  top: email ? '8px' : '50%',
+                  left: '14px',
+                  top: email ? '6px' : '50%',
                   transform: email ? 'none' : 'translateY(-50%)',
-                  fontSize: email ? '10px' : '14px',
+                  fontSize: email ? '9px' : '13px',
                   color: 'rgba(255, 255, 255, 0.55)',
                   pointerEvents: 'none',
                   transition: 'all 0.18s ease',
@@ -474,7 +476,7 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
             {/* Password Field with Eye Toggle */}
             <div
               style={{
-                marginBottom: '18px',
+                marginBottom: '14px',
                 position: 'relative',
                 animation: shakingField === 'password' ? 'shake 0.4s ease' : 'none',
               }}
@@ -486,12 +488,12 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
                 placeholder=" "
                 style={{
                   width: '100%',
-                  padding: '20px 46px 8px 16px',
+                  padding: '16px 42px 6px 14px',
                   background: 'rgba(255, 255, 255, 0.08)',
                   border: '1px solid rgba(255, 255, 255, 0.14)',
                   borderRadius: '6px',
                   color: '#ffffff',
-                  fontSize: '15px',
+                  fontSize: '14px',
                   outline: 'none',
                   transition: 'all 0.2s',
                 }}
@@ -509,10 +511,10 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
               <label
                 style={{
                   position: 'absolute',
-                  left: '16px',
-                  top: password ? '8px' : '50%',
+                  left: '14px',
+                  top: password ? '6px' : '50%',
                   transform: password ? 'none' : 'translateY(-50%)',
-                  fontSize: password ? '10px' : '14px',
+                  fontSize: password ? '9px' : '13px',
                   color: 'rgba(255, 255, 255, 0.55)',
                   pointerEvents: 'none',
                   transition: 'all 0.18s ease',
@@ -528,7 +530,7 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
                 onClick={() => setPwdVisible(!pwdVisible)}
                 style={{
                   position: 'absolute',
-                  right: '14px',
+                  right: '12px',
                   top: '50%',
                   transform: 'translateY(-50%)',
                   background: 'none',
@@ -540,7 +542,7 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
                   alignItems: 'center',
                 }}
               >
-                {pwdVisible ? <EyeOff size={18} /> : <Eye size={18} />}
+                {pwdVisible ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
             </div>
 
@@ -551,18 +553,18 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
               className="btn-signin-netflix"
               style={{
                 width: '100%',
-                padding: '16px',
+                padding: '13px',
                 background: success ? '#16a34a' : 'linear-gradient(135deg, #e50914 0%, #b20710 100%)',
                 border: 'none',
                 borderRadius: '6px',
                 color: '#ffffff',
-                fontSize: '15px',
+                fontSize: '14px',
                 fontWeight: 700,
                 cursor: loading || success ? 'not-allowed' : 'pointer',
                 letterSpacing: '0.04em',
                 boxShadow: success
-                  ? '0 4px 24px rgba(22, 163, 74, 0.55)'
-                  : '0 4px 24px rgba(229, 9, 20, 0.45)',
+                  ? '0 4px 20px rgba(22, 163, 74, 0.5)'
+                  : '0 4px 20px rgba(229, 9, 20, 0.45)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -573,8 +575,8 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
                 <>
                   <svg
                     style={{ animation: 'spin 0.75s linear infinite' }}
-                    width="18"
-                    height="18"
+                    width="16"
+                    height="16"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -588,22 +590,22 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
                 </>
               ) : success ? (
                 <>
-                  <Check size={18} strokeWidth={2.5} />
+                  <Check size={16} strokeWidth={2.5} />
                   <span>Welcome Back!</span>
                 </>
               ) : (
                 <>
                   <span>{activeTab === 'adm' ? 'Sign In as Superadmin' : 'Sign In'}</span>
-                  <ArrowRight size={16} strokeWidth={2.5} />
+                  <ArrowRight size={15} strokeWidth={2.5} />
                 </>
               )}
             </button>
           </form>
 
           {/* Divider */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', margin: '20px 0' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', margin: '12px 0' }}>
             <div style={{ flex: 1, height: '1px', backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
-            <span style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.55)' }}>or</span>
+            <span style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.5)' }}>or</span>
             <div style={{ flex: 1, height: '1px', backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
           </div>
 
@@ -613,30 +615,30 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
             onClick={() => showToast('Activation Code', 'Use 6-digit code: NX-8849 to link your Smart TV')}
             style={{
               width: '100%',
-              padding: '14px',
+              padding: '10px',
               background: 'rgba(255, 255, 255, 0.08)',
               border: '1px solid rgba(255, 255, 255, 0.15)',
               borderRadius: '6px',
               color: '#ffffff',
-              fontSize: '14px',
+              fontSize: '12px',
               fontWeight: 600,
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '8px',
+              gap: '6px',
               backdropFilter: 'blur(6px)',
               transition: 'all 0.2s',
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.15)')}
+            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.14)')}
             onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.08)')}
           >
-            <Tv size={16} color="#fda4af" />
+            <Tv size={14} color="#fda4af" />
             <span>Use Activation Code</span>
           </button>
 
           {/* Card Footer Links */}
-          <div style={{ marginTop: '22px', fontSize: '13px', color: 'rgba(255, 255, 255, 0.55)', textAlign: 'center' }}>
+          <div style={{ marginTop: '14px', fontSize: '11px', color: 'rgba(255, 255, 255, 0.55)', textAlign: 'center' }}>
             New to NEXORA?{' '}
             <a
               href="#"
@@ -666,18 +668,18 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
         <div
           style={{
             display: 'flex',
-            gap: '32px',
-            marginTop: '32px',
-            animation: 'heroEntry 0.9s 0.5s cubic-bezier(0.16, 1, 0.3, 1) both',
+            gap: '24px',
+            marginTop: '16px',
+            animation: 'heroEntry 0.8s 0.35s cubic-bezier(0.16, 1, 0.3, 1) both',
             flexWrap: 'wrap',
             justifyContent: 'center',
           }}
         >
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px', fontSize: '12px', color: 'rgba(255, 255, 255, 0.55)', textAlign: 'center' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', fontSize: '11px', color: 'rgba(255, 255, 255, 0.5)', textAlign: 'center' }}>
             <div
               style={{
-                width: '42px',
-                height: '42px',
+                width: '34px',
+                height: '34px',
                 borderRadius: '50%',
                 backgroundColor: 'rgba(255, 255, 255, 0.08)',
                 border: '1px solid rgba(255, 255, 255, 0.12)',
@@ -686,17 +688,17 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
                 justifyContent: 'center',
               }}
             >
-              <Tv size={18} color="#fda4af" />
+              <Tv size={15} color="#fda4af" />
             </div>
-            <div style={{ fontSize: '16px', fontWeight: 800, color: '#ffffff', lineHeight: 1 }}>1,400+</div>
+            <div style={{ fontSize: '14px', fontWeight: 800, color: '#ffffff', lineHeight: 1 }}>1,400+</div>
             <span>Live Channels</span>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px', fontSize: '12px', color: 'rgba(255, 255, 255, 0.55)', textAlign: 'center' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', fontSize: '11px', color: 'rgba(255, 255, 255, 0.5)', textAlign: 'center' }}>
             <div
               style={{
-                width: '42px',
-                height: '42px',
+                width: '34px',
+                height: '34px',
                 borderRadius: '50%',
                 backgroundColor: 'rgba(255, 255, 255, 0.08)',
                 border: '1px solid rgba(255, 255, 255, 0.12)',
@@ -705,17 +707,17 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
                 justifyContent: 'center',
               }}
             >
-              <Monitor size={18} color="#ffffff" />
+              <Monitor size={15} color="#ffffff" />
             </div>
-            <div style={{ fontSize: '16px', fontWeight: 800, color: '#ffffff', lineHeight: 1 }}>4K</div>
+            <div style={{ fontSize: '14px', fontWeight: 800, color: '#ffffff', lineHeight: 1 }}>4K</div>
             <span>Ultra HD</span>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px', fontSize: '12px', color: 'rgba(255, 255, 255, 0.55)', textAlign: 'center' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', fontSize: '11px', color: 'rgba(255, 255, 255, 0.5)', textAlign: 'center' }}>
             <div
               style={{
-                width: '42px',
-                height: '42px',
+                width: '34px',
+                height: '34px',
                 borderRadius: '50%',
                 backgroundColor: 'rgba(255, 255, 255, 0.08)',
                 border: '1px solid rgba(255, 255, 255, 0.12)',
@@ -724,17 +726,17 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
                 justifyContent: 'center',
               }}
             >
-              <ShieldCheck size={18} color="#fda4af" />
+              <ShieldCheck size={15} color="#fda4af" />
             </div>
-            <div style={{ fontSize: '16px', fontWeight: 800, color: '#ffffff', lineHeight: 1 }}>5</div>
+            <div style={{ fontSize: '14px', fontWeight: 800, color: '#ffffff', lineHeight: 1 }}>5</div>
             <span>Screens</span>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px', fontSize: '12px', color: 'rgba(255, 255, 255, 0.55)', textAlign: 'center' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', fontSize: '11px', color: 'rgba(255, 255, 255, 0.5)', textAlign: 'center' }}>
             <div
               style={{
-                width: '42px',
-                height: '42px',
+                width: '34px',
+                height: '34px',
                 borderRadius: '50%',
                 backgroundColor: 'rgba(255, 255, 255, 0.08)',
                 border: '1px solid rgba(255, 255, 255, 0.12)',
@@ -743,9 +745,9 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
                 justifyContent: 'center',
               }}
             >
-              <Globe size={18} color="#ffffff" />
+              <Globe size={15} color="#ffffff" />
             </div>
-            <div style={{ fontSize: '16px', fontWeight: 800, color: '#ffffff', lineHeight: 1 }}>190+</div>
+            <div style={{ fontSize: '14px', fontWeight: 800, color: '#ffffff', lineHeight: 1 }}>190+</div>
             <span>Countries</span>
           </div>
         </div>
@@ -756,13 +758,14 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
         style={{
           position: 'relative',
           zIndex: 10,
-          padding: '24px 48px',
+          padding: '12px 40px',
           background: 'linear-gradient(to top, rgba(5, 5, 8, 0.85) 0%, transparent 100%)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: '24px',
+          gap: '20px',
           flexWrap: 'wrap',
+          flexShrink: 0,
         }}
       >
         {['FAQ', 'Help Centre', 'Terms of Use', 'Privacy', 'Cookie Preferences', 'Corporate Info', 'Contact Us'].map((txt) => (
@@ -773,7 +776,7 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
               e.preventDefault();
               showToast(txt, `Opening ${txt} documentation…`);
             }}
-            style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.4)', textDecoration: 'none', transition: 'color 0.2s' }}
+            style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.4)', textDecoration: 'none', transition: 'color 0.2s' }}
             onMouseEnter={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.8)')}
             onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.4)')}
           >
@@ -786,26 +789,26 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
       <div
         style={{
           position: 'fixed',
-          top: '84px',
+          top: '64px',
           right: '24px',
           zIndex: 200,
           backgroundColor: 'rgba(15, 15, 22, 0.95)',
           border: '1px solid rgba(255, 255, 255, 0.12)',
           borderLeft: '4px solid #e50914',
           borderRadius: '8px',
-          padding: '14px 20px',
-          fontSize: '13px',
+          padding: '12px 18px',
+          fontSize: '12px',
           color: '#ffffff',
           boxShadow: '0 12px 36px rgba(0, 0, 0, 0.75)',
           backdropFilter: 'blur(16px)',
           transform: toast.show ? 'translateX(0)' : 'translateX(120%)',
           opacity: toast.show ? 1 : 0,
           transition: 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
-          minWidth: '260px',
+          minWidth: '240px',
         }}
       >
-        <div style={{ fontWeight: 800, marginBottom: '3px', color: '#fda4af' }}>{toast.title}</div>
-        <div style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '12px' }}>{toast.msg}</div>
+        <div style={{ fontWeight: 800, marginBottom: '2px', color: '#fda4af' }}>{toast.title}</div>
+        <div style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '11px' }}>{toast.msg}</div>
       </div>
     </div>
   );
