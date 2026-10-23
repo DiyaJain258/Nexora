@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Tv, KeyRound, PlaySquare, ShieldCheck, Sparkles } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
+import { Tv, KeyRound, PlaySquare, ShieldCheck } from 'lucide-react';
 
 interface NavbarProps {
   onOpenActivation: () => void;
@@ -29,6 +29,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [activeSection, setActiveSection] = useState<string>('');
   const [hoveredSection, setHoveredSection] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
+  const isManualNavigatingRef = useRef(false);
+  const navigatingTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Sync active section based on current scroll position (Scroll Spy)
   useEffect(() => {
@@ -38,20 +40,29 @@ export const Navbar: React.FC<NavbarProps> = ({
       const scrollY = window.scrollY;
       setIsScrolled(scrollY > 20);
 
+      // If user clicked a nav tab and page is smoothly gliding, freeze scroll spy to avoid jumping
+      if (isManualNavigatingRef.current) return;
+
       // If user is near top (Hero section), no nav item is active
       if (scrollY < 260) {
         setActiveSection('');
         return;
       }
 
-      const viewportMiddle = scrollY + window.innerHeight * 0.35;
+      // Check if user reached bottom of page (FAQ section)
+      if (window.innerHeight + scrollY >= document.documentElement.scrollHeight - 120) {
+        setActiveSection('#faq');
+        return;
+      }
+
+      const scrollFocusY = scrollY + 160;
 
       for (let i = sectionIds.length - 1; i >= 0; i--) {
         const id = sectionIds[i];
         const el = document.getElementById(id);
         if (el) {
-          const top = el.offsetTop;
-          if (viewportMiddle >= top) {
+          const top = el.getBoundingClientRect().top + scrollY;
+          if (scrollFocusY >= top) {
             setActiveSection(`#${id}`);
             return;
           }
@@ -61,38 +72,70 @@ export const Navbar: React.FC<NavbarProps> = ({
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (navigatingTimerRef.current) clearTimeout(navigatingTimerRef.current);
+    };
   }, []);
 
-  // Smooth scroll handler with custom offset so title is never covered by fixed navbar
+  // Smooth scroll handler with custom offset and Lenis integration for butter-smooth gliding
   const handleNavClick = (e: React.MouseEvent, href: string) => {
     e.preventDefault();
     const targetId = href.replace('#', '');
     const element = document.getElementById(targetId);
 
     if (element) {
-      const navbarHeight = 78;
-      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
-      const offsetPosition = elementPosition - navbarHeight;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth',
-      });
-
+      isManualNavigatingRef.current = true;
       setActiveSection(href);
       if (window.history.pushState) {
         window.history.pushState(null, '', href);
       }
+
+      if (navigatingTimerRef.current) {
+        clearTimeout(navigatingTimerRef.current);
+      }
+
+      const lenis = (window as any).__lenis;
+      if (lenis) {
+        lenis.scrollTo(element, {
+          offset: -76,
+          duration: 0.95,
+        });
+      } else {
+        const navbarHeight = 76;
+        const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+        const offsetPosition = elementPosition - navbarHeight;
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth',
+        });
+      }
+
+      // Release navigation lock once smooth scrolling finishes
+      navigatingTimerRef.current = setTimeout(() => {
+        isManualNavigatingRef.current = false;
+      }, 1000);
     }
   };
 
   const handleLogoClick = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    isManualNavigatingRef.current = true;
     setActiveSection('');
     if (window.history.pushState) {
       window.history.pushState(null, '', window.location.pathname);
     }
+
+    const lenis = (window as any).__lenis;
+    if (lenis) {
+      lenis.scrollTo(0, { duration: 0.95 });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    if (navigatingTimerRef.current) clearTimeout(navigatingTimerRef.current);
+    navigatingTimerRef.current = setTimeout(() => {
+      isManualNavigatingRef.current = false;
+    }, 1000);
   };
 
   return (
@@ -227,16 +270,15 @@ export const Navbar: React.FC<NavbarProps> = ({
 
               {/* Hover Light-Up Capsule when not active */}
               {!isActive && isHovered && (
-                <motion.span
-                  layoutId="hoverNavPill"
-                  transition={{ type: 'spring', stiffness: 450, damping: 35 }}
+                <span
                   style={{
                     position: 'absolute',
                     inset: 0,
                     borderRadius: '999px',
-                    backgroundColor: 'rgba(255, 255, 255, 0.07)',
-                    border: '1px solid rgba(255, 255, 255, 0.12)',
+                    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                    border: '1px solid rgba(255, 255, 255, 0.14)',
                     zIndex: 0,
+                    transition: 'all 0.15s ease',
                   }}
                 />
               )}
