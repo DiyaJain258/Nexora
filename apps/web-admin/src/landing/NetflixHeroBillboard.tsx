@@ -151,12 +151,11 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
       style={{
         position: 'relative',
         width: '100%',
-        minHeight: '720px',
+        minHeight: '76vh',
         backgroundColor: '#050507',
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'flex-start',
       }}
     >
       {/* Background Cinematic Movie Live Video & Backdrop with Smooth Crossfade */}
@@ -208,8 +207,8 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
                 top: 0,
                 left: 0,
                 right: 0,
-                height: '120px',
-                background: 'linear-gradient(180deg, #050507 0%, rgba(5, 5, 7, 0.6) 40%, transparent 100%)',
+                height: '160px',
+                background: 'linear-gradient(180deg, #050507 0%, rgba(5, 5, 7, 0.7) 40%, transparent 100%)',
                 pointerEvents: 'none',
               }}
             />
@@ -231,7 +230,7 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
                 bottom: 0,
                 left: 0,
                 right: 0,
-                height: '180px',
+                height: '240px',
                 background: 'linear-gradient(0deg, #050507 0%, rgba(5, 5, 7, 0.8) 45%, transparent 100%)',
                 pointerEvents: 'none',
               }}
@@ -259,7 +258,7 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
           zIndex: 10,
           maxWidth: '1380px',
           margin: '0 auto',
-          padding: '84px 32px 14px',
+          padding: '82px 32px 24px',
           width: '100%',
         }}
       >
@@ -441,7 +440,7 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
         {/* Unified Bottom Strip: Flex layout with ZERO overlap */}
         <div
           style={{
-            marginTop: '20px',
+            marginTop: '18px',
             borderTop: '1px solid rgba(255, 255, 255, 0.1)',
             paddingTop: '14px',
             display: 'flex',

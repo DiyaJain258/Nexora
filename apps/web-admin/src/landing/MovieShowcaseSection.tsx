@@ -17,11 +17,11 @@ export const MovieShowcaseSection: React.FC<MovieShowcaseSectionProps> = ({ onPl
     : MOCK_CONTENT.filter((c) => c.type === selectedFilter);
 
   return (
-    <section id="cinema" style={{ padding: '40px 0 28px', position: 'relative', overflow: 'hidden' }}>
+    <section id="cinema" style={{ padding: '44px 0', position: 'relative', overflow: 'hidden' }}>
       <div style={{ maxWidth: '1340px', margin: '0 auto', padding: '0 24px' }}>
         
         {/* Section Header */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '20px', marginBottom: '20px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '20px', marginBottom: '24px' }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
               <span style={{ fontSize: '13px', fontWeight: 800, color: '#fda4af', letterSpacing: '1px', textTransform: 'uppercase' }}>

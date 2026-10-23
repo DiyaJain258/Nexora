@@ -29,14 +29,14 @@ export const FaqSection: React.FC = () => {
   ];
 
   return (
-    <section id="faq" style={{ padding: '40px 0 28px', position: 'relative' }}>
+    <section id="faq" style={{ padding: '44px 0', position: 'relative' }}>
       <div style={{ maxWidth: '900px', margin: '0 auto', padding: '0 24px' }}>
         
-        <div style={{ textAlign: 'center', marginBottom: '22px' }}>
+        <div style={{ textAlign: 'center', marginBottom: '24px' }}>
           <div style={{ fontSize: '13px', fontWeight: 800, color: '#fda4af', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '8px' }}>
             FREQUENTLY ASKED QUESTIONS
           </div>
-          <h2 style={{ fontSize: '38px', fontWeight: 900, color: '#f8fafc', letterSpacing: '-1px', marginBottom: '14px' }}>
+          <h2 style={{ fontSize: '38px', fontWeight: 900, color: '#f8fafc', letterSpacing: '-1px', marginBottom: '16px' }}>
             Got Questions? <span className="gradient-text">We Have Answers</span>
           </h2>
         </div>

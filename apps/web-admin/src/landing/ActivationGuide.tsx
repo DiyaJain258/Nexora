@@ -23,7 +23,7 @@ export const ActivationGuide: React.FC = () => {
   };
 
   return (
-    <section id="activation" style={{ padding: '40px 0 28px', position: 'relative' }}>
+    <section id="activation" style={{ padding: '44px 0', position: 'relative' }}>
       <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 24px' }}>
         
         <div style={{ textAlign: 'center', marginBottom: '24px' }}>
@@ -38,7 +38,7 @@ export const ActivationGuide: React.FC = () => {
           </p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '28px', marginBottom: '48px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '28px', marginBottom: '24px' }}>
           
           <div className="glass-card" style={{ padding: '32px' }}>
             <div style={{ width: '48px', height: '48px', borderRadius: '14px', backgroundColor: 'rgba(255, 255, 255, 0.08)', border: '1px solid rgba(255, 255, 255, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>

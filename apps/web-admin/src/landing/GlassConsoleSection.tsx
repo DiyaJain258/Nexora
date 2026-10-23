@@ -11,7 +11,7 @@ export const GlassConsoleSection: React.FC<GlassConsoleSectionProps> = ({ onPlay
     <section
       id="experience"
       style={{
-        padding: '44px 0 32px',
+        padding: '48px 0 36px',
         position: 'relative',
         overflow: 'hidden',
         background: 'radial-gradient(circle at 50% 30%, rgba(35, 10, 20, 0.35) 0%, rgba(5, 5, 7, 1) 70%)',
@@ -20,7 +20,7 @@ export const GlassConsoleSection: React.FC<GlassConsoleSectionProps> = ({ onPlay
       <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 24px' }}>
         
         {/* Section Header */}
-        <div style={{ textAlign: 'center', marginBottom: '26px' }}>
+        <div style={{ textAlign: 'center', marginBottom: '28px' }}>
           <div
             style={{
               display: 'inline-flex',

@@ -50,7 +50,7 @@ export const DeviceShowcase3D: React.FC = () => {
   const current = devices.find((d) => d.id === activeDevice) || devices[0];
 
   return (
-    <section id="devices" style={{ padding: '40px 0 28px', position: 'relative' }}>
+    <section id="devices" style={{ padding: '44px 0', position: 'relative' }}>
       <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 24px' }}>
         
         <div style={{ textAlign: 'center', marginBottom: '24px' }}>

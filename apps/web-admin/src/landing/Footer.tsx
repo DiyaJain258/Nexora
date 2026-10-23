@@ -7,9 +7,9 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ onNavigateToAdmin }) => {
   return (
-    <footer style={{ borderTop: '1px solid rgba(255, 255, 255, 0.08)', backgroundColor: '#050507', padding: '40px 0 28px' }}>
+    <footer style={{ borderTop: '1px solid rgba(255, 255, 255, 0.08)', backgroundColor: '#050507', padding: '40px 0 24px' }}>
       <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 24px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr 1fr 1fr', gap: '36px', marginBottom: '32px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr 1fr 1fr', gap: '48px', marginBottom: '24px' }}>
           
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>

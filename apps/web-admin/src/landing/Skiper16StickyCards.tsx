@@ -43,7 +43,7 @@ const StickyCard_001: React.FC<StickyCardProps> = ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        marginBottom: '48px',
+        marginBottom: '28px',
         zIndex: i + 1,
       }}
     >
@@ -389,8 +389,8 @@ export const Skiper16StickyCards: React.FC<{ onPlayMovie?: (movie: any) => void 
       style={{
         position: 'relative',
         width: '100%',
-        paddingBottom: '6vh',
-        paddingTop: '36px',
+        paddingBottom: '4vh',
+        paddingTop: '32px',
         backgroundColor: '#050507',
       }}
     >
