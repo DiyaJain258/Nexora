@@ -75,27 +75,28 @@ export const Skiper49Coverflow: React.FC<Skiper49Props> = ({
   }
 
   .coverflow-nav-btn {
-    width: 44px;
-    height: 44px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
-    background: rgba(14, 14, 20, 0.9);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(12px);
+    background: rgba(10, 10, 16, 0.88);
+    border: 1.5px solid rgba(225, 29, 72, 0.5);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
-    transition: all 0.25s;
-    z-index: 10;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85), 0 0 22px rgba(225, 29, 72, 0.35);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 30;
   }
 
   .coverflow-nav-btn:hover {
     background: #e11d48;
     color: #ffffff;
-    border-color: #e11d48;
-    transform: scale(1.1);
-    box-shadow: 0 0 22px rgba(225, 29, 72, 0.6);
+    border-color: #ffffff;
+    transform: translateY(-50%) scale(1.12);
+    box-shadow: 0 0 30px rgba(225, 29, 72, 0.8), 0 0 15px #ffffff;
   }
 `;
 
@@ -333,7 +334,7 @@ export const Skiper49Coverflow: React.FC<Skiper49Props> = ({
           ))}
         </Swiper>
 
-        {/* Custom Navigation Chevrons */}
+        {/* Custom Navigation Chevrons inside container */}
         {showNavigation && (
           <>
             <button
@@ -341,7 +342,7 @@ export const Skiper49Coverflow: React.FC<Skiper49Props> = ({
               style={{
                 position: 'absolute',
                 top: '46%',
-                left: '-16px',
+                left: '8px',
                 transform: 'translateY(-50%)',
               }}
               aria-label="Previous Slide"
@@ -353,7 +354,7 @@ export const Skiper49Coverflow: React.FC<Skiper49Props> = ({
               style={{
                 position: 'absolute',
                 top: '46%',
-                right: '-16px',
+                right: '8px',
                 transform: 'translateY(-50%)',
               }}
               aria-label="Next Slide"

@@ -12,7 +12,7 @@ export const LampContainer: React.FC<{
       style={{
         position: "relative",
         display: "flex",
-        minHeight: "44rem",
+        minHeight: "36rem",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
@@ -20,8 +20,8 @@ export const LampContainer: React.FC<{
         backgroundColor: "#050507",
         width: "100%",
         zIndex: 0,
-        paddingTop: "60px",
-        paddingBottom: "80px",
+        paddingTop: "120px",
+        paddingBottom: "40px",
       }}
     >
       <div
@@ -38,8 +38,8 @@ export const LampContainer: React.FC<{
       >
         {/* Left Glowing Cone */}
         <motion.div
-          initial={{ opacity: 0.5, width: "16rem" }}
-          whileInView={{ opacity: 1, width: "32rem" }}
+          initial={{ opacity: 0.4, width: "18rem" }}
+          whileInView={{ opacity: 1, width: "36rem" }}
           viewport={{ once: true }}
           transition={{
             delay: 0.2,
@@ -49,10 +49,10 @@ export const LampContainer: React.FC<{
           style={{
             position: "absolute",
             right: "50%",
-            top: "80px",
-            height: "15rem",
-            width: "32rem",
-            background: `conic-gradient(from 70deg at center top, ${glowColor}, rgba(225, 29, 72, 0.4) 20%, transparent 60%)`,
+            top: "20px",
+            height: "16rem",
+            width: "36rem",
+            background: `conic-gradient(from 70deg at center top, ${glowColor}, rgba(225, 29, 72, 0.45) 25%, transparent 65%)`,
             color: "#ffffff",
           }}
         >
@@ -63,7 +63,7 @@ export const LampContainer: React.FC<{
               width: "100%",
               left: 0,
               bottom: 0,
-              height: "10rem",
+              height: "8rem",
               background: "linear-gradient(to top, #050507 20%, transparent 100%)",
               zIndex: 20,
             }}
@@ -71,7 +71,7 @@ export const LampContainer: React.FC<{
           <div
             style={{
               position: "absolute",
-              width: "10rem",
+              width: "12rem",
               left: 0,
               bottom: 0,
               height: "100%",
@@ -83,8 +83,8 @@ export const LampContainer: React.FC<{
 
         {/* Right Glowing Cone */}
         <motion.div
-          initial={{ opacity: 0.5, width: "16rem" }}
-          whileInView={{ opacity: 1, width: "32rem" }}
+          initial={{ opacity: 0.4, width: "18rem" }}
+          whileInView={{ opacity: 1, width: "36rem" }}
           viewport={{ once: true }}
           transition={{
             delay: 0.2,
@@ -94,10 +94,10 @@ export const LampContainer: React.FC<{
           style={{
             position: "absolute",
             left: "50%",
-            top: "80px",
-            height: "15rem",
-            width: "32rem",
-            background: `conic-gradient(from 290deg at center top, transparent 40%, rgba(225, 29, 72, 0.4) 80%, ${glowColor} 100%)`,
+            top: "20px",
+            height: "16rem",
+            width: "36rem",
+            background: `conic-gradient(from 290deg at center top, transparent 35%, rgba(225, 29, 72, 0.45) 75%, ${glowColor} 100%)`,
             color: "#ffffff",
           }}
         >
@@ -105,7 +105,7 @@ export const LampContainer: React.FC<{
           <div
             style={{
               position: "absolute",
-              width: "10rem",
+              width: "12rem",
               right: 0,
               bottom: 0,
               height: "100%",
@@ -119,7 +119,7 @@ export const LampContainer: React.FC<{
               width: "100%",
               right: 0,
               bottom: 0,
-              height: "10rem",
+              height: "8rem",
               background: "linear-gradient(to top, #050507 20%, transparent 100%)",
               zIndex: 20,
             }}
@@ -131,33 +131,33 @@ export const LampContainer: React.FC<{
           style={{
             position: "absolute",
             top: "50%",
-            height: "12rem",
+            height: "10rem",
             width: "100%",
             backgroundColor: "#050507",
             filter: "blur(40px)",
-            transform: "translateY(40px)",
+            transform: "translateY(20px)",
           }}
         />
 
-        {/* Core Spotlight Glow Bubble */}
+        {/* Core Spotlight Glow Bubble Overhead */}
         <div
           style={{
             position: "absolute",
-            top: "130px",
-            height: "9rem",
+            top: "40px",
+            height: "8rem",
             width: "30rem",
             borderRadius: "50%",
             backgroundColor: glowColor,
             opacity: 0.65,
-            filter: "blur(60px)",
+            filter: "blur(55px)",
             zIndex: 30,
           }}
         />
 
         {/* Inner Highlight Light Beam */}
         <motion.div
-          initial={{ width: "10rem" }}
-          whileInView={{ width: "20rem" }}
+          initial={{ width: "12rem" }}
+          whileInView={{ width: "24rem" }}
           viewport={{ once: true }}
           transition={{
             delay: 0.2,
@@ -166,21 +166,21 @@ export const LampContainer: React.FC<{
           }}
           style={{
             position: "absolute",
-            top: "90px",
-            height: "9rem",
-            width: "20rem",
+            top: "22px",
+            height: "7rem",
+            width: "24rem",
             borderRadius: "50%",
             backgroundColor: "#fda4af",
-            opacity: 0.7,
+            opacity: 0.75,
             filter: "blur(35px)",
             zIndex: 35,
           }}
         />
 
-        {/* Top Crisp Illuminating Beam Line */}
+        {/* Top Crisp Illuminating Beam Line (Aceternity Lamp Beam) */}
         <motion.div
-          initial={{ width: "16rem" }}
-          whileInView={{ width: "38rem" }}
+          initial={{ width: "18rem" }}
+          whileInView={{ width: "42rem" }}
           viewport={{ once: true }}
           transition={{
             delay: 0.2,
@@ -189,17 +189,17 @@ export const LampContainer: React.FC<{
           }}
           style={{
             position: "absolute",
-            top: "80px",
+            top: "20px",
             height: "3px",
-            width: "38rem",
+            width: "42rem",
             background: "linear-gradient(to right, transparent, #fda4af 25%, #ffffff 50%, #fda4af 75%, transparent)",
-            boxShadow: `0 0 25px ${glowColor}, 0 0 45px #ffffff`,
+            boxShadow: `0 0 30px ${glowColor}, 0 0 60px #ffffff`,
             zIndex: 50,
           }}
         />
       </div>
 
-      {/* Children Content placed directly underneath the illuminating lamp */}
+      {/* Children Content placed cleanly BELOW the overhead illuminating lamp */}
       <div
         style={{
           position: "relative",
@@ -209,7 +209,7 @@ export const LampContainer: React.FC<{
           alignItems: "center",
           padding: "0 24px",
           textAlign: "center",
-          marginTop: "-110px",
+          marginTop: "30px",
           width: "100%",
         }}
       >
