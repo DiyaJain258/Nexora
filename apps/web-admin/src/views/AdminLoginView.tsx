@@ -212,10 +212,10 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
                 rgba(5, 5, 8, 0.96) 100%
               ),
               linear-gradient(to right,
-                rgba(5, 5, 8, 0.75) 0%,
+                rgba(5, 5, 8, 0.78) 0%,
                 transparent 35%,
                 transparent 65%,
-                rgba(5, 5, 8, 0.75) 100%
+                rgba(5, 5, 8, 0.78) 100%
               )
             `,
           }}
@@ -236,7 +236,7 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
         style={{
           position: 'relative',
           zIndex: 50,
-          padding: '14px 40px',
+          padding: '16px 48px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
@@ -252,7 +252,7 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
         >
           <div
             style={{
-              fontSize: '26px',
+              fontSize: '28px',
               fontWeight: 900,
               letterSpacing: '4px',
               background: 'linear-gradient(135deg, #e50914, #ff4d4d)',
@@ -266,7 +266,7 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
         </div>
 
         {/* Nav Right Controls */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <button
             onClick={handleBack}
             style={{
@@ -276,7 +276,7 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
               backgroundColor: 'rgba(255, 255, 255, 0.08)',
               border: '1px solid rgba(255, 255, 255, 0.18)',
               borderRadius: '6px',
-              padding: '6px 12px',
+              padding: '7px 14px',
               fontSize: '12px',
               fontWeight: 600,
               color: '#ffffff',
@@ -299,7 +299,7 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
               gap: '6px',
               border: '1px solid rgba(255, 255, 255, 0.3)',
               borderRadius: '6px',
-              padding: '6px 12px',
+              padding: '7px 14px',
               fontSize: '12px',
               fontWeight: 600,
               color: '#ffffff',
@@ -318,75 +318,264 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
         </div>
       </nav>
 
-      {/* ── CENTER HERO & COMPACT SIGN-IN CARD ── */}
+      {/* ── CENTER: SPACIOUS SIDE-BY-SIDE LAYOUT ── */}
       <div
         style={{
           position: 'relative',
           zIndex: 10,
           display: 'flex',
-          flexDirection: 'column',
+          flexDirection: 'row',
           alignItems: 'center',
-          justifyContent: 'center',
-          padding: '0 20px',
+          justifyContent: 'space-between',
+          padding: '0 48px',
           width: '100%',
-          maxWidth: '1100px',
+          maxWidth: '1220px',
           margin: '0 auto',
+          gap: '56px',
           flex: 1,
         }}
       >
-        {/* Compact Hero Headline */}
-        <div style={{ textAlign: 'center', marginBottom: '12px', animation: 'heroEntry 0.8s 0.15s cubic-bezier(0.16, 1, 0.3, 1) both' }}>
-          <h1
+        {/* LEFT COLUMN: Hero Title, Brand Messaging & 4 Feature Badges */}
+        <div
+          style={{
+            flex: 1.1,
+            maxWidth: '540px',
+            animation: 'heroEntry 0.8s 0.15s cubic-bezier(0.16, 1, 0.3, 1) both',
+          }}
+        >
+          {/* Top Pill */}
+          <div
             style={{
-              fontSize: 'clamp(24px, 2.6vw, 34px)',
-              fontWeight: 900,
-              lineHeight: 1.15,
-              textShadow: '0 4px 20px rgba(0, 0, 0, 0.85)',
-              marginBottom: '4px',
-              letterSpacing: '-0.3px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '6px 14px',
+              borderRadius: '999px',
+              backgroundColor: 'rgba(229, 9, 20, 0.16)',
+              border: '1px solid rgba(229, 9, 20, 0.4)',
+              marginBottom: '16px',
+              backdropFilter: 'blur(10px)',
             }}
           >
-            Unlimited Movies, Shows <span style={{ color: '#e50914' }}>&amp; More.</span>
+            <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#e50914', boxShadow: '0 0 8px #e50914' }} />
+            <span style={{ fontSize: '11px', fontWeight: 800, color: '#fda4af', letterSpacing: '0.8px', textTransform: 'uppercase' }}>
+              4K STREAMING PLATFORM
+            </span>
+          </div>
+
+          <h1
+            style={{
+              fontSize: 'clamp(34px, 3.6vw, 48px)',
+              fontWeight: 900,
+              lineHeight: 1.1,
+              textShadow: '0 4px 24px rgba(0, 0, 0, 0.85)',
+              marginBottom: '14px',
+              letterSpacing: '-1px',
+            }}
+          >
+            Unlimited Movies,<br />
+            Shows <span style={{ color: '#e50914' }}>&amp; More.</span>
           </h1>
-          <div style={{ fontSize: '13px', fontWeight: 500, color: 'rgba(255, 255, 255, 0.9)', textShadow: '0 2px 10px rgba(0, 0, 0, 0.6)' }}>
+
+          <div
+            style={{
+              fontSize: '17px',
+              fontWeight: 500,
+              color: 'rgba(255, 255, 255, 0.9)',
+              textShadow: '0 2px 10px rgba(0, 0, 0, 0.6)',
+              marginBottom: '8px',
+            }}
+          >
             Stream anywhere. Cancel anytime.
           </div>
-          <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.55)', letterSpacing: '0.4px', marginTop: '2px' }}>
-            4K Ultra HD · Dolby Audio · 1,400+ Live Channels
+
+          <div
+            style={{
+              fontSize: '13px',
+              color: 'rgba(255, 255, 255, 0.6)',
+              letterSpacing: '0.3px',
+              marginBottom: '26px',
+              lineHeight: 1.5,
+            }}
+          >
+            4K Ultra HD · Dolby Audio 7.1 · 1,400+ Live Channels · Instant Smart TV 1-Tap Pairing
+          </div>
+
+          {/* 4 Feature Badges in 2x2 Grid on Left */}
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              gap: '12px',
+              maxWidth: '460px',
+            }}
+          >
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                padding: '9px 12px',
+                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                border: '1px solid rgba(255, 255, 255, 0.09)',
+                borderRadius: '10px',
+                backdropFilter: 'blur(10px)',
+              }}
+            >
+              <div
+                style={{
+                  width: '34px',
+                  height: '34px',
+                  borderRadius: '8px',
+                  backgroundColor: 'rgba(229, 9, 20, 0.16)',
+                  border: '1px solid rgba(229, 9, 20, 0.35)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                }}
+              >
+                <Tv size={16} color="#fda4af" />
+              </div>
+              <div>
+                <div style={{ fontSize: '14px', fontWeight: 800, color: '#ffffff', lineHeight: 1.1 }}>1,400+</div>
+                <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.6)' }}>Live Channels</div>
+              </div>
+            </div>
+
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                padding: '9px 12px',
+                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                border: '1px solid rgba(255, 255, 255, 0.09)',
+                borderRadius: '10px',
+                backdropFilter: 'blur(10px)',
+              }}
+            >
+              <div
+                style={{
+                  width: '34px',
+                  height: '34px',
+                  borderRadius: '8px',
+                  backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                  border: '1px solid rgba(255, 255, 255, 0.16)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                }}
+              >
+                <Monitor size={16} color="#ffffff" />
+              </div>
+              <div>
+                <div style={{ fontSize: '14px', fontWeight: 800, color: '#ffffff', lineHeight: 1.1 }}>4K UHD</div>
+                <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.6)' }}>Cinema HDR</div>
+              </div>
+            </div>
+
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                padding: '9px 12px',
+                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                border: '1px solid rgba(255, 255, 255, 0.09)',
+                borderRadius: '10px',
+                backdropFilter: 'blur(10px)',
+              }}
+            >
+              <div
+                style={{
+                  width: '34px',
+                  height: '34px',
+                  borderRadius: '8px',
+                  backgroundColor: 'rgba(229, 9, 20, 0.16)',
+                  border: '1px solid rgba(229, 9, 20, 0.35)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                }}
+              >
+                <ShieldCheck size={16} color="#fda4af" />
+              </div>
+              <div>
+                <div style={{ fontSize: '14px', fontWeight: 800, color: '#ffffff', lineHeight: 1.1 }}>5 Screens</div>
+                <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.6)' }}>Simultaneous</div>
+              </div>
+            </div>
+
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                padding: '9px 12px',
+                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                border: '1px solid rgba(255, 255, 255, 0.09)',
+                borderRadius: '10px',
+                backdropFilter: 'blur(10px)',
+              }}
+            >
+              <div
+                style={{
+                  width: '34px',
+                  height: '34px',
+                  borderRadius: '8px',
+                  backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                  border: '1px solid rgba(255, 255, 255, 0.16)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                }}
+              >
+                <Globe size={16} color="#ffffff" />
+              </div>
+              <div>
+                <div style={{ fontSize: '14px', fontWeight: 800, color: '#ffffff', lineHeight: 1.1 }}>190+</div>
+                <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.6)' }}>Global CDN</div>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* ── PROPORTIONED SIGN-IN CARD ── */}
+        {/* RIGHT COLUMN: Spacious, Proportioned Sign-In Card */}
         <div
           style={{
             width: '100%',
-            maxWidth: '380px',
-            background: 'rgba(5, 5, 8, 0.86)',
-            borderRadius: '12px',
-            padding: '24px 28px 20px',
-            backdropFilter: 'blur(24px) saturate(1.5)',
-            WebkitBackdropFilter: 'blur(24px) saturate(1.5)',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
-            boxShadow: '0 24px 60px rgba(0, 0, 0, 0.85), 0 0 60px rgba(229, 9, 20, 0.1)',
+            maxWidth: '410px',
+            background: 'rgba(5, 5, 8, 0.88)',
+            borderRadius: '16px',
+            padding: '28px 32px 24px',
+            backdropFilter: 'blur(28px) saturate(1.5)',
+            WebkitBackdropFilter: 'blur(28px) saturate(1.5)',
+            border: '1px solid rgba(255, 255, 255, 0.12)',
+            boxShadow: '0 32px 80px rgba(0, 0, 0, 0.85), 0 0 80px rgba(229, 9, 20, 0.12)',
             animation: 'cardEntry 0.8s 0.25s cubic-bezier(0.16, 1, 0.3, 1) both',
+            flexShrink: 0,
           }}
         >
-          <div style={{ fontSize: '22px', fontWeight: 800, marginBottom: '14px', letterSpacing: '-0.3px', color: '#ffffff' }}>
+          <div style={{ fontSize: '24px', fontWeight: 800, marginBottom: '16px', letterSpacing: '-0.3px', color: '#ffffff' }}>
             Sign In
           </div>
 
           {/* Tabs: Subscriber vs Admin Console */}
-          <div style={{ display: 'flex', borderBottom: '2px solid rgba(255, 255, 255, 0.1)', marginBottom: '16px' }}>
+          <div style={{ display: 'flex', borderBottom: '2px solid rgba(255, 255, 255, 0.1)', marginBottom: '18px' }}>
             <button
               onClick={() => handleTabSwitch('sub')}
               type="button"
               style={{
                 flex: 1,
-                padding: '7px 0',
+                padding: '8px 0',
                 background: 'transparent',
                 border: 'none',
                 color: activeTab === 'sub' ? '#ffffff' : 'rgba(255, 255, 255, 0.55)',
-                fontSize: '12px',
+                fontSize: '13px',
                 fontWeight: 700,
                 cursor: 'pointer',
                 letterSpacing: '0.03em',
@@ -402,11 +591,11 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
               type="button"
               style={{
                 flex: 1,
-                padding: '7px 0',
+                padding: '8px 0',
                 background: 'transparent',
                 border: 'none',
                 color: activeTab === 'adm' ? '#ffffff' : 'rgba(255, 255, 255, 0.55)',
-                fontSize: '12px',
+                fontSize: '13px',
                 fontWeight: 700,
                 cursor: 'pointer',
                 letterSpacing: '0.03em',
@@ -423,7 +612,7 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
             {/* Email Field with Floating Label */}
             <div
               style={{
-                marginBottom: '10px',
+                marginBottom: '12px',
                 position: 'relative',
                 animation: shakingField === 'email' ? 'shake 0.4s ease' : 'none',
               }}
@@ -435,7 +624,7 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
                 placeholder=" "
                 style={{
                   width: '100%',
-                  padding: '16px 14px 6px',
+                  padding: '18px 14px 6px',
                   background: 'rgba(255, 255, 255, 0.08)',
                   border: '1px solid rgba(255, 255, 255, 0.14)',
                   borderRadius: '6px',
@@ -461,7 +650,7 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
                   left: '14px',
                   top: email ? '6px' : '50%',
                   transform: email ? 'none' : 'translateY(-50%)',
-                  fontSize: email ? '9px' : '13px',
+                  fontSize: email ? '10px' : '13px',
                   color: 'rgba(255, 255, 255, 0.55)',
                   pointerEvents: 'none',
                   transition: 'all 0.18s ease',
@@ -476,7 +665,7 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
             {/* Password Field with Eye Toggle */}
             <div
               style={{
-                marginBottom: '14px',
+                marginBottom: '16px',
                 position: 'relative',
                 animation: shakingField === 'password' ? 'shake 0.4s ease' : 'none',
               }}
@@ -488,7 +677,7 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
                 placeholder=" "
                 style={{
                   width: '100%',
-                  padding: '16px 42px 6px 14px',
+                  padding: '18px 42px 6px 14px',
                   background: 'rgba(255, 255, 255, 0.08)',
                   border: '1px solid rgba(255, 255, 255, 0.14)',
                   borderRadius: '6px',
@@ -514,7 +703,7 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
                   left: '14px',
                   top: password ? '6px' : '50%',
                   transform: password ? 'none' : 'translateY(-50%)',
-                  fontSize: password ? '9px' : '13px',
+                  fontSize: password ? '10px' : '13px',
                   color: 'rgba(255, 255, 255, 0.55)',
                   pointerEvents: 'none',
                   transition: 'all 0.18s ease',
@@ -553,7 +742,7 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
               className="btn-signin-netflix"
               style={{
                 width: '100%',
-                padding: '13px',
+                padding: '14px',
                 background: success ? '#16a34a' : 'linear-gradient(135deg, #e50914 0%, #b20710 100%)',
                 border: 'none',
                 borderRadius: '6px',
@@ -603,7 +792,7 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
           </form>
 
           {/* Divider */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', margin: '12px 0' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', margin: '14px 0' }}>
             <div style={{ flex: 1, height: '1px', backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
             <span style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.5)' }}>or</span>
             <div style={{ flex: 1, height: '1px', backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
@@ -615,12 +804,12 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
             onClick={() => showToast('Activation Code', 'Use 6-digit code: NX-8849 to link your Smart TV')}
             style={{
               width: '100%',
-              padding: '10px',
+              padding: '11px',
               background: 'rgba(255, 255, 255, 0.08)',
               border: '1px solid rgba(255, 255, 255, 0.15)',
               borderRadius: '6px',
               color: '#ffffff',
-              fontSize: '12px',
+              fontSize: '13px',
               fontWeight: 600,
               cursor: 'pointer',
               display: 'flex',
@@ -638,7 +827,7 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
           </button>
 
           {/* Card Footer Links */}
-          <div style={{ marginTop: '14px', fontSize: '11px', color: 'rgba(255, 255, 255, 0.55)', textAlign: 'center' }}>
+          <div style={{ marginTop: '16px', fontSize: '12px', color: 'rgba(255, 255, 255, 0.55)', textAlign: 'center' }}>
             New to NEXORA?{' '}
             <a
               href="#"
@@ -663,94 +852,6 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
             </a>
           </div>
         </div>
-
-        {/* ── FEATURES ROW ── */}
-        <div
-          style={{
-            display: 'flex',
-            gap: '24px',
-            marginTop: '16px',
-            animation: 'heroEntry 0.8s 0.35s cubic-bezier(0.16, 1, 0.3, 1) both',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-          }}
-        >
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', fontSize: '11px', color: 'rgba(255, 255, 255, 0.5)', textAlign: 'center' }}>
-            <div
-              style={{
-                width: '34px',
-                height: '34px',
-                borderRadius: '50%',
-                backgroundColor: 'rgba(255, 255, 255, 0.08)',
-                border: '1px solid rgba(255, 255, 255, 0.12)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <Tv size={15} color="#fda4af" />
-            </div>
-            <div style={{ fontSize: '14px', fontWeight: 800, color: '#ffffff', lineHeight: 1 }}>1,400+</div>
-            <span>Live Channels</span>
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', fontSize: '11px', color: 'rgba(255, 255, 255, 0.5)', textAlign: 'center' }}>
-            <div
-              style={{
-                width: '34px',
-                height: '34px',
-                borderRadius: '50%',
-                backgroundColor: 'rgba(255, 255, 255, 0.08)',
-                border: '1px solid rgba(255, 255, 255, 0.12)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <Monitor size={15} color="#ffffff" />
-            </div>
-            <div style={{ fontSize: '14px', fontWeight: 800, color: '#ffffff', lineHeight: 1 }}>4K</div>
-            <span>Ultra HD</span>
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', fontSize: '11px', color: 'rgba(255, 255, 255, 0.5)', textAlign: 'center' }}>
-            <div
-              style={{
-                width: '34px',
-                height: '34px',
-                borderRadius: '50%',
-                backgroundColor: 'rgba(255, 255, 255, 0.08)',
-                border: '1px solid rgba(255, 255, 255, 0.12)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <ShieldCheck size={15} color="#fda4af" />
-            </div>
-            <div style={{ fontSize: '14px', fontWeight: 800, color: '#ffffff', lineHeight: 1 }}>5</div>
-            <span>Screens</span>
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', fontSize: '11px', color: 'rgba(255, 255, 255, 0.5)', textAlign: 'center' }}>
-            <div
-              style={{
-                width: '34px',
-                height: '34px',
-                borderRadius: '50%',
-                backgroundColor: 'rgba(255, 255, 255, 0.08)',
-                border: '1px solid rgba(255, 255, 255, 0.12)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <Globe size={15} color="#ffffff" />
-            </div>
-            <div style={{ fontSize: '14px', fontWeight: 800, color: '#ffffff', lineHeight: 1 }}>190+</div>
-            <span>Countries</span>
-          </div>
-        </div>
       </div>
 
       {/* ── FOOTER ── */}
@@ -758,12 +859,12 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
         style={{
           position: 'relative',
           zIndex: 10,
-          padding: '12px 40px',
+          padding: '14px 48px',
           background: 'linear-gradient(to top, rgba(5, 5, 8, 0.85) 0%, transparent 100%)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: '20px',
+          gap: '24px',
           flexWrap: 'wrap',
           flexShrink: 0,
         }}
@@ -789,7 +890,7 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
       <div
         style={{
           position: 'fixed',
-          top: '64px',
+          top: '68px',
           right: '24px',
           zIndex: 200,
           backgroundColor: 'rgba(15, 15, 22, 0.95)',
