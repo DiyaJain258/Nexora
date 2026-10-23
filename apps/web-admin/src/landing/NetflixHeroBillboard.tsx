@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play, Zap, Star, Volume2, VolumeX, ChevronLeft, ChevronRight, Activity, Sparkles, CheckCircle2, Film } from 'lucide-react';
+import { Play, Pause, Zap, Star, Volume2, VolumeX, ChevronLeft, ChevronRight, Activity, Sparkles, CheckCircle2, Film } from 'lucide-react';
 import { SparklesCore } from '@/components/ui/sparkles';
 import { MovieTrailerModal, MovieTrailerItem } from './MovieTrailerModal';
 
@@ -10,7 +10,7 @@ interface NetflixHeroBillboardProps {
   onNavigateToAdmin: () => void;
 }
 
-const HERO_MOVIES: MovieTrailerItem[] = [
+const HERO_MOVIES: (MovieTrailerItem & { videoUrl: string })[] = [
   {
     id: 'hero-01',
     title: 'Dune: Prophecy • Part Two',
@@ -21,7 +21,8 @@ const HERO_MOVIES: MovieTrailerItem[] = [
     duration: '2h 46m',
     releaseYear: 2026,
     synopsis: 'Paul Atreides unites with Chani and the Fremen while seeking vengeance against the conspirators who destroyed his family, confronting choices between the love of his life and the fate of the known universe.',
-    backdropUrl: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=1920&auto=format&fit=crop&q=85',
+    backdropUrl: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=1920&auto=format&fit=crop&q=85',
+    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4',
     accentColor: '#e11d48',
   },
   {
@@ -34,7 +35,8 @@ const HERO_MOVIES: MovieTrailerItem[] = [
     duration: '2h 30m',
     releaseYear: 2026,
     synopsis: 'Years after witnessing the heroic sacrifice of Maximus, Lucius must enter the Colosseum after his home is conquered by tyrannical Emperors who lead Rome with an iron fist.',
-    backdropUrl: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=1920&auto=format&fit=crop&q=85',
+    backdropUrl: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=1920&auto=format&fit=crop&q=85',
+    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
     accentColor: '#be123c',
   },
   {
@@ -47,7 +49,8 @@ const HERO_MOVIES: MovieTrailerItem[] = [
     duration: 'Live 120m',
     releaseYear: 2026,
     synopsis: 'Real Madrid vs Manchester City in the greatest European football clash. Ultra-low latency LL-HLS 4K 60fps broadcast with Dolby Atmos stadium crowd audio and zero buffering.',
-    backdropUrl: 'https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=1920&auto=format&fit=crop&q=80',
+    backdropUrl: 'https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=1920&auto=format&fit=crop&q=85',
+    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4',
     accentColor: '#e11d48',
   },
   {
@@ -61,6 +64,7 @@ const HERO_MOVIES: MovieTrailerItem[] = [
     releaseYear: 2026,
     synopsis: 'In the sprawling subterranean corridors of New Hong Kong, a renegade augmented operative unravels a rogue sentient AI conspiracy threatening global satellite networks.',
     backdropUrl: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1920&auto=format&fit=crop&q=85',
+    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
     accentColor: '#fda4af',
   },
   {
@@ -73,7 +77,8 @@ const HERO_MOVIES: MovieTrailerItem[] = [
     duration: '2h 49m',
     releaseYear: 2026,
     synopsis: 'A team of explorers travel through a wormhole in space in an attempt to ensure humanity’s survival, exploring gargantuan ocean planets and temporal gravity distortions.',
-    backdropUrl: 'https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?w=1920&auto=format&fit=crop&q=85',
+    backdropUrl: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&auto=format&fit=crop&q=85',
+    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
     accentColor: '#ffffff',
   },
 ];
@@ -87,10 +92,18 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
   const [isTrailerModalOpen, setIsTrailerModalOpen] = useState(false);
   const [selectedTrailerMovie, setSelectedTrailerMovie] = useState<MovieTrailerItem | null>(null);
   const [isMuted, setIsMuted] = useState(true);
+  const [isPlayingVideo, setIsPlayingVideo] = useState(true);
   const [timerProgress, setTimerProgress] = useState(0);
-  const autoPlayRef = useRef<NodeJS.Timeout | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
-  // Auto-slide every 6 seconds with animated progress
+  // Sync video audio mute state
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = isMuted;
+    }
+  }, [isMuted]);
+
+  // Auto-slide every 7 seconds with animated progress
   useEffect(() => {
     setTimerProgress(0);
     const progressInterval = setInterval(() => {
@@ -99,9 +112,9 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
           setCurrentIndex((idx) => (idx + 1) % HERO_MOVIES.length);
           return 0;
         }
-        return prev + 2;
+        return prev + 1.6;
       });
-    }, 120);
+    }, 110);
 
     return () => clearInterval(progressInterval);
   }, [currentIndex]);
@@ -121,6 +134,18 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
     setCurrentIndex((prev) => (prev - 1 + HERO_MOVIES.length) % HERO_MOVIES.length);
   };
 
+  const toggleVideoPlayback = () => {
+    if (videoRef.current) {
+      if (isPlayingVideo) {
+        videoRef.current.pause();
+        setIsPlayingVideo(false);
+      } else {
+        videoRef.current.play();
+        setIsPlayingVideo(true);
+      }
+    }
+  };
+
   return (
     <div
       style={{
@@ -134,67 +159,86 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
         justifyContent: 'flex-end',
       }}
     >
-      {/* Background Cinematic Movie Artwork with Smooth Crossfade */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentMovie.id}
-          initial={{ opacity: 0, scale: 1.05 }}
-          animate={{ opacity: 1, scale: 1.0 }}
-          exit={{ opacity: 0, scale: 0.98 }}
-          transition={{ duration: 1.1, ease: 'easeOut' }}
-          style={{
-            position: 'absolute',
-            inset: 0,
-            zIndex: 1,
-          }}
-        >
-          <img
-            src={currentMovie.backdropUrl}
-            alt={currentMovie.title}
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              objectPosition: 'center 20%',
-              filter: 'brightness(0.7) contrast(1.15)',
-            }}
-          />
-
-          {/* Cinematic Gradient Vignettes for Seamless Legibility */}
-          {/* Top Navbar Dimmer */}
-          <div
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              height: '240px',
-              background: 'linear-gradient(180deg, #050507 0%, rgba(5, 5, 7, 0.7) 50%, transparent 100%)',
-            }}
-          />
-
-          {/* Left Text Shadow Gradient (Netflix signature look) */}
-          <div
+      {/* Background Cinematic Movie Live Video & Backdrop with Smooth Crossfade */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: 1,
+          overflow: 'hidden',
+        }}
+      >
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentMovie.id}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.9, ease: 'easeOut' }}
             style={{
               position: 'absolute',
               inset: 0,
-              background: 'linear-gradient(90deg, #050507 0%, rgba(5, 5, 7, 0.94) 35%, rgba(5, 5, 7, 0.45) 65%, transparent 100%)',
             }}
-          />
+          >
+            {/* Live 4K Streaming Video Player playing directly on the hero */}
+            <video
+              ref={videoRef}
+              autoPlay
+              loop
+              muted={isMuted}
+              playsInline
+              poster={currentMovie.backdropUrl}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                objectPosition: 'center 25%',
+                filter: 'brightness(0.9) contrast(1.15) saturate(1.1)',
+                transform: 'scale(1.02)',
+              }}
+            >
+              <source src={currentMovie.videoUrl} type="video/mp4" />
+            </video>
 
-          {/* Bottom Deep Fade into next section */}
-          <div
-            style={{
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: '340px',
-              background: 'linear-gradient(0deg, #050507 0%, rgba(5, 5, 7, 0.9) 45%, transparent 100%)',
-            }}
-          />
-        </motion.div>
-      </AnimatePresence>
+            {/* Cinematic Gradient Vignettes: Soft on Right so Video is clearly visible, Dark on Left for typography */}
+            {/* Top Navbar Dimmer */}
+            <div
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: '160px',
+                background: 'linear-gradient(180deg, #050507 0%, rgba(5, 5, 7, 0.7) 40%, transparent 100%)',
+                pointerEvents: 'none',
+              }}
+            />
+
+            {/* Left Text Shadow Gradient (Soft feathering ensures video on the right shines bright) */}
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                background: 'linear-gradient(90deg, #050507 0%, rgba(5, 5, 7, 0.88) 36%, rgba(5, 5, 7, 0.3) 65%, transparent 100%)',
+                pointerEvents: 'none',
+              }}
+            />
+
+            {/* Bottom Deep Fade into next section */}
+            <div
+              style={{
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                height: '240px',
+                background: 'linear-gradient(0deg, #050507 0%, rgba(5, 5, 7, 0.8) 45%, transparent 100%)',
+                pointerEvents: 'none',
+              }}
+            />
+          </motion.div>
+        </AnimatePresence>
+      </div>
 
       {/* Sparkling Stars Overlay (Aceternity SparklesCore) */}
       <div style={{ position: 'absolute', inset: 0, zIndex: 2, pointerEvents: 'none', opacity: 0.7 }}>
@@ -215,7 +259,7 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
           zIndex: 10,
           maxWidth: '1380px',
           margin: '0 auto',
-          padding: '140px 32px 50px',
+          padding: '110px 32px 30px',
           width: '100%',
         }}
       >
@@ -231,35 +275,35 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
               display: 'inline-flex',
               alignItems: 'center',
               gap: '8px',
-              padding: '6px 14px',
+              padding: '5px 14px',
               backgroundColor: 'rgba(225, 29, 72, 0.18)',
               border: '1px solid rgba(225, 29, 72, 0.45)',
               borderRadius: '8px',
-              marginBottom: '18px',
+              marginBottom: '14px',
               backdropFilter: 'blur(10px)',
               boxShadow: '0 0 25px rgba(225, 29, 72, 0.25)',
             }}
           >
-            <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#e11d48', boxShadow: '0 0 10px #e11d48' }} />
+            <span style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: '#e11d48', boxShadow: '0 0 10px #e11d48' }} />
             <span style={{ fontSize: '11px', fontWeight: 900, color: '#ffffff', letterSpacing: '1px', textTransform: 'uppercase' }}>
               {currentMovie.tagline}
             </span>
           </motion.div>
 
-          {/* Huge Netflix Title */}
+          {/* Netflix Movie Title */}
           <motion.h1
             key={`title-${currentMovie.id}`}
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            transition={{ duration: 0.5, delay: 0.08 }}
             style={{
-              fontSize: '58px',
+              fontSize: '48px',
               fontWeight: 900,
-              lineHeight: 1.05,
+              lineHeight: 1.1,
               color: '#ffffff',
-              letterSpacing: '-1.5px',
-              marginBottom: '16px',
-              textShadow: '0 4px 30px rgba(0, 0, 0, 0.9)',
+              letterSpacing: '-1px',
+              marginBottom: '14px',
+              textShadow: '0 4px 30px rgba(0, 0, 0, 0.95)',
             }}
           >
             {currentMovie.title}
@@ -270,13 +314,13 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
             key={`meta-${currentMovie.id}`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            transition={{ duration: 0.5, delay: 0.15 }}
             style={{
               display: 'flex',
               alignItems: 'center',
               flexWrap: 'wrap',
-              gap: '12px',
-              marginBottom: '20px',
+              gap: '10px',
+              marginBottom: '16px',
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '4px', backgroundColor: 'rgba(245, 158, 11, 0.2)', border: '1px solid rgba(245, 158, 11, 0.4)', padding: '3px 9px', borderRadius: '6px' }}>
@@ -312,39 +356,39 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
           {/* Synopsis */}
           <motion.p
             key={`synopsis-${currentMovie.id}`}
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.25 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
             style={{
-              fontSize: '16px',
-              lineHeight: 1.65,
+              fontSize: '15px',
+              lineHeight: 1.6,
               color: '#d4d4d8',
               maxWidth: '680px',
-              marginBottom: '32px',
-              textShadow: '0 2px 10px rgba(0, 0, 0, 0.8)',
+              marginBottom: '24px',
+              textShadow: '0 2px 10px rgba(0, 0, 0, 0.85)',
             }}
           >
             {currentMovie.synopsis}
           </motion.p>
 
           {/* Action CTAs */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap', marginBottom: '40px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap', marginBottom: '24px' }}>
             
-            {/* Primary Watch Trailer Button (User Explicit Request) */}
+            {/* Primary Watch Trailer Button */}
             <button
               onClick={() => handleOpenTrailer(currentMovie)}
               className="btn-radiant"
               style={{
-                padding: '16px 32px',
-                fontSize: '15px',
+                padding: '14px 28px',
+                fontSize: '14px',
                 fontWeight: 900,
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '10px',
+                gap: '8px',
                 cursor: 'pointer',
               }}
             >
-              <Play size={20} color="#050507" fill="#050507" />
+              <Play size={18} color="#050507" fill="#050507" />
               <span>Watch 4K Trailer</span>
             </button>
 
@@ -353,11 +397,11 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
               onClick={onOpenActivation}
               className="btn-primary-glow"
               style={{
-                padding: '16px 28px',
-                fontSize: '15px',
+                padding: '14px 24px',
+                fontSize: '14px',
               }}
             >
-              <Zap size={18} />
+              <Zap size={16} />
               <span>Activate TV Free Pass</span>
             </button>
 
@@ -366,120 +410,68 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
               onClick={onOpenLiveDemo}
               className="btn-secondary-glass"
               style={{
-                padding: '16px 24px',
-                fontSize: '15px',
+                padding: '14px 22px',
+                fontSize: '14px',
               }}
             >
-              <Activity size={18} color="#fda4af" />
+              <Activity size={16} color="#fda4af" />
               <span>1,420+ Live Channels</span>
             </button>
 
           </div>
 
           {/* Value Highlights Pill Bar */}
-          <div style={{ display: 'flex', gap: '24px', alignItems: 'center', flexWrap: 'wrap' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <CheckCircle2 size={16} color="#fda4af" />
-              <span style={{ fontSize: '13px', color: '#e4e4e7', fontWeight: 600 }}>0.4s Instant Channel Tuning</span>
+          <div style={{ display: 'flex', gap: '20px', alignItems: 'center', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '7px' }}>
+              <CheckCircle2 size={15} color="#fda4af" />
+              <span style={{ fontSize: '12px', color: '#e4e4e7', fontWeight: 600 }}>0.4s Instant Channel Tuning</span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <CheckCircle2 size={16} color="#ffffff" />
-              <span style={{ fontSize: '13px', color: '#e4e4e7', fontWeight: 600 }}>Zero Buffering LL-HLS</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '7px' }}>
+              <CheckCircle2 size={15} color="#ffffff" />
+              <span style={{ fontSize: '12px', color: '#e4e4e7', fontWeight: 600 }}>Zero Buffering LL-HLS</span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <CheckCircle2 size={16} color="#fda4af" />
-              <span style={{ fontSize: '13px', color: '#e4e4e7', fontWeight: 600 }}>Smart TV 1-Tap Pairing</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '7px' }}>
+              <CheckCircle2 size={15} color="#fda4af" />
+              <span style={{ fontSize: '12px', color: '#e4e4e7', fontWeight: 600 }}>Smart TV 1-Tap Pairing</span>
             </div>
           </div>
 
         </div>
 
-        {/* Right Corner: Sound Mute/Unmute & Rating Badge (Netflix Signature) */}
+        {/* Unified Bottom Strip: Flex layout with ZERO overlap */}
         <div
           style={{
-            position: 'absolute',
-            right: '32px',
-            bottom: '60px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '14px',
-            zIndex: 20,
-          }}
-        >
-          <button
-            onClick={() => setIsMuted(!isMuted)}
-            title={isMuted ? 'Unmute Ambient Sound' : 'Mute Ambient Sound'}
-            style={{
-              width: '44px',
-              height: '44px',
-              borderRadius: '50%',
-              backgroundColor: 'rgba(255, 255, 255, 0.08)',
-              border: '1px solid rgba(255, 255, 255, 0.25)',
-              backdropFilter: 'blur(12px)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-              color: '#ffffff',
-              transition: 'all 0.2s',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = 'rgba(225, 29, 72, 0.25)';
-              e.currentTarget.style.borderColor = '#e11d48';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.08)';
-              e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.25)';
-            }}
-          >
-            {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
-          </button>
-
-          <div
-            style={{
-              padding: '6px 14px',
-              backgroundColor: 'rgba(5, 5, 7, 0.8)',
-              borderLeft: '3px solid #e11d48',
-              borderRadius: '0 6px 6px 0',
-              backdropFilter: 'blur(10px)',
-            }}
-          >
-            <span style={{ fontSize: '12px', fontWeight: 900, color: '#ffffff' }}>4K ULTRA HD</span>
-          </div>
-        </div>
-
-        {/* Bottom Interactive Thumbnail Carousel Strip (Netflix / Prime Video Style) */}
-        <div
-          style={{
-            marginTop: '44px',
-            borderTop: '1px solid rgba(255, 255, 255, 0.08)',
-            paddingTop: '20px',
+            marginTop: '28px',
+            borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+            paddingTop: '18px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            gap: '20px',
+            gap: '16px',
+            flexWrap: 'nowrap',
+            width: '100%',
           }}
         >
-          {/* Slide Timer Indicator Bar */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          {/* Left: Slide Timer Indicator Bar */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
             <span style={{ fontSize: '11px', fontWeight: 800, color: '#71717a' }}>
               0{currentIndex + 1} / 0{HERO_MOVIES.length}
             </span>
-            <div style={{ width: '80px', height: '3px', backgroundColor: 'rgba(255, 255, 255, 0.15)', borderRadius: '2px', overflow: 'hidden' }}>
+            <div style={{ width: '60px', height: '3px', backgroundColor: 'rgba(255, 255, 255, 0.15)', borderRadius: '2px', overflow: 'hidden' }}>
               <div
                 style={{
                   width: `${timerProgress}%`,
                   height: '100%',
                   backgroundColor: '#e11d48',
                   boxShadow: '0 0 8px #e11d48',
-                  transition: 'width 0.12s linear',
+                  transition: 'width 0.11s linear',
                 }}
               />
             </div>
           </div>
 
-          {/* Thumbnail Movie Cards Strip */}
-          <div style={{ display: 'flex', gap: '14px', overflowX: 'auto', paddingBottom: '4px' }}>
+          {/* Center: Movie Thumbnails Strip */}
+          <div style={{ display: 'flex', gap: '12px', overflowX: 'auto', paddingBottom: '2px', flex: 1, minWidth: 0, justifyContent: 'flex-start' }}>
             {HERO_MOVIES.map((movie, idx) => {
               const isActive = idx === currentIndex;
               return (
@@ -488,15 +480,15 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
                   onClick={() => setCurrentIndex(idx)}
                   style={{
                     position: 'relative',
-                    width: '140px',
-                    height: '76px',
+                    width: '130px',
+                    height: '70px',
                     borderRadius: '10px',
                     overflow: 'hidden',
                     cursor: 'pointer',
-                    border: isActive ? '2px solid #ffffff' : '1px solid rgba(255, 255, 255, 0.12)',
-                    boxShadow: isActive ? '0 0 20px rgba(225, 29, 72, 0.4), 0 0 10px #ffffff' : 'none',
-                    transform: isActive ? 'scale(1.05)' : 'scale(1.0)',
-                    transition: 'all 0.3s ease',
+                    border: isActive ? '2px solid #ffffff' : '1px solid rgba(255, 255, 255, 0.15)',
+                    boxShadow: isActive ? '0 0 16px rgba(225, 29, 72, 0.5), 0 0 8px #ffffff' : 'none',
+                    transform: isActive ? 'scale(1.04)' : 'scale(1.0)',
+                    transition: 'all 0.25s ease',
                     flexShrink: 0,
                   }}
                 >
@@ -514,13 +506,32 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
                         : 'linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0,0,0,0.2) 100%)',
                     }}
                   />
+                  {isActive && (
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: '5px',
+                        right: '5px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '3px',
+                        backgroundColor: '#e11d48',
+                        padding: '2px 5px',
+                        borderRadius: '4px',
+                        boxShadow: '0 0 8px #e11d48',
+                      }}
+                    >
+                      <Play size={7} fill="#ffffff" color="#ffffff" />
+                      <span style={{ fontSize: '7px', fontWeight: 900, color: '#ffffff' }}>LIVE</span>
+                    </div>
+                  )}
                   <span
                     style={{
                       position: 'absolute',
-                      bottom: '6px',
-                      left: '8px',
-                      right: '8px',
-                      fontSize: '10px',
+                      bottom: '5px',
+                      left: '7px',
+                      right: '7px',
+                      fontSize: '9px',
                       fontWeight: 800,
                       color: '#ffffff',
                       whiteSpace: 'nowrap',
@@ -535,16 +546,18 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
             })}
           </div>
 
-          {/* Next / Prev Navigation Buttons */}
-          <div style={{ display: 'flex', gap: '8px' }}>
+          {/* Right: Controls & Live Feed Badge (Unified Flex Items - NEVER overlaps) */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+            {/* Prev & Next Slide Buttons */}
             <button
               onClick={handlePrev}
+              title="Previous Movie"
               style={{
-                width: '36px',
-                height: '36px',
+                width: '34px',
+                height: '34px',
                 borderRadius: '50%',
                 backgroundColor: 'rgba(255, 255, 255, 0.08)',
-                border: '1px solid rgba(255, 255, 255, 0.15)',
+                border: '1px solid rgba(255, 255, 255, 0.18)',
                 color: '#ffffff',
                 display: 'flex',
                 alignItems: 'center',
@@ -552,16 +565,17 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
                 cursor: 'pointer',
               }}
             >
-              <ChevronLeft size={18} />
+              <ChevronLeft size={16} />
             </button>
             <button
               onClick={handleNext}
+              title="Next Movie"
               style={{
-                width: '36px',
-                height: '36px',
+                width: '34px',
+                height: '34px',
                 borderRadius: '50%',
                 backgroundColor: 'rgba(255, 255, 255, 0.08)',
-                border: '1px solid rgba(255, 255, 255, 0.15)',
+                border: '1px solid rgba(255, 255, 255, 0.18)',
                 color: '#ffffff',
                 display: 'flex',
                 alignItems: 'center',
@@ -569,10 +583,70 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
                 cursor: 'pointer',
               }}
             >
-              <ChevronRight size={18} />
+              <ChevronRight size={16} />
             </button>
-          </div>
 
+            {/* Pause / Play Ambient Video */}
+            <button
+              onClick={toggleVideoPlayback}
+              title={isPlayingVideo ? 'Pause Video' : 'Play Video'}
+              style={{
+                width: '38px',
+                height: '38px',
+                borderRadius: '50%',
+                backgroundColor: 'rgba(10, 10, 16, 0.9)',
+                border: '1px solid rgba(255, 255, 255, 0.25)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                color: '#ffffff',
+                transition: 'all 0.2s',
+              }}
+            >
+              {isPlayingVideo ? <Pause size={15} /> : <Play size={15} fill="#ffffff" />}
+            </button>
+
+            {/* Sound Mute/Unmute */}
+            <button
+              onClick={() => setIsMuted(!isMuted)}
+              title={isMuted ? 'Unmute Audio' : 'Mute Audio'}
+              style={{
+                width: '38px',
+                height: '38px',
+                borderRadius: '50%',
+                backgroundColor: isMuted ? 'rgba(10, 10, 16, 0.9)' : '#e11d48',
+                border: `1px solid ${isMuted ? 'rgba(255, 255, 255, 0.25)' : '#ffffff'}`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                color: '#ffffff',
+                boxShadow: isMuted ? 'none' : '0 0 16px rgba(225, 29, 72, 0.8)',
+                transition: 'all 0.2s',
+              }}
+            >
+              {isMuted ? <VolumeX size={15} /> : <Volume2 size={15} />}
+            </button>
+
+            {/* 4K Live Broadcast Pill */}
+            <div
+              style={{
+                padding: '6px 12px',
+                backgroundColor: 'rgba(10, 10, 16, 0.92)',
+                border: '1px solid rgba(225, 29, 72, 0.4)',
+                borderLeft: '3px solid #e11d48',
+                borderRadius: '6px',
+                backdropFilter: 'blur(10px)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+              }}
+            >
+              <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: '#e11d48', animation: 'pulse 1.2s infinite' }} />
+              <span style={{ fontSize: '11px', fontWeight: 900, color: '#ffffff', letterSpacing: '0.5px' }}>4K LIVE</span>
+            </div>
+          </div>
         </div>
 
       </div>
