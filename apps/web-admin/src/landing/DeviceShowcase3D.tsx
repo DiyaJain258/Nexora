@@ -64,7 +64,7 @@ export const DeviceShowcase3D: React.FC = () => {
             One single subscription powers your living room big screen, your mobile device on the go, and your desktop browser with instant synchronized state.
           </p>
 
-          <div style={{ display: 'inline-flex', gap: '8px', padding: '6px', backgroundColor: 'rgba(10, 10, 14, 0.7)', borderRadius: '16px', border: '1px solid rgba(255, 255, 255, 0.08)', marginTop: '32px' }}>
+          <div className="device-tabs-container" style={{ backgroundColor: 'rgba(10, 10, 14, 0.7)', borderRadius: '16px', border: '1px solid rgba(255, 255, 255, 0.08)', marginTop: '32px' }}>
             {devices.map((d) => {
               const Icon = d.icon;
               const isActive = activeDevice === d.id;
@@ -103,8 +103,7 @@ export const DeviceShowcase3D: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.4 }}
-            className="glass-card"
-            style={{ padding: '48px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '48px', alignItems: 'center' }}
+            className="glass-card device-showcase-grid"
           >
             <div>
               <span

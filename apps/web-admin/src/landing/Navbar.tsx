@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
-import { Tv, KeyRound, PlaySquare } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Tv, KeyRound, PlaySquare, Menu, X, ChevronRight, Sparkles } from 'lucide-react';
 
 interface NavbarProps {
   onOpenActivation: () => void;
@@ -29,6 +29,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [activeSection, setActiveSection] = useState<string>('');
   const [hoveredSection, setHoveredSection] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const isManualNavigatingRef = useRef(false);
   const navigatingTimerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -209,10 +210,10 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
       </motion.div>
 
-      {/* Floating Animated Nav Capsule */}
+      {/* Floating Animated Nav Capsule (Desktop & Wide Tablet) */}
       <nav
+        className="desktop-nav-capsule"
         style={{
-          display: 'flex',
           alignItems: 'center',
           gap: '2px',
           padding: '4px 6px',
@@ -307,8 +308,8 @@ export const Navbar: React.FC<NavbarProps> = ({
         })}
       </nav>
 
-      {/* Action CTA Buttons */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+      {/* Action CTA Buttons (Desktop) */}
+      <div className="desktop-nav-actions" style={{ alignItems: 'center', gap: '10px' }}>
         <motion.button
           whileHover={{ scale: 1.03, y: -1 }}
           whileTap={{ scale: 0.97 }}
@@ -342,6 +343,126 @@ export const Navbar: React.FC<NavbarProps> = ({
           <span>Sign In</span>
         </motion.button>
       </div>
+
+      {/* Mobile Right Controls: Sign In + Hamburger Menu Toggle */}
+      <div className="mobile-nav-toggle-group" style={{ display: 'none', alignItems: 'center', gap: '8px' }}>
+        <motion.button
+          whileTap={{ scale: 0.95 }}
+          onClick={() => onOpenSignIn('subscriber')}
+          className="nav-btn-signin"
+          style={{ padding: '6px 12px', fontSize: '12px' }}
+        >
+          <span>Sign In</span>
+        </motion.button>
+
+        <motion.button
+          whileTap={{ scale: 0.92 }}
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          className="mobile-hamburger-btn"
+          aria-label="Toggle menu"
+          style={{
+            width: '38px',
+            height: '38px',
+            borderRadius: '10px',
+            backgroundColor: 'rgba(255, 255, 255, 0.08)',
+            border: '1px solid rgba(255, 255, 255, 0.15)',
+            color: '#ffffff',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+          }}
+        >
+          {isMobileMenuOpen ? <X size={20} color="#fda4af" /> : <Menu size={20} color="#ffffff" />}
+        </motion.button>
+      </div>
+
+      {/* Mobile Animated Dropdown Drawer */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10, height: 0 }}
+            animate={{ opacity: 1, y: 0, height: 'auto' }}
+            exit={{ opacity: 0, y: -10, height: 0 }}
+            transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+            style={{
+              position: 'absolute',
+              top: '100%',
+              left: 0,
+              right: 0,
+              backgroundColor: 'rgba(7, 5, 10, 0.96)',
+              backdropFilter: 'blur(28px)',
+              WebkitBackdropFilter: 'blur(28px)',
+              borderBottom: '1px solid rgba(184, 29, 74, 0.35)',
+              boxShadow: '0 25px 60px rgba(0, 0, 0, 0.9)',
+              padding: '18px 20px 24px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '12px',
+              overflow: 'hidden',
+              zIndex: 100,
+            }}
+          >
+            {/* Nav Links Grid */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
+              {NAV_ITEMS.map((item) => (
+                <button
+                  key={item.href}
+                  onClick={(e) => {
+                    handleNavClick(e, item.href);
+                    setIsMobileMenuOpen(false);
+                  }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '10px 14px',
+                    backgroundColor: activeSection === item.href ? 'rgba(139, 0, 50, 0.3)' : 'rgba(255, 255, 255, 0.04)',
+                    border: activeSection === item.href ? '1px solid rgba(184, 29, 74, 0.5)' : '1px solid rgba(255, 255, 255, 0.08)',
+                    borderRadius: '10px',
+                    color: activeSection === item.href ? '#fda4af' : '#e2e8f0',
+                    fontSize: '13px',
+                    fontWeight: 700,
+                    textAlign: 'left',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <span>{item.label}</span>
+                  <ChevronRight size={13} color={activeSection === item.href ? '#fda4af' : '#71717a'} />
+                </button>
+              ))}
+            </div>
+
+            {/* Mobile Action Buttons */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '8px' }}>
+              <button
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  onOpenLiveDemo();
+                }}
+                className="nav-btn-livedemo"
+                style={{ width: '100%', justifyContent: 'center', padding: '12px' }}
+              >
+                <span className="nav-live-dot" />
+                <PlaySquare size={16} color="#fda4af" />
+                <span>Launch Live 4K Demo</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  onOpenActivation();
+                }}
+                className="nav-btn-activation"
+                style={{ width: '100%', justifyContent: 'center', padding: '12px' }}
+              >
+                <KeyRound size={16} color="#fda4af" />
+                <span>Enter TV Code (Instant Pairing)</span>
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 };

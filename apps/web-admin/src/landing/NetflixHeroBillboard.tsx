@@ -253,12 +253,12 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
 
       {/* Main Content Area */}
       <div
+        className="hero-billboard-content"
         style={{
           position: 'relative',
           zIndex: 10,
           maxWidth: '1380px',
           margin: '0 auto',
-          padding: '120px 32px 30px',
           width: '100%',
           flex: 1,
           display: 'flex',
@@ -299,8 +299,8 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.08 }}
+            className="hero-billboard-title"
             style={{
-              fontSize: '48px',
               fontWeight: 900,
               lineHeight: 1.1,
               color: '#ffffff',
@@ -443,6 +443,7 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
 
         {/* Unified Bottom Strip: Flex layout with ZERO overlap */}
         <div
+          className="hero-billboard-bottom-strip"
           style={{
             marginTop: 'auto',
             borderTop: '1px solid rgba(255, 255, 255, 0.1)',
@@ -451,7 +452,6 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
             alignItems: 'center',
             justifyContent: 'space-between',
             gap: '16px',
-            flexWrap: 'nowrap',
             width: '100%',
           }}
         >

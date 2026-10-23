@@ -67,7 +67,7 @@ export const PricingSection: React.FC = () => {
           </div>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '32px', alignItems: 'stretch' }}>
+        <div className="pricing-cards-grid" style={{ alignItems: 'stretch' }}>
           {MOCK_SUBSCRIPTION_PLANS.map((plan) => {
             const isPopular = plan.isPopular;
             const price = billingCycle === 'yearly' ? (plan.priceYearly / 12).toFixed(2) : plan.priceMonthly;

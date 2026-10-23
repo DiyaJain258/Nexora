@@ -48,12 +48,12 @@ const StickyCard_001: React.FC<StickyCardProps> = ({
       }}
     >
       <motion.div
+        className="skiper-sticky-card"
         style={{
           scale,
           top: `calc(${i * 20}px)`,
           width: '92%',
           maxWidth: '960px',
-          height: '480px',
           borderRadius: '28px',
           overflow: 'hidden',
           position: 'relative',
@@ -121,14 +121,9 @@ const StickyCard_001: React.FC<StickyCardProps> = ({
 
         {/* Card Number & Top Quality Indicator */}
         <div
+          className="skiper-card-top-strip"
           style={{
             position: 'absolute',
-            top: '24px',
-            left: '28px',
-            right: '28px',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
             zIndex: 2,
           }}
         >
@@ -199,16 +194,10 @@ const StickyCard_001: React.FC<StickyCardProps> = ({
 
         {/* Bottom Content Metadata Panel */}
         <div
+          className="skiper-card-bottom-strip"
           style={{
             position: 'absolute',
-            bottom: '28px',
-            left: '28px',
-            right: '28px',
             zIndex: 2,
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'flex-end',
-            gap: '24px',
           }}
         >
           <div style={{ maxWidth: '620px' }}>
