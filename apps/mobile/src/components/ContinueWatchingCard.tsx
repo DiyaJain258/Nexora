@@ -80,14 +80,11 @@ export const ContinueWatchingCard: React.FC<ContinueWatchingCardProps> = ({
       style={[styles.wrapper, { width }]}
     >
       <Animated.View
-        style={[
-          styles.container,
-          {
-            width,
-            transform: [{ perspective: 800 }, { scale: scaleAnim }],
-          },
-        ]}
+        style={{
+          transform: [{ perspective: 800 }, { scale: scaleAnim }],
+        }}
       >
+        <View style={[styles.container, { width }]}>
         {/* Landscape Backdrop Image */}
         <View style={styles.imageBox}>
           <Image
@@ -137,6 +134,7 @@ export const ContinueWatchingCard: React.FC<ContinueWatchingCardProps> = ({
           <Text style={styles.subtext} numberOfLines={1}>
             {item.subtitle || (item.type === 'movie' ? 'Feature Film' : 'Continuous Stream')}
           </Text>
+        </View>
         </View>
       </Animated.View>
     </TouchableOpacity>

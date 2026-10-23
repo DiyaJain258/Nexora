@@ -101,20 +101,24 @@ export const MoviePosterCard: React.FC<MoviePosterCardProps> = ({
       style={[styles.wrapper, { width }]}
     >
       <Animated.View
-        style={[
-          styles.cardContainer,
-          {
-            width,
-            height,
-            transform: [
-              { perspective: 800 },
-              { scale: scaleAnim },
-              { rotateX },
-              { rotateY },
-            ],
-          },
-        ]}
+        style={{
+          transform: [
+            { perspective: 800 },
+            { scale: scaleAnim },
+            { rotateX },
+            { rotateY },
+          ],
+        }}
       >
+        <View
+          style={[
+            styles.cardContainer,
+            {
+              width,
+              height,
+            },
+          ]}
+        >
         {/* Poster Image */}
         <Image
           source={{ uri: item.posterUrl }}
@@ -159,6 +163,7 @@ export const MoviePosterCard: React.FC<MoviePosterCardProps> = ({
             <Text style={styles.matchScore}>{item.matchScore}% Match</Text>
             <Text style={styles.year}>{item.releaseYear}</Text>
           </View>
+        </View>
         </View>
       </Animated.View>
     </TouchableOpacity>

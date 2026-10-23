@@ -100,12 +100,9 @@ const TabButton: React.FC<TabButtonProps> = ({ tab, isActive, onPress }) => {
       style={styles.tabItem}
     >
       {/* Top Active Red Indicator Bar */}
-      <Animated.View
-        style={[
-          styles.activeIndicator,
-          { opacity: indicatorOpacity },
-        ]}
-      />
+      <Animated.View style={{ opacity: indicatorOpacity }}>
+        <View style={styles.activeIndicator} />
+      </Animated.View>
 
       {/* Animated Icon */}
       <Animated.Text

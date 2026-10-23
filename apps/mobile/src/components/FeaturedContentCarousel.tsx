@@ -278,38 +278,39 @@ export const FeaturedContentCarousel: React.FC<FeaturedContentCarouselProps> = (
                 },
               ]}
             />
-            <Animated.View
-              style={{
-                width: '100%',
-                transform: [{ scale: buttonPulseAnim }],
-              }}
-            >
-              <TouchableOpacity
-                activeOpacity={0.88}
-                onPress={() => onPlay(currentItem)}
-                style={styles.primaryButton}
+            <View style={{ width: '100%' }}>
+              <Animated.View
+                style={{
+                  transform: [{ scale: buttonPulseAnim }],
+                }}
               >
-                <View style={styles.buttonTopSheen} />
-                <Animated.View
-                  pointerEvents="none"
-                  style={[
-                    styles.shimmerLight,
-                    {
-                      transform: [
-                        { translateX: shimmerAnim },
-                        { rotate: '25deg' },
-                      ],
-                    },
-                  ]}
-                />
-                <View style={styles.buttonInnerRow}>
-                  <View style={styles.playIconBox}>
-                    <Text style={styles.playIconText}>▶</Text>
+                <TouchableOpacity
+                  activeOpacity={0.88}
+                  onPress={() => onPlay(currentItem)}
+                  style={styles.primaryButton}
+                >
+                  <View style={styles.buttonTopSheen} />
+                  <Animated.View
+                    pointerEvents="none"
+                    style={[
+                      styles.shimmerLight,
+                      {
+                        transform: [
+                          { translateX: shimmerAnim },
+                          { rotate: '25deg' },
+                        ],
+                      },
+                    ]}
+                  />
+                  <View style={styles.buttonInnerRow}>
+                    <View style={styles.playIconBox}>
+                      <Text style={styles.playIconText}>▶</Text>
+                    </View>
+                    <Text style={styles.primaryButtonText}>Watch Now</Text>
                   </View>
-                  <Text style={styles.primaryButtonText}>Watch Now</Text>
-                </View>
-              </TouchableOpacity>
-            </Animated.View>
+                </TouchableOpacity>
+              </Animated.View>
+            </View>
           </View>
 
           {/* Details Button */}

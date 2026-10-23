@@ -422,7 +422,41 @@ export default function App() {
           ))}
         </ScrollView>
 
-        {/* Rail 2: Trending 4K Blockbusters - 3D Coverflow Effect */}
+        {/* Rail 2: Live TV Channels Spotlight (Matches Web HomeScreen Rail!) */}
+        <SectionHeader
+          title="Live TV Channels"
+          badge="EPG ACTIVE"
+          onSeeAll={() => setActiveTab('livetv')}
+        />
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.railScroll}
+        >
+          {MOCK_CHANNELS.map((ch) => (
+            <TouchableOpacity
+              key={ch.id}
+              activeOpacity={0.85}
+              style={styles.liveChannelCard}
+              onPress={() => setPlayingItem(ch)}
+            >
+              <View style={styles.liveChannelHeader}>
+                <Image source={{ uri: ch.logo }} style={styles.liveChannelLogo} />
+                <View style={styles.liveResBadge}>
+                  <Text style={styles.liveResBadgeText}>{ch.resolution}</Text>
+                </View>
+              </View>
+              <Text style={styles.liveChannelName} numberOfLines={1}>
+                {ch.name}
+              </Text>
+              <Text style={styles.liveChannelProgram} numberOfLines={1}>
+                {ch.currentProgram?.title || 'Continuous Stream'}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+
+        {/* Rail 3: Trending 4K Blockbusters - 3D Coverflow Effect */}
         <SectionHeader
           title="Trending 4K Blockbusters"
           badge="3D COVERFLOW"
@@ -434,10 +468,10 @@ export default function App() {
           onDetails={(item) => setSelectedItem(item)}
         />
 
-        {/* Rail 3: NEXORA Binge-Worthy Series with 3D Cards Stack Deck */}
+        {/* Rail 4: NEXORA Binge-Worthy Series with 3D Cards Stack Deck */}
         <SectionHeader
-          title="Binge-Worthy Series Deck"
-          badge="3D CARDS SWIPER"
+          title="Binge-Worthy Series 3D Deck"
+          badge="3D CARDS DECK"
           onSeeAll={() => setSelectedCategory('Series')}
         />
         <CardsEffectSeriesDeck
@@ -448,47 +482,41 @@ export default function App() {
           favoriteIds={favoriteIds}
         />
 
-        {/* Rail 4: Live EPG Channels Spotlight */}
+        {/* Rail 5: Quick Series Catalog (Horizontal browse matching Web) */}
         <SectionHeader
-          title="Live Transmission Channels"
-          badge="LIVE EPG"
-          onSeeAll={() => setActiveTab('livetv')}
+          title={`Quick Catalog (${series.length} Available)`}
+          badge="SERIES"
+          onSeeAll={() => setSelectedCategory('Series')}
         />
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.railScroll}
         >
-          {MOCK_CHANNELS.map((ch) => (
+          {series.map((s) => (
             <TouchableOpacity
-              key={ch.id}
+              key={s.id}
               activeOpacity={0.88}
-              style={styles.liveChannelCard}
-              onPress={() => setPlayingItem(ch)}
+              onPress={() => setSelectedItem(s)}
+              style={styles.quickCatalogItem}
             >
-              <Image source={{ uri: ch.logo }} style={styles.liveChannelLogo} />
-              <View style={styles.liveChannelBadge}>
-                <Text style={styles.liveChannelBadgeText}>● LIVE</Text>
+              <View style={styles.quickCatalogPosterBox}>
+                <Image source={{ uri: s.posterUrl }} style={styles.quickCatalogPoster} />
+                <View style={styles.quickCatalogBadge}>
+                  <Text style={styles.quickCatalogBadgeText}>
+                    {s.seasonsCount ? `${s.seasonsCount}S` : s.duration}
+                  </Text>
+                </View>
               </View>
-              <Text style={styles.liveChannelName} numberOfLines={1}>
-                {ch.name}
+              <Text style={styles.quickCatalogTitle} numberOfLines={1}>
+                {s.title}
               </Text>
-              <Text style={styles.liveChannelProgram} numberOfLines={1}>
-                {ch.currentProgram?.title || 'Continuous Airing'}
-              </Text>
-              <View style={styles.liveTrack}>
-                <View
-                  style={[
-                    styles.liveFill,
-                    { width: `${ch.currentProgram?.progressPercent || 50}%` },
-                  ]}
-                />
-              </View>
+              <Text style={styles.quickCatalogMatch}>{s.matchScore}% Match</Text>
             </TouchableOpacity>
           ))}
         </ScrollView>
 
-        {/* Rail 5: Apex Sports Ultra */}
+        {/* Rail 6: Apex Sports Ultra */}
         <SectionHeader
           title="Apex Sports Ultra"
           badge="4K 60FPS"
@@ -907,58 +935,96 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: '#151515',
     padding: 10,
-    marginRight: 12,
+    marginRight: 10,
     borderWidth: 1,
-    borderColor: '#262626',
-    position: 'relative',
+    borderColor: '#303030',
     shadowColor: '#000000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.5,
     shadowRadius: 6,
     elevation: 4,
   },
+  liveChannelHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 8,
+  },
   liveChannelLogo: {
-    width: '100%',
-    height: 70,
+    width: 36,
+    height: 36,
     borderRadius: 6,
     backgroundColor: '#0D0D0D',
   },
-  liveChannelBadge: {
-    position: 'absolute',
-    top: 14,
-    left: 14,
-    backgroundColor: 'rgba(229, 9, 20, 0.95)',
-    paddingHorizontal: 6,
-    paddingVertical: 2,
+  liveResBadge: {
+    backgroundColor: 'rgba(229, 9, 20, 0.2)',
+    borderWidth: 1,
+    borderColor: 'rgba(229, 9, 20, 0.4)',
     borderRadius: 4,
+    paddingHorizontal: 5,
+    paddingVertical: 1,
   },
-  liveChannelBadgeText: {
-    color: '#FFFFFF',
+  liveResBadgeText: {
+    color: '#FF2B36',
     fontSize: 9,
-    fontWeight: '900',
+    fontWeight: '800',
   },
   liveChannelName: {
     color: '#FFFFFF',
-    fontWeight: '800',
+    fontWeight: '700',
     fontSize: 12,
-    marginTop: 8,
   },
   liveChannelProgram: {
-    color: '#8A8A8A',
+    color: '#FF2B36',
     fontSize: 10,
+    fontWeight: '600',
     marginTop: 2,
   },
-  liveTrack: {
-    width: '100%',
-    height: 3,
-    backgroundColor: '#2B2B2B',
-    borderRadius: 2,
-    marginTop: 6,
-    overflow: 'hidden',
+
+  // Quick Series Catalog
+  quickCatalogItem: {
+    width: 110,
+    marginRight: 10,
   },
-  liveFill: {
+  quickCatalogPosterBox: {
+    width: 110,
+    height: 155,
+    borderRadius: 10,
+    overflow: 'hidden',
+    backgroundColor: '#151515',
+    borderWidth: 1,
+    borderColor: '#303030',
+    position: 'relative',
+  },
+  quickCatalogPoster: {
+    width: '100%',
     height: '100%',
+  },
+  quickCatalogBadge: {
+    position: 'absolute',
+    bottom: 6,
+    left: 6,
     backgroundColor: '#E50914',
+    paddingHorizontal: 5,
+    paddingVertical: 1,
+    borderRadius: 3,
+  },
+  quickCatalogBadgeText: {
+    color: '#FFFFFF',
+    fontSize: 9,
+    fontWeight: '800',
+  },
+  quickCatalogTitle: {
+    color: '#FFFFFF',
+    fontSize: 11,
+    fontWeight: '600',
+    marginTop: 6,
+  },
+  quickCatalogMatch: {
+    color: '#FF2B36',
+    fontSize: 10,
+    fontWeight: '600',
+    marginTop: 2,
   },
 
   // Search

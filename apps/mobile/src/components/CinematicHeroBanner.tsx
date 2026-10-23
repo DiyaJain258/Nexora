@@ -258,17 +258,15 @@ export const CinematicHeroBanner: React.FC<CinematicHeroBannerProps> = ({
             />
 
             {/* Pulsing Button Body */}
-            <Animated.View
-              style={[
-                styles.pulsingButtonContainer,
-                {
+            <View style={{ width: '100%' }}>
+              <Animated.View
+                style={{
                   transform: [
                     { scale: buttonPulseAnim },
                     { scale: pressScaleAnim },
                   ],
-                },
-              ]}
-            >
+                }}
+              >
               <TouchableOpacity
                 activeOpacity={0.88}
                 onPressIn={handlePressIn}
@@ -302,6 +300,7 @@ export const CinematicHeroBanner: React.FC<CinematicHeroBannerProps> = ({
               </TouchableOpacity>
             </Animated.View>
           </View>
+        </View>
 
           {/* Details Secondary Button */}
           <TouchableOpacity

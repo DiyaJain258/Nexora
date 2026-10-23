@@ -145,26 +145,28 @@ export const Coverflow3DCarousel: React.FC<Coverflow3DCarouselProps> = ({
             const zIndex = 50 - distFromActive * 5;
 
             return (
-              <Animated.View
+              <View
                 key={item.id}
                 style={[
                   styles.cardWrapper,
-                  {
-                    zIndex,
+                  { zIndex },
+                ]}
+              >
+                <Animated.View
+                  style={{
                     transform: [
                       { perspective: 900 },
                       { translateX },
                       { scale },
                       { rotateY },
                     ],
-                  },
-                ]}
-              >
-                <TouchableOpacity
-                  activeOpacity={0.92}
-                  onPress={() => onDetails(item)}
-                  style={styles.cardTouch}
+                  }}
                 >
+                  <TouchableOpacity
+                    activeOpacity={0.92}
+                    onPress={() => onDetails(item)}
+                    style={styles.cardTouch}
+                  >
                   {/* Poster Image */}
                   <Image
                     source={{ uri: item.posterUrl }}
@@ -226,8 +228,9 @@ export const Coverflow3DCarousel: React.FC<Coverflow3DCarouselProps> = ({
                   </View>
                 </TouchableOpacity>
               </Animated.View>
-            );
-          })}
+            </View>
+          );
+        })}
         </Animated.ScrollView>
 
         {/* Swiper Navigation Chevrons: Left & Right */}
@@ -306,8 +309,8 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   cardTouch: {
-    width: '100%',
-    height: '100%',
+    width: CARD_WIDTH,
+    height: CARD_HEIGHT,
     borderRadius: 20,
     overflow: 'hidden',
     position: 'relative',
