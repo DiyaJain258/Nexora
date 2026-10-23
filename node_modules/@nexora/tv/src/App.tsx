@@ -4,7 +4,6 @@ import { TvRemoteControl } from './components/TvRemoteControl';
 import { TvHomeView } from './views/TvHomeView';
 import { TvEpgGridView } from './views/TvEpgGridView';
 import { TvPlayerView } from './views/TvPlayerView';
-import { TvActivationView } from './views/TvActivationView';
 import { Channel, ContentItem, MOCK_CHANNELS, MOCK_CONTENT } from '@nexora/shared';
 
 export const App: React.FC = () => {
@@ -13,7 +12,7 @@ export const App: React.FC = () => {
   const [focusedMenuIndex, setFocusedMenuIndex] = useState(0);
 
   // Focus coordinates on Home Screen
-  const [focusedRailIndex, setFocusedRailIndex] = useState(1); // 0: continue, 1: trending movies, 2: live channels
+  const [focusedRailIndex, setFocusedRailIndex] = useState(1); // 0: continue, 1: live channels, 2: movies
   const [focusedItemIndex, setFocusedItemIndex] = useState(0);
 
   // EPG focus coordinates
@@ -23,7 +22,7 @@ export const App: React.FC = () => {
   // Player state
   const [playingItem, setPlayingItem] = useState<Channel | ContentItem | null>(null);
 
-  const menuKeys: TvTab[] = ['home', 'epg', 'movies', 'series', 'sports', 'kids', 'search', 'activation', 'settings'];
+  const menuKeys: TvTab[] = ['home', 'epg', 'movies', 'series', 'sports', 'kids', 'search', 'settings'];
 
   // Handle D-Pad Directions from Remote or Keyboard
   const handleDirection = (direction: 'up' | 'down' | 'left' | 'right') => {
@@ -83,11 +82,11 @@ export const App: React.FC = () => {
 
     if (activeTab === 'home') {
       if (focusedRailIndex === 1) {
-        setPlayingItem(MOCK_CONTENT[focusedItemIndex] || MOCK_CONTENT[0]);
+        setPlayingItem(MOCK_CHANNELS[focusedItemIndex] || MOCK_CHANNELS[0]);
       } else if (focusedRailIndex === 0) {
         setPlayingItem(MOCK_CONTENT[0]);
       } else {
-        setPlayingItem(MOCK_CHANNELS[focusedItemIndex] || MOCK_CHANNELS[0]);
+        setPlayingItem(MOCK_CONTENT[focusedItemIndex] || MOCK_CONTENT[0]);
       }
     } else if (activeTab === 'epg') {
       setPlayingItem(MOCK_CHANNELS[focusedChannelIndex]);
@@ -105,7 +104,7 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div style={{ display: 'flex', width: '100vw', height: '100vh', backgroundColor: '#050505', overflow: 'hidden' }}>
+    <div style={{ display: 'flex', width: '100vw', height: '100vh', backgroundColor: '#070912', overflow: 'hidden' }}>
       {/* 10-Foot Collapsible Side Dock */}
       <TvSidebarDock
         activeTab={activeTab}
@@ -143,18 +142,10 @@ export const App: React.FC = () => {
           />
         )}
 
-        {activeTab === 'activation' && (
-          <TvActivationView
-            onActivated={() => setActiveTab('home')}
-          />
-        )}
-
         {(activeTab === 'movies' || activeTab === 'series' || activeTab === 'sports' || activeTab === 'kids' || activeTab === 'search' || activeTab === 'settings') && (
-          <div style={{ padding: '48px', color: '#FFFFFF' }}>
-            <h1 style={{ fontSize: '36px', fontWeight: 900, textTransform: 'capitalize' }}>
-              {activeTab} <span style={{ color: '#E50914' }}>10-Foot Showcase</span>
-            </h1>
-            <p style={{ color: '#B3B3B3', fontSize: '16px' }}>
+          <div style={{ padding: '48px', color: '#F8FAFC' }}>
+            <h1 style={{ fontSize: '36px', fontWeight: 900, textTransform: 'capitalize' }}>{activeTab} 10-Foot Showcase</h1>
+            <p style={{ color: '#94A3B8', fontSize: '16px' }}>
               Full remote-navigated grid optimized for Android TV and Google TV Leanback UI.
             </p>
             <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', marginTop: '32px' }}>
@@ -168,8 +159,8 @@ export const App: React.FC = () => {
                     height: '280px',
                     borderRadius: '14px',
                     overflow: 'hidden',
-                    backgroundColor: '#151515',
-                    border: '1px solid #303030',
+                    backgroundColor: '#111827',
+                    border: '1px solid #1E293B',
                     cursor: 'pointer',
                   }}
                 >

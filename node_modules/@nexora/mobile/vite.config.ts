@@ -7,8 +7,6 @@ export default defineConfig({
   resolve: {
     alias: {
       '@nexora/shared': path.resolve(__dirname, '../../packages/shared/src/index.ts'),
-      'react': path.resolve(__dirname, '../../node_modules/react'),
-      'react-dom': path.resolve(__dirname, '../../node_modules/react-dom'),
     },
   },
   server: {

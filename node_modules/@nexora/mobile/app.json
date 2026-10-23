@@ -1,25 +1,20 @@
 {
-  "expo": {
-    "name": "NEXORA",
-    "slug": "nexora-mobile",
-    "version": "1.0.0",
-    "sdkVersion": "57.0.0",
-    "orientation": "portrait",
-    "userInterfaceStyle": "dark",
-    "backgroundColor": "#050505",
-    "splash": {
-      "backgroundColor": "#050505",
-      "resizeMode": "contain"
-    },
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.nexora.mobile"
-    },
-    "android": {
-      "package": "com.nexora.mobile",
-      "adaptiveIcon": {
-        "backgroundColor": "#050505"
-      }
-    }
+  "name": "NexoraMobile",
+  "displayName": "NEXORA Stream",
+  "version": "1.0.0",
+  "android": {
+    "package": "com.nexora.mobile",
+    "versionCode": 1,
+    "permissions": [
+      "android.permission.INTERNET",
+      "android.permission.ACCESS_NETWORK_STATE",
+      "android.permission.WAKE_LOCK",
+      "android.permission.FOREGROUND_SERVICE"
+    ]
+  },
+  "ios": {
+    "bundleIdentifier": "com.nexora.mobile",
+    "buildNumber": "1",
+    "supportsTablet": true
   }
 }

@@ -30,7 +30,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ onSelectItem, onPlay
         display: 'flex',
         alignItems: 'center',
       }}>
-        <Search size={18} color="#E50914" style={{ position: 'absolute', left: '12px' }} />
+        <Search size={18} color="#8B5CF6" style={{ position: 'absolute', left: '12px' }} />
         <input
           type="text"
           autoFocus
@@ -39,11 +39,11 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ onSelectItem, onPlay
           onChange={(e) => setQuery(e.target.value)}
           style={{
             width: '100%',
-            backgroundColor: '#151515',
-            border: '1px solid #303030',
+            backgroundColor: '#111827',
+            border: '1px solid #1E293B',
             borderRadius: '10px',
             padding: '12px 38px 12px 38px',
-            color: '#FFFFFF',
+            color: '#F8FAFC',
             fontSize: '14px',
             outline: 'none',
           }}
@@ -56,7 +56,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ onSelectItem, onPlay
               right: '12px',
               background: 'none',
               border: 'none',
-              color: '#B3B3B3',
+              color: '#94A3B8',
               cursor: 'pointer',
             }}
           >
@@ -67,14 +67,14 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ onSelectItem, onPlay
 
       {/* Results */}
       <div>
-        <div style={{ fontSize: '13px', color: '#B3B3B3', marginBottom: '12px' }}>
+        <div style={{ fontSize: '13px', color: '#94A3B8', marginBottom: '12px' }}>
           {query ? `Search results for "${query}"` : 'Top Searched Titles & Live Channels'}
         </div>
 
         {/* Live Channels Matches */}
         {filteredChannels.length > 0 && (
           <div style={{ marginBottom: '20px' }}>
-            <div style={{ fontSize: '12px', fontWeight: 700, color: '#FF2B36', marginBottom: '8px', letterSpacing: '0.04em' }}>
+            <div style={{ fontSize: '12px', fontWeight: 700, color: '#22D3EE', marginBottom: '8px' }}>
               LIVE CHANNELS ({filteredChannels.length})
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -83,25 +83,24 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ onSelectItem, onPlay
                   key={ch.id}
                   onClick={() => onPlayChannel(ch)}
                   style={{
-                    backgroundColor: '#151515',
-                    border: '1px solid #303030',
+                    backgroundColor: '#111827',
+                    border: '1px solid #1E293B',
                     borderRadius: '10px',
                     padding: '10px 14px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
                     cursor: 'pointer',
-                    transition: 'all 0.15s ease',
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <img src={ch.logo} alt={ch.name} style={{ width: '36px', height: '36px', borderRadius: '6px', objectFit: 'cover' }} />
                     <div>
-                      <div style={{ fontSize: '13px', fontWeight: 600, color: '#FFFFFF' }}>{ch.name}</div>
-                      <div style={{ fontSize: '11px', color: '#FF2B36' }}>{ch.currentProgram?.title || ch.category}</div>
+                      <div style={{ fontSize: '13px', fontWeight: 600, color: '#F8FAFC' }}>{ch.name}</div>
+                      <div style={{ fontSize: '11px', color: '#22D3EE' }}>{ch.currentProgram?.title || ch.category}</div>
                     </div>
                   </div>
-                  <Play size={16} color="#E50914" fill="#E50914" />
+                  <Play size={16} color="#8B5CF6" />
                 </div>
               ))}
             </div>
@@ -110,7 +109,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ onSelectItem, onPlay
 
         {/* VOD Matches */}
         <div>
-          <div style={{ fontSize: '12px', fontWeight: 700, color: '#E50914', marginBottom: '8px', letterSpacing: '0.04em' }}>
+          <div style={{ fontSize: '12px', fontWeight: 700, color: '#8B5CF6', marginBottom: '8px' }}>
             MOVIES & SERIES ({filteredVOD.length})
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -119,33 +118,30 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ onSelectItem, onPlay
                 key={item.id}
                 onClick={() => onSelectItem(item)}
                 style={{
-                  backgroundColor: '#151515',
-                  border: '1px solid #303030',
+                  backgroundColor: '#111827',
+                  border: '1px solid #1E293B',
                   borderRadius: '10px',
                   padding: '10px 14px',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '12px',
                   cursor: 'pointer',
-                  transition: 'all 0.15s ease',
                 }}
               >
                 <img
                   src={item.posterUrl}
                   alt={item.title}
-                  style={{ width: '48px', height: '68px', borderRadius: '6px', objectFit: 'cover', border: '1px solid #303030' }}
+                  style={{ width: '48px', height: '68px', borderRadius: '6px', objectFit: 'cover' }}
                 />
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: '14px', fontWeight: 700, color: '#FFFFFF' }}>{item.title}</div>
-                  <div style={{ fontSize: '11px', color: '#B3B3B3', marginTop: '2px' }}>
+                  <div style={{ fontSize: '14px', fontWeight: 700, color: '#F8FAFC' }}>{item.title}</div>
+                  <div style={{ fontSize: '11px', color: '#94A3B8', marginTop: '2px' }}>
                     {item.releaseYear} • {item.genres.join(', ')}
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '4px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
-                      <Star size={11} fill="#FBBF24" color="#FBBF24" />
-                      <span style={{ fontSize: '11px', color: '#FBBF24', fontWeight: 700 }}>{item.rating}</span>
-                    </div>
-                    <span className="badge badge-red" style={{ fontSize: '9px', padding: '1px 5px' }}>{item.quality}</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '4px' }}>
+                    <Star size={11} fill="#FBBF24" color="#FBBF24" />
+                    <span style={{ fontSize: '11px', color: '#FBBF24', fontWeight: 700 }}>{item.rating}</span>
+                    <span className="badge badge-cyan" style={{ fontSize: '9px', padding: '1px 5px', marginLeft: '6px' }}>{item.quality}</span>
                   </div>
                 </div>
               </div>

@@ -163,31 +163,3 @@ export interface StreamStats {
     cdnNode: string;
     latencyMs: number;
 }
-export interface DeviceActivationCode {
-    id: string;
-    code: string;
-    deviceType: 'android-tv' | 'google-tv' | 'apple-tv' | 'fire-tv';
-    deviceName: string;
-    ipAddress: string;
-    generatedAt: string;
-    expiresAt: string;
-    status: 'pending' | 'activated' | 'expired';
-    userId?: string;
-    userName?: string;
-}
-export interface RolePermission {
-    id: string;
-    roleName: string;
-    description: string;
-    usersCount: number;
-    permissions: {
-        manageVod: boolean;
-        manageLiveChannels: boolean;
-        manageEpg: boolean;
-        manageUsers: boolean;
-        manageDevices: boolean;
-        manageBilling: boolean;
-        broadcastNotifications: boolean;
-        systemSettings: boolean;
-    };
-}

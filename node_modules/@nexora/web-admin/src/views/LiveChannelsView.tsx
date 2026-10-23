@@ -78,6 +78,17 @@ export const LiveChannelsView: React.FC = () => {
 
     setChannels([created, ...channels]);
     setIsAddModalOpen(false);
+    setNewChannel({
+      name: '',
+      channelNumber: channels.length + 102,
+      category: 'Sports',
+      streamUrl: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8',
+      logo: 'https://images.unsplash.com/photo-1594909122845-11baa439b7bf?w=160&auto=format&fit=crop&q=80',
+      resolution: '4K',
+      fps: 60,
+      bitrateKbps: 18000,
+      epgId: 'epg-custom-02',
+    });
   };
 
   const handleDeleteChannel = (id: string) => {
@@ -107,26 +118,26 @@ export const LiveChannelsView: React.FC = () => {
         alignItems: 'center',
         justifyContent: 'space-between',
         gap: '16px',
-        backgroundColor: '#151515',
-        border: '1px solid #303030',
+        backgroundColor: '#111827',
+        border: '1px solid #1E293B',
         borderRadius: '14px',
         padding: '16px 20px',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
           {/* Search bar */}
           <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-            <Search size={16} color="#737373" style={{ position: 'absolute', left: '12px' }} />
+            <Search size={16} color="#64748B" style={{ position: 'absolute', left: '12px' }} />
             <input
               type="text"
               placeholder="Search by name or number..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               style={{
-                backgroundColor: '#050505',
-                border: '1px solid #303030',
+                backgroundColor: '#070912',
+                border: '1px solid #1E293B',
                 borderRadius: '8px',
                 padding: '8px 14px 8px 36px',
-                color: '#FFFFFF',
+                color: '#F8FAFC',
                 fontSize: '13px',
                 width: '240px',
                 outline: 'none',
@@ -146,10 +157,10 @@ export const LiveChannelsView: React.FC = () => {
                     padding: '6px 12px',
                     borderRadius: '8px',
                     fontSize: '12px',
-                    fontWeight: 700,
-                    border: active ? '1px solid #E50914' : '1px solid #303030',
-                    backgroundColor: active ? 'rgba(229, 9, 20, 0.2)' : '#0D0D0D',
-                    color: active ? '#FF2B36' : '#B3B3B3',
+                    fontWeight: 600,
+                    border: active ? '1px solid #8B5CF6' : '1px solid #1E293B',
+                    backgroundColor: active ? 'rgba(139, 92, 246, 0.2)' : '#070912',
+                    color: active ? '#22D3EE' : '#94A3B8',
                     cursor: 'pointer',
                   }}
                 >
@@ -172,20 +183,20 @@ export const LiveChannelsView: React.FC = () => {
 
       {/* Channels Table */}
       <div style={{
-        backgroundColor: '#151515',
-        border: '1px solid #303030',
+        backgroundColor: '#111827',
+        border: '1px solid #1E293B',
         borderRadius: '14px',
         overflow: 'hidden',
       }}>
         <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '13px' }}>
           <thead>
-            <tr style={{ backgroundColor: '#0D0D0D', borderBottom: '1px solid #303030', color: '#B3B3B3' }}>
-              <th style={{ padding: '14px 18px', fontWeight: 700 }}>CH #</th>
-              <th style={{ padding: '14px 18px', fontWeight: 700 }}>Channel Info</th>
-              <th style={{ padding: '14px 18px', fontWeight: 700 }}>Current EPG Airing</th>
-              <th style={{ padding: '14px 18px', fontWeight: 700 }}>Quality</th>
-              <th style={{ padding: '14px 18px', fontWeight: 700 }}>Status</th>
-              <th style={{ padding: '14px 18px', fontWeight: 700, textAlign: 'right' }}>Actions</th>
+            <tr style={{ backgroundColor: '#0B1020', borderBottom: '1px solid #1E293B', color: '#94A3B8' }}>
+              <th style={{ padding: '14px 18px', fontWeight: 600 }}>CH #</th>
+              <th style={{ padding: '14px 18px', fontWeight: 600 }}>Channel Info</th>
+              <th style={{ padding: '14px 18px', fontWeight: 600 }}>Current EPG Airing</th>
+              <th style={{ padding: '14px 18px', fontWeight: 600 }}>Quality</th>
+              <th style={{ padding: '14px 18px', fontWeight: 600 }}>Status</th>
+              <th style={{ padding: '14px 18px', fontWeight: 600, textAlign: 'right' }}>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -193,13 +204,13 @@ export const LiveChannelsView: React.FC = () => {
               <tr
                 key={ch.id}
                 style={{
-                  borderBottom: '1px solid #303030',
+                  borderBottom: '1px solid #1E293B',
                   transition: 'background-color 0.15s ease',
                 }}
                 onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.02)')}
                 onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
               >
-                <td style={{ padding: '14px 18px', fontWeight: 800, color: '#E50914' }}>
+                <td style={{ padding: '14px 18px', fontWeight: 700, color: '#8B5CF6' }}>
                   {ch.channelNumber}
                 </td>
                 <td style={{ padding: '14px 18px' }}>
@@ -210,24 +221,24 @@ export const LiveChannelsView: React.FC = () => {
                       style={{ width: '40px', height: '40px', borderRadius: '8px', objectFit: 'cover' }}
                     />
                     <div>
-                      <div style={{ fontWeight: 700, color: '#FFFFFF' }}>{ch.name}</div>
-                      <div style={{ fontSize: '11px', color: '#B3B3B3' }}>{ch.category} • EPG: {ch.epgId}</div>
+                      <div style={{ fontWeight: 600, color: '#F8FAFC' }}>{ch.name}</div>
+                      <div style={{ fontSize: '11px', color: '#94A3B8' }}>{ch.category} • EPG: {ch.epgId}</div>
                     </div>
                   </div>
                 </td>
                 <td style={{ padding: '14px 18px' }}>
-                  <div style={{ color: '#FFFFFF', fontWeight: 600 }}>
+                  <div style={{ color: '#22D3EE', fontWeight: 500 }}>
                     {ch.currentProgram?.title || 'Continuous broadcast'}
                   </div>
-                  <div style={{ fontSize: '11px', color: '#737373' }}>
+                  <div style={{ fontSize: '11px', color: '#64748B' }}>
                     {ch.currentProgram ? `${ch.currentProgram.startTime} - ${ch.currentProgram.endTime} (${ch.currentProgram.progressPercent}%)` : '24/7 stream'}
                   </div>
                 </td>
                 <td style={{ padding: '14px 18px' }}>
-                  <span className="badge badge-red">
+                  <span className={`badge ${ch.resolution === '4K' ? 'badge-cyan' : 'badge-violet'}`}>
                     {ch.resolution} • {ch.fps} FPS
                   </span>
-                  <div style={{ fontSize: '11px', color: '#B3B3B3', marginTop: '3px' }}>
+                  <div style={{ fontSize: '11px', color: '#94A3B8', marginTop: '3px' }}>
                     {Math.round((ch.bitrateKbps || 0) / 1000)} Mbps
                   </div>
                 </td>
@@ -265,16 +276,15 @@ export const LiveChannelsView: React.FC = () => {
                       onClick={() => setPreviewChannel(ch)}
                       title="Preview HLS stream"
                       style={{
-                        backgroundColor: 'rgba(229, 9, 20, 0.15)',
-                        border: '1px solid rgba(229, 9, 20, 0.4)',
+                        backgroundColor: 'rgba(34, 211, 238, 0.1)',
+                        border: '1px solid rgba(34, 211, 238, 0.3)',
                         borderRadius: '6px',
                         padding: '6px 10px',
-                        color: '#FF2B36',
+                        color: '#22D3EE',
                         cursor: 'pointer',
                         display: 'flex',
                         alignItems: 'center',
                         gap: '4px',
-                        fontWeight: 600,
                       }}
                     >
                       <Play size={13} />
@@ -284,11 +294,11 @@ export const LiveChannelsView: React.FC = () => {
                       onClick={() => handleDeleteChannel(ch.id)}
                       title="Delete channel"
                       style={{
-                        backgroundColor: 'rgba(229, 9, 20, 0.1)',
-                        border: '1px solid rgba(229, 9, 20, 0.3)',
+                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                        border: '1px solid rgba(239, 68, 68, 0.3)',
                         borderRadius: '6px',
                         padding: '6px 8px',
-                        color: '#E50914',
+                        color: '#EF4444',
                         cursor: 'pointer',
                       }}
                     >
@@ -310,8 +320,8 @@ export const LiveChannelsView: React.FC = () => {
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundColor: 'rgba(5, 5, 5, 0.88)',
-          backdropFilter: 'blur(10px)',
+          backgroundColor: 'rgba(7, 9, 18, 0.85)',
+          backdropFilter: 'blur(8px)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -319,40 +329,42 @@ export const LiveChannelsView: React.FC = () => {
           padding: '20px',
         }}>
           <div style={{
-            backgroundColor: '#151515',
-            border: '1px solid #303030',
+            backgroundColor: '#111827',
+            border: '1px solid #1E293B',
             borderRadius: '16px',
             width: '100%',
             maxWidth: '560px',
             overflow: 'hidden',
-            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.95)',
+            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.8)',
           }}>
+            {/* Modal Header */}
             <div style={{
               padding: '18px 24px',
-              borderBottom: '1px solid #303030',
+              borderBottom: '1px solid #1E293B',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              backgroundColor: '#0D0D0D',
+              backgroundColor: '#0B1020',
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <Tv size={20} color="#E50914" />
-                <h3 style={{ margin: 0, fontSize: '17px', fontWeight: 800, color: '#FFFFFF' }}>
+                <Tv size={20} color="#8B5CF6" />
+                <h3 style={{ margin: 0, fontSize: '17px', fontWeight: 700, color: '#F8FAFC' }}>
                   Register New Live TV Channel
                 </h3>
               </div>
               <button
                 onClick={() => setIsAddModalOpen(false)}
-                style={{ background: 'none', border: 'none', color: '#B3B3B3', cursor: 'pointer' }}
+                style={{ background: 'none', border: 'none', color: '#94A3B8', cursor: 'pointer' }}
               >
                 <X size={20} />
               </button>
             </div>
 
+            {/* Modal Form */}
             <form onSubmit={handleAddChannel} style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '12px' }}>
                 <div>
-                  <label style={{ fontSize: '12px', color: '#B3B3B3', fontWeight: 700 }}>Channel #</label>
+                  <label style={{ fontSize: '12px', color: '#94A3B8', fontWeight: 600 }}>Channel #</label>
                   <input
                     type="number"
                     required
@@ -360,17 +372,17 @@ export const LiveChannelsView: React.FC = () => {
                     onChange={(e) => setNewChannel({ ...newChannel, channelNumber: Number(e.target.value) })}
                     style={{
                       width: '100%',
-                      backgroundColor: '#050505',
-                      border: '1px solid #303030',
+                      backgroundColor: '#070912',
+                      border: '1px solid #1E293B',
                       borderRadius: '8px',
                       padding: '8px 12px',
-                      color: '#FFFFFF',
+                      color: '#F8FAFC',
                       marginTop: '6px',
                     }}
                   />
                 </div>
                 <div>
-                  <label style={{ fontSize: '12px', color: '#B3B3B3', fontWeight: 700 }}>Channel Name</label>
+                  <label style={{ fontSize: '12px', color: '#94A3B8', fontWeight: 600 }}>Channel Name</label>
                   <input
                     type="text"
                     required
@@ -379,11 +391,11 @@ export const LiveChannelsView: React.FC = () => {
                     onChange={(e) => setNewChannel({ ...newChannel, name: e.target.value })}
                     style={{
                       width: '100%',
-                      backgroundColor: '#050505',
-                      border: '1px solid #303030',
+                      backgroundColor: '#070912',
+                      border: '1px solid #1E293B',
                       borderRadius: '8px',
                       padding: '8px 12px',
-                      color: '#FFFFFF',
+                      color: '#F8FAFC',
                       marginTop: '6px',
                     }}
                   />
@@ -392,17 +404,17 @@ export const LiveChannelsView: React.FC = () => {
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                 <div>
-                  <label style={{ fontSize: '12px', color: '#B3B3B3', fontWeight: 700 }}>Category</label>
+                  <label style={{ fontSize: '12px', color: '#94A3B8', fontWeight: 600 }}>Category</label>
                   <select
                     value={newChannel.category}
                     onChange={(e) => setNewChannel({ ...newChannel, category: e.target.value })}
                     style={{
                       width: '100%',
-                      backgroundColor: '#050505',
-                      border: '1px solid #303030',
+                      backgroundColor: '#070912',
+                      border: '1px solid #1E293B',
                       borderRadius: '8px',
                       padding: '8px 12px',
-                      color: '#FFFFFF',
+                      color: '#F8FAFC',
                       marginTop: '6px',
                     }}
                   >
@@ -412,17 +424,17 @@ export const LiveChannelsView: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label style={{ fontSize: '12px', color: '#B3B3B3', fontWeight: 700 }}>Resolution</label>
+                  <label style={{ fontSize: '12px', color: '#94A3B8', fontWeight: 600 }}>Resolution</label>
                   <select
                     value={newChannel.resolution}
                     onChange={(e) => setNewChannel({ ...newChannel, resolution: e.target.value as any })}
                     style={{
                       width: '100%',
-                      backgroundColor: '#050505',
-                      border: '1px solid #303030',
+                      backgroundColor: '#070912',
+                      border: '1px solid #1E293B',
                       borderRadius: '8px',
                       padding: '8px 12px',
-                      color: '#FFFFFF',
+                      color: '#F8FAFC',
                       marginTop: '6px',
                     }}
                   >
@@ -434,19 +446,20 @@ export const LiveChannelsView: React.FC = () => {
               </div>
 
               <div>
-                <label style={{ fontSize: '12px', color: '#B3B3B3', fontWeight: 700 }}>Origin Stream URL (HLS / m3u8)</label>
+                <label style={{ fontSize: '12px', color: '#94A3B8', fontWeight: 600 }}>Origin Stream URL (HLS / m3u8)</label>
                 <input
                   type="url"
                   required
+                  placeholder="https://origin-cdn.nexora.io/live/stream.m3u8"
                   value={newChannel.streamUrl}
                   onChange={(e) => setNewChannel({ ...newChannel, streamUrl: e.target.value })}
                   style={{
                     width: '100%',
-                    backgroundColor: '#050505',
-                    border: '1px solid #303030',
+                    backgroundColor: '#070912',
+                    border: '1px solid #1E293B',
                     borderRadius: '8px',
                     padding: '8px 12px',
-                    color: '#FFFFFF',
+                    color: '#F8FAFC',
                     marginTop: '6px',
                     fontFamily: 'JetBrains Mono, monospace',
                     fontSize: '12px',
@@ -454,6 +467,26 @@ export const LiveChannelsView: React.FC = () => {
                 />
               </div>
 
+              <div>
+                <label style={{ fontSize: '12px', color: '#94A3B8', fontWeight: 600 }}>Logo Image URL</label>
+                <input
+                  type="url"
+                  required
+                  value={newChannel.logo}
+                  onChange={(e) => setNewChannel({ ...newChannel, logo: e.target.value })}
+                  style={{
+                    width: '100%',
+                    backgroundColor: '#070912',
+                    border: '1px solid #1E293B',
+                    borderRadius: '8px',
+                    padding: '8px 12px',
+                    color: '#F8FAFC',
+                    marginTop: '6px',
+                  }}
+                />
+              </div>
+
+              {/* Form Buttons */}
               <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '12px' }}>
                 <button
                   type="button"
@@ -479,7 +512,7 @@ export const LiveChannelsView: React.FC = () => {
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundColor: 'rgba(5, 5, 5, 0.92)',
+          backgroundColor: 'rgba(7, 9, 18, 0.9)',
           backdropFilter: 'blur(10px)',
           display: 'flex',
           alignItems: 'center',
@@ -488,8 +521,8 @@ export const LiveChannelsView: React.FC = () => {
           padding: '20px',
         }}>
           <div style={{
-            backgroundColor: '#151515',
-            border: '1px solid #303030',
+            backgroundColor: '#111827',
+            border: '1px solid #1E293B',
             borderRadius: '16px',
             width: '100%',
             maxWidth: '680px',
@@ -497,26 +530,27 @@ export const LiveChannelsView: React.FC = () => {
           }}>
             <div style={{
               padding: '16px 20px',
-              borderBottom: '1px solid #303030',
+              borderBottom: '1px solid #1E293B',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              backgroundColor: '#0D0D0D',
+              backgroundColor: '#0B1020',
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <Radio size={18} color="#E50914" />
-                <span style={{ fontWeight: 800, color: '#FFFFFF' }}>
+                <Radio size={18} color="#22D3EE" />
+                <span style={{ fontWeight: 700, color: '#F8FAFC' }}>
                   Live Monitor: {previewChannel.name} ({previewChannel.resolution})
                 </span>
               </div>
               <button
                 onClick={() => setPreviewChannel(null)}
-                style={{ background: 'none', border: 'none', color: '#B3B3B3', cursor: 'pointer' }}
+                style={{ background: 'none', border: 'none', color: '#94A3B8', cursor: 'pointer' }}
               >
                 <X size={20} />
               </button>
             </div>
 
+            {/* Simulated Live Player Screen */}
             <div style={{
               position: 'relative',
               height: '340px',
@@ -546,20 +580,20 @@ export const LiveChannelsView: React.FC = () => {
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '6px',
-                  backgroundColor: '#E50914',
+                  backgroundColor: 'rgba(239, 68, 68, 0.85)',
                   color: '#FFFFFF',
                   padding: '4px 12px',
                   borderRadius: '20px',
                   fontSize: '12px',
-                  fontWeight: 800,
+                  fontWeight: 700,
                   marginBottom: '12px',
                 }}>
-                  <span className="live-dot" style={{ backgroundColor: '#FFFFFF' }} /> LIVE TRANSMISSION
+                  <span className="live-dot" /> LIVE TRANSMISSION
                 </div>
-                <h2 style={{ fontSize: '22px', fontWeight: 900, color: '#FFFFFF', margin: '0 0 8px 0' }}>
+                <h2 style={{ fontSize: '22px', fontWeight: 800, color: '#F8FAFC', margin: '0 0 8px 0' }}>
                   {previewChannel.currentProgram?.title || previewChannel.name}
                 </h2>
-                <div style={{ fontSize: '13px', color: '#FF2B36', fontWeight: 600 }}>
+                <div style={{ fontSize: '13px', color: '#22D3EE' }}>
                   HLS Ingestion Endpoint Active • Bitrate: {(previewChannel.bitrateKbps || 0) / 1000} Mbps
                 </div>
               </div>
@@ -567,15 +601,15 @@ export const LiveChannelsView: React.FC = () => {
 
             <div style={{
               padding: '14px 20px',
-              backgroundColor: '#0D0D0D',
-              borderTop: '1px solid #303030',
+              backgroundColor: '#0B1020',
+              borderTop: '1px solid #1E293B',
               fontSize: '12px',
-              color: '#B3B3B3',
+              color: '#94A3B8',
               display: 'flex',
               justifyContent: 'space-between',
             }}>
               <span>Origin: {previewChannel.streamUrl}</span>
-              <span style={{ color: '#10B981', fontWeight: 700 }}>Signal Lock: 100%</span>
+              <span style={{ color: '#10B981', fontWeight: 600 }}>Signal Lock: 100%</span>
             </div>
           </div>
         </div>
