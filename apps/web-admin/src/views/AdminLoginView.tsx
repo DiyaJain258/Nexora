@@ -1,31 +1,114 @@
-import React, { useState } from 'react';
-import { Tv, KeyRound, ShieldCheck, ArrowRight, ArrowLeft, ExternalLink, Lock } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Tv, Globe, ChevronDown, Eye, EyeOff, ArrowRight, ArrowLeft, Check, ShieldCheck, Monitor, HelpCircle } from 'lucide-react';
 import { MOCK_CONTENT } from '@nexora/shared';
 
 interface AdminLoginViewProps {
   onLoginSuccess: () => void;
   onBackToLanding?: () => void;
+  defaultTab?: 'sub' | 'adm';
 }
 
-export const AdminLoginView: React.FC<AdminLoginViewProps> = ({ onLoginSuccess, onBackToLanding }) => {
+const CINEMATIC_POSTERS = [
+  'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1518676590629-3dcbd9c5a5c9?w=500&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=500&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=500&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?w=500&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=500&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=500&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?w=500&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1509281373149-e957c6296406?w=500&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1460881680858-30d870d7b53c?w=500&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1542204165-65bf26472b9b?w=500&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=500&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1533488765986-dfa2a9939acd?w=500&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=500&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=500&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1501286353178-1ec881214838?w=500&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1485846234645-a62644f84728?w=500&auto=format&fit=crop&q=80',
+];
+
+export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
+  onLoginSuccess,
+  onBackToLanding,
+  defaultTab = 'adm',
+}) => {
+  const [activeTab, setActiveTab] = useState<'sub' | 'adm'>(defaultTab);
   const [email, setEmail] = useState('alexander@nexora.tv');
   const [password, setPassword] = useState('superadmin2026');
+  const [pwdVisible, setPwdVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [shakingField, setShakingField] = useState<'email' | 'password' | null>(null);
+  const [toast, setToast] = useState<{ title: string; msg: string; show: boolean }>({
+    title: '',
+    msg: '',
+    show: false,
+  });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+  const showToast = (title: string, msg: string) => {
+    setToast({ title, msg, show: true });
     setTimeout(() => {
-      setLoading(false);
-      onLoginSuccess();
-    }, 600);
+      setToast((prev) => ({ ...prev, show: false }));
+    }, 3200);
   };
 
-  const handleBackToLanding = () => {
+  const handleTabSwitch = (t: 'sub' | 'adm') => {
+    setActiveTab(t);
+    if (t === 'adm') {
+      setEmail('alexander@nexora.tv');
+      setPassword('superadmin2026');
+    } else {
+      setEmail('subscriber@nexora.tv');
+      setPassword('stream4kpass');
+    }
+  };
+
+  const handleSignIn = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!email.trim()) {
+      setShakingField('email');
+      showToast('Error', 'Please enter your email address.');
+      setTimeout(() => setShakingField(null), 500);
+      return;
+    }
+    if (!password) {
+      setShakingField('password');
+      showToast('Error', 'Please enter your password.');
+      setTimeout(() => setShakingField(null), 500);
+      return;
+    }
+
+    setLoading(true);
+
+    setTimeout(() => {
+      setLoading(false);
+      setSuccess(true);
+      showToast('Success 🎬', activeTab === 'adm' ? 'Welcome Back! Loading Admin Operations Console…' : 'Welcome to NEXORA 4K! Redirecting to Player…');
+
+      setTimeout(() => {
+        if (activeTab === 'adm') {
+          onLoginSuccess();
+        } else {
+          if (onBackToLanding) {
+            onBackToLanding();
+          } else {
+            window.location.hash = '#/';
+          }
+        }
+      }, 1200);
+    }, 1400);
+  };
+
+  const handleBack = () => {
     if (onBackToLanding) {
       onBackToLanding();
     } else {
-      window.location.href = '/';
+      window.location.hash = '#/';
     }
   };
 
@@ -33,244 +116,699 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({ onLoginSuccess, 
     <div
       style={{
         minHeight: '100vh',
-        backgroundColor: '#03050d',
+        position: 'relative',
+        backgroundColor: '#050507',
+        color: '#ffffff',
+        fontFamily: "'Montserrat', sans-serif",
+        overflowX: 'hidden',
+        overflowY: 'auto',
         display: 'flex',
         flexDirection: 'column',
-        position: 'relative',
-        overflow: 'hidden',
+        justifyContent: 'space-between',
       }}
     >
-      {/* Background Animated Movie Posters Mosaic Grid */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '-10%',
-          left: '-10%',
-          right: '-10%',
-          bottom: '-10%',
-          display: 'grid',
-          gridTemplateColumns: 'repeat(6, 1fr)',
-          gap: '16px',
-          opacity: 0.16,
-          filter: 'blur(3px) grayscale(15%)',
-          pointerEvents: 'none',
-          transform: 'rotate(-4deg) scale(1.08)',
-        }}
-      >
-        {MOCK_CONTENT.concat(MOCK_CONTENT).slice(0, 18).map((item, idx) => (
-          <div key={idx} style={{ height: '260px', borderRadius: '14px', overflow: 'hidden' }}>
-            <img src={item.posterUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-          </div>
-        ))}
+      <style>{`
+        @keyframes slowZoom {
+          from { transform: scale(1.08) rotate(-2deg); }
+          to { transform: scale(1.16) rotate(-2deg); }
+        }
+        @keyframes heroEntry {
+          from { opacity: 0; transform: translateY(30px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes cardEntry {
+          from { opacity: 0; transform: translateY(24px) scale(0.97); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes spin {
+          to { transform: rotate(360deg); }
+        }
+        @keyframes shake {
+          0%, 100% { transform: translateX(0); }
+          20% { transform: translateX(-8px); }
+          40% { transform: translateX(8px); }
+          60% { transform: translateX(-5px); }
+          80% { transform: translateX(5px); }
+        }
+        .btn-signin-netflix {
+          position: relative;
+          overflow: hidden;
+          transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+        }
+        .btn-signin-netflix::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+          transition: left 0.5s ease;
+        }
+        .btn-signin-netflix:hover::before {
+          left: 100%;
+        }
+      `}</style>
+
+      {/* ── CINEMATIC POSTER WALL ── */}
+      <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }}>
+        {/* 7x3 Collage Grid */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            display: 'grid',
+            gridTemplateColumns: 'repeat(7, 1fr)',
+            gridTemplateRows: 'repeat(3, 1fr)',
+            gap: '6px',
+            transform: 'scale(1.08) rotate(-2deg)',
+            animation: 'slowZoom 25s ease-in-out infinite alternate',
+          }}
+        >
+          {CINEMATIC_POSTERS.map((src, i) => (
+            <div
+              key={i}
+              style={{
+                backgroundImage: `url(${src})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                filter: 'brightness(0.55) saturate(1.25)',
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Gradient overlays — Netflix style */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: `
+              linear-gradient(to bottom,
+                rgba(5, 5, 8, 0.75) 0%,
+                rgba(5, 5, 8, 0.25) 30%,
+                rgba(5, 5, 8, 0.35) 60%,
+                rgba(5, 5, 8, 0.95) 100%
+              ),
+              linear-gradient(to right,
+                rgba(5, 5, 8, 0.75) 0%,
+                transparent 35%,
+                transparent 65%,
+                rgba(5, 5, 8, 0.75) 100%
+              )
+            `,
+          }}
+        />
+
+        {/* Red vignette glow */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'radial-gradient(ellipse 70% 50% at 50% 100%, rgba(229, 9, 20, 0.16) 0%, transparent 70%)',
+          }}
+        />
       </div>
 
-      {/* Radial Dark Vignette Overlay */}
-      <div
+      {/* ── TOP NAVBAR ── */}
+      <nav
         style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'radial-gradient(circle at center, rgba(3, 5, 13, 0.75) 0%, rgba(3, 5, 13, 0.98) 90%)',
-          pointerEvents: 'none',
-        }}
-      />
-
-      {/* Top Header Navigation Bar with Direct Back Button */}
-      <header
-        style={{
-          padding: '20px 32px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-          backgroundColor: 'rgba(5, 7, 14, 0.75)',
-          backdropFilter: 'blur(20px)',
           position: 'relative',
-          zIndex: 10,
+          zIndex: 50,
+          padding: '24px 48px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          background: 'linear-gradient(to bottom, rgba(5, 5, 8, 0.85) 0%, transparent 100%)',
         }}
       >
-        <button
-          onClick={handleBackToLanding}
-          style={{
-            background: 'rgba(255, 255, 255, 0.06)',
-            border: '1px solid rgba(255, 255, 255, 0.14)',
-            borderRadius: '10px',
-            padding: '10px 18px',
-            color: '#F8FAFC',
-            fontSize: '13px',
-            fontWeight: 700,
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            transition: 'all 0.2s',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = 'rgba(225, 29, 72, 0.15)';
-            e.currentTarget.style.borderColor = '#e11d48';
-            e.currentTarget.style.color = '#fda4af';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.06)';
-            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.14)';
-            e.currentTarget.style.color = '#F8FAFC';
-          }}
-        >
-          <ArrowLeft size={16} />
-          <span>Back to Landing Page</span>
-        </button>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#e11d48', boxShadow: '0 0 10px #e11d48' }} />
-          <span style={{ fontSize: '13px', color: '#94A3B8', fontWeight: 600 }}>NEXORA v2.4 Security Gateway</span>
-        </div>
-      </header>
-
-      {/* Main Login Form Area */}
-      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px', position: 'relative', zIndex: 10 }}>
-        
+        {/* Brand Logo */}
         <div
-          className="glass-card"
+          onClick={handleBack}
+          style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '12px' }}
+          title="Return to NEXORA"
+        >
+          <div
+            style={{
+              fontSize: '32px',
+              fontWeight: 900,
+              letterSpacing: '5px',
+              background: 'linear-gradient(135deg, #e50914, #ff4d4d)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              filter: 'drop-shadow(0 0 24px rgba(229, 9, 20, 0.6))',
+            }}
+          >
+            NEXORA
+          </div>
+        </div>
+
+        {/* Nav Right Controls */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <button
+            onClick={handleBack}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              backgroundColor: 'rgba(255, 255, 255, 0.08)',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              borderRadius: '6px',
+              padding: '8px 14px',
+              fontSize: '13px',
+              fontWeight: 600,
+              color: '#ffffff',
+              cursor: 'pointer',
+              backdropFilter: 'blur(8px)',
+              transition: 'all 0.2s',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.15)')}
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.08)')}
+          >
+            <ArrowLeft size={14} />
+            <span>Back to Home</span>
+          </button>
+
+          <button
+            onClick={() => showToast('Language', 'English (UK) selected')}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              border: '1px solid rgba(255, 255, 255, 0.35)',
+              borderRadius: '6px',
+              padding: '8px 14px',
+              fontSize: '13px',
+              fontWeight: 600,
+              color: '#ffffff',
+              cursor: 'pointer',
+              background: 'rgba(5, 5, 8, 0.45)',
+              backdropFilter: 'blur(8px)',
+              transition: 'border-color 0.2s',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.borderColor = '#ffffff')}
+            onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.35)')}
+          >
+            <Globe size={14} />
+            <span>English</span>
+            <ChevronDown size={14} />
+          </button>
+        </div>
+      </nav>
+
+      {/* ── HERO & SIGN IN CARD ── */}
+      <div
+        style={{
+          position: 'relative',
+          zIndex: 10,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '20px 20px 40px',
+          width: '100%',
+          maxWidth: '1200px',
+          margin: '0 auto',
+        }}
+      >
+        {/* Hero Title */}
+        <div style={{ textAlign: 'center', marginBottom: '32px', animation: 'heroEntry 0.9s 0.2s cubic-bezier(0.16, 1, 0.3, 1) both' }}>
+          <h1
+            style={{
+              fontSize: 'clamp(34px, 4.5vw, 56px)',
+              fontWeight: 900,
+              lineHeight: 1.12,
+              textShadow: '0 4px 24px rgba(0, 0, 0, 0.85)',
+              marginBottom: '12px',
+              letterSpacing: '-0.5px',
+            }}
+          >
+            Unlimited Movies,<br />
+            Shows <span style={{ color: '#e50914' }}>&amp; More.</span>
+          </h1>
+          <div style={{ fontSize: 'clamp(15px, 1.8vw, 20px)', fontWeight: 500, color: 'rgba(255, 255, 255, 0.9)', textShadow: '0 2px 12px rgba(0, 0, 0, 0.6)', marginBottom: '6px' }}>
+            Stream anywhere. Cancel anytime.
+          </div>
+          <div style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.65)', letterSpacing: '0.5px' }}>
+            4K Ultra HD · Dolby Audio · 1,400+ Live Channels
+          </div>
+        </div>
+
+        {/* ── SIGN-IN CARD ── */}
+        <div
           style={{
             width: '100%',
-            maxWidth: '460px',
-            backgroundColor: '#0d0d12',
-            border: '1px solid rgba(225, 29, 72, 0.4)',
-            borderRadius: '24px',
-            padding: '40px',
-            boxShadow: '0 30px 80px rgba(0, 0, 0, 0.95), 0 0 40px rgba(225, 29, 72, 0.2)',
-            position: 'relative',
+            maxWidth: '430px',
+            background: 'rgba(5, 5, 8, 0.84)',
+            borderRadius: '12px',
+            padding: '40px 38px 34px',
+            backdropFilter: 'blur(24px) saturate(1.5)',
+            WebkitBackdropFilter: 'blur(24px) saturate(1.5)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            boxShadow: '0 32px 80px rgba(0, 0, 0, 0.85), 0 0 80px rgba(229, 9, 20, 0.1)',
+            animation: 'cardEntry 0.8s 0.35s cubic-bezier(0.16, 1, 0.3, 1) both',
           }}
         >
-          {/* Brand Header */}
-          <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-            <div
-              style={{
-                width: '56px',
-                height: '56px',
-                borderRadius: '16px',
-                background: 'linear-gradient(135deg, #e11d48 0%, #881337 100%)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                margin: '0 auto 16px',
-                boxShadow: '0 0 25px rgba(225, 29, 72, 0.4)',
-              }}
-            >
-              <Tv size={28} color="#ffffff" strokeWidth={2.5} />
-            </div>
-            <h2 style={{ fontSize: '24px', fontWeight: 900, color: '#F8FAFC', margin: 0 }}>
-              NEXORA ADMIN CONSOLE
-            </h2>
-            <p style={{ fontSize: '13px', color: '#94A3B8', marginTop: '6px' }}>
-              Broadcaster Operations & Streaming Infrastructure
-            </p>
+          <div style={{ fontSize: '28px', fontWeight: 800, marginBottom: '22px', letterSpacing: '-0.3px', color: '#ffffff' }}>
+            Sign In
           </div>
 
-          {/* Form */}
-          <form onSubmit={handleSubmit}>
-            <div style={{ marginBottom: '20px' }}>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', marginBottom: '8px' }}>
-                Admin Email
-              </label>
+          {/* Tabs: Subscriber vs Admin Console */}
+          <div style={{ display: 'flex', borderBottom: '2px solid rgba(255, 255, 255, 0.1)', marginBottom: '24px' }}>
+            <button
+              onClick={() => handleTabSwitch('sub')}
+              type="button"
+              style={{
+                flex: 1,
+                padding: '10px 0',
+                background: 'transparent',
+                border: 'none',
+                color: activeTab === 'sub' ? '#ffffff' : 'rgba(255, 255, 255, 0.55)',
+                fontSize: '13px',
+                fontWeight: 700,
+                cursor: 'pointer',
+                letterSpacing: '0.03em',
+                borderBottom: activeTab === 'sub' ? '2px solid #e50914' : '2px solid transparent',
+                marginBottom: '-2px',
+                transition: 'all 0.2s',
+              }}
+            >
+              Subscriber
+            </button>
+            <button
+              onClick={() => handleTabSwitch('adm')}
+              type="button"
+              style={{
+                flex: 1,
+                padding: '10px 0',
+                background: 'transparent',
+                border: 'none',
+                color: activeTab === 'adm' ? '#ffffff' : 'rgba(255, 255, 255, 0.55)',
+                fontSize: '13px',
+                fontWeight: 700,
+                cursor: 'pointer',
+                letterSpacing: '0.03em',
+                borderBottom: activeTab === 'adm' ? '2px solid #e50914' : '2px solid transparent',
+                marginBottom: '-2px',
+                transition: 'all 0.2s',
+              }}
+            >
+              Admin Console
+            </button>
+          </div>
+
+          <form onSubmit={handleSignIn}>
+            {/* Email Field with Floating Label */}
+            <div
+              style={{
+                marginBottom: '14px',
+                position: 'relative',
+                animation: shakingField === 'email' ? 'shake 0.4s ease' : 'none',
+              }}
+            >
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required
+                placeholder=" "
                 style={{
                   width: '100%',
-                  backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                  padding: '20px 16px 8px',
+                  background: 'rgba(255, 255, 255, 0.08)',
                   border: '1px solid rgba(255, 255, 255, 0.14)',
-                  borderRadius: '12px',
-                  padding: '13px 16px',
-                  color: '#F8FAFC',
-                  fontSize: '14px',
+                  borderRadius: '6px',
+                  color: '#ffffff',
+                  fontSize: '15px',
                   outline: 'none',
+                  transition: 'all 0.2s',
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.4)';
+                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.12)';
+                  e.currentTarget.style.boxShadow = '0 0 0 2px rgba(229, 9, 20, 0.3)';
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.14)';
+                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.08)';
+                  e.currentTarget.style.boxShadow = 'none';
                 }}
               />
+              <label
+                style={{
+                  position: 'absolute',
+                  left: '16px',
+                  top: email ? '8px' : '50%',
+                  transform: email ? 'none' : 'translateY(-50%)',
+                  fontSize: email ? '10px' : '14px',
+                  color: 'rgba(255, 255, 255, 0.55)',
+                  pointerEvents: 'none',
+                  transition: 'all 0.18s ease',
+                  fontWeight: 600,
+                  letterSpacing: email ? '0.05em' : 'normal',
+                }}
+              >
+                {activeTab === 'adm' ? 'Admin Email' : 'Email or phone number'}
+              </label>
             </div>
 
-            <div style={{ marginBottom: '24px' }}>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', marginBottom: '8px' }}>
-                Access Password
-              </label>
+            {/* Password Field with Eye Toggle */}
+            <div
+              style={{
+                marginBottom: '18px',
+                position: 'relative',
+                animation: shakingField === 'password' ? 'shake 0.4s ease' : 'none',
+              }}
+            >
               <input
-                type="password"
+                type={pwdVisible ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required
+                placeholder=" "
                 style={{
                   width: '100%',
-                  backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                  padding: '20px 46px 8px 16px',
+                  background: 'rgba(255, 255, 255, 0.08)',
                   border: '1px solid rgba(255, 255, 255, 0.14)',
-                  borderRadius: '12px',
-                  padding: '13px 16px',
-                  color: '#F8FAFC',
-                  fontSize: '14px',
+                  borderRadius: '6px',
+                  color: '#ffffff',
+                  fontSize: '15px',
                   outline: 'none',
+                  transition: 'all 0.2s',
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.4)';
+                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.12)';
+                  e.currentTarget.style.boxShadow = '0 0 0 2px rgba(229, 9, 20, 0.3)';
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.14)';
+                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.08)';
+                  e.currentTarget.style.boxShadow = 'none';
                 }}
               />
+              <label
+                style={{
+                  position: 'absolute',
+                  left: '16px',
+                  top: password ? '8px' : '50%',
+                  transform: password ? 'none' : 'translateY(-50%)',
+                  fontSize: password ? '10px' : '14px',
+                  color: 'rgba(255, 255, 255, 0.55)',
+                  pointerEvents: 'none',
+                  transition: 'all 0.18s ease',
+                  fontWeight: 600,
+                  letterSpacing: password ? '0.05em' : 'normal',
+                }}
+              >
+                Password
+              </label>
+
+              <button
+                type="button"
+                onClick={() => setPwdVisible(!pwdVisible)}
+                style={{
+                  position: 'absolute',
+                  right: '14px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  color: 'rgba(255, 255, 255, 0.55)',
+                  padding: 0,
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                {pwdVisible ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
             </div>
 
+            {/* Red Sign In Button */}
             <button
               type="submit"
-              disabled={loading}
-              className="btn-radiant"
+              disabled={loading || success}
+              className="btn-signin-netflix"
               style={{
                 width: '100%',
-                justifyContent: 'center',
-                padding: '15px',
+                padding: '16px',
+                background: success ? '#16a34a' : 'linear-gradient(135deg, #e50914 0%, #b20710 100%)',
+                border: 'none',
+                borderRadius: '6px',
+                color: '#ffffff',
                 fontSize: '15px',
+                fontWeight: 700,
+                cursor: loading || success ? 'not-allowed' : 'pointer',
+                letterSpacing: '0.04em',
+                boxShadow: success
+                  ? '0 4px 24px rgba(22, 163, 74, 0.55)'
+                  : '0 4px 24px rgba(229, 9, 20, 0.45)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
               }}
             >
               {loading ? (
-                <span>Authenticating...</span>
+                <>
+                  <svg
+                    style={{ animation: 'spin 0.75s linear infinite' }}
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+                  </svg>
+                  <span>Signing in…</span>
+                </>
+              ) : success ? (
+                <>
+                  <Check size={18} strokeWidth={2.5} />
+                  <span>Welcome Back!</span>
+                </>
               ) : (
                 <>
-                  <span>Sign In as Superadmin</span>
-                  <ArrowRight size={16} />
+                  <span>{activeTab === 'adm' ? 'Sign In as Superadmin' : 'Sign In'}</span>
+                  <ArrowRight size={16} strokeWidth={2.5} />
                 </>
               )}
             </button>
           </form>
 
-          {/* Demo Credentials Box */}
-          <div style={{ marginTop: '24px', backgroundColor: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '12px', padding: '12px', textAlign: 'center' }}>
-            <span style={{ fontSize: '11px', color: '#64748B', fontWeight: 700, textTransform: 'uppercase' }}>
-              Mock Demonstration Access
-            </span>
-            <div style={{ fontSize: '12px', color: '#fda4af', fontWeight: 600, marginTop: '4px' }}>
-              Pre-filled with Superadmin Credentials
-            </div>
+          {/* Divider */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', margin: '20px 0' }}>
+            <div style={{ flex: 1, height: '1px', backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
+            <span style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.55)' }}>or</span>
+            <div style={{ flex: 1, height: '1px', backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
           </div>
 
-          {/* Bottom Back Button */}
-          <div style={{ marginTop: '24px', textAlign: 'center', borderTop: '1px solid rgba(255, 255, 255, 0.06)', paddingTop: '16px' }}>
-            <button
-              onClick={handleBackToLanding}
-              style={{
-                background: 'transparent',
-                border: 'none',
-                color: '#94A3B8',
-                fontSize: '13px',
-                cursor: 'pointer',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                transition: 'color 0.2s',
+          {/* Activation Code Button */}
+          <button
+            type="button"
+            onClick={() => showToast('Activation Code', 'Use 6-digit code: NX-8849 to link your Smart TV')}
+            style={{
+              width: '100%',
+              padding: '14px',
+              background: 'rgba(255, 255, 255, 0.08)',
+              border: '1px solid rgba(255, 255, 255, 0.15)',
+              borderRadius: '6px',
+              color: '#ffffff',
+              fontSize: '14px',
+              fontWeight: 600,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              backdropFilter: 'blur(6px)',
+              transition: 'all 0.2s',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.15)')}
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.08)')}
+          >
+            <Tv size={16} color="#fda4af" />
+            <span>Use Activation Code</span>
+          </button>
+
+          {/* Card Footer Links */}
+          <div style={{ marginTop: '22px', fontSize: '13px', color: 'rgba(255, 255, 255, 0.55)', textAlign: 'center' }}>
+            New to NEXORA?{' '}
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                showToast('Register', 'Instant 4K 14-day pass generated for your account!');
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = '#fda4af')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = '#94A3B8')}
+              style={{ color: '#ffffff', textDecoration: 'none', fontWeight: 700 }}
             >
-              <ArrowLeft size={14} />
-              <span>Return to Public Landing Page</span>
-            </button>
+              Sign up now.
+            </a>
+            &nbsp;·&nbsp;{' '}
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                showToast('Support', '24/7 Priority Support is available on WhatsApp & Telegram.');
+              }}
+              style={{ color: '#ffffff', textDecoration: 'none', fontWeight: 700 }}
+            >
+              Need help?
+            </a>
           </div>
         </div>
+
+        {/* ── FEATURES ROW ── */}
+        <div
+          style={{
+            display: 'flex',
+            gap: '32px',
+            marginTop: '32px',
+            animation: 'heroEntry 0.9s 0.5s cubic-bezier(0.16, 1, 0.3, 1) both',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+          }}
+        >
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px', fontSize: '12px', color: 'rgba(255, 255, 255, 0.55)', textAlign: 'center' }}>
+            <div
+              style={{
+                width: '42px',
+                height: '42px',
+                borderRadius: '50%',
+                backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                border: '1px solid rgba(255, 255, 255, 0.12)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Tv size={18} color="#fda4af" />
+            </div>
+            <div style={{ fontSize: '16px', fontWeight: 800, color: '#ffffff', lineHeight: 1 }}>1,400+</div>
+            <span>Live Channels</span>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px', fontSize: '12px', color: 'rgba(255, 255, 255, 0.55)', textAlign: 'center' }}>
+            <div
+              style={{
+                width: '42px',
+                height: '42px',
+                borderRadius: '50%',
+                backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                border: '1px solid rgba(255, 255, 255, 0.12)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Monitor size={18} color="#ffffff" />
+            </div>
+            <div style={{ fontSize: '16px', fontWeight: 800, color: '#ffffff', lineHeight: 1 }}>4K</div>
+            <span>Ultra HD</span>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px', fontSize: '12px', color: 'rgba(255, 255, 255, 0.55)', textAlign: 'center' }}>
+            <div
+              style={{
+                width: '42px',
+                height: '42px',
+                borderRadius: '50%',
+                backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                border: '1px solid rgba(255, 255, 255, 0.12)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <ShieldCheck size={18} color="#fda4af" />
+            </div>
+            <div style={{ fontSize: '16px', fontWeight: 800, color: '#ffffff', lineHeight: 1 }}>5</div>
+            <span>Screens</span>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px', fontSize: '12px', color: 'rgba(255, 255, 255, 0.55)', textAlign: 'center' }}>
+            <div
+              style={{
+                width: '42px',
+                height: '42px',
+                borderRadius: '50%',
+                backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                border: '1px solid rgba(255, 255, 255, 0.12)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Globe size={18} color="#ffffff" />
+            </div>
+            <div style={{ fontSize: '16px', fontWeight: 800, color: '#ffffff', lineHeight: 1 }}>190+</div>
+            <span>Countries</span>
+          </div>
+        </div>
+      </div>
+
+      {/* ── FOOTER ── */}
+      <footer
+        style={{
+          position: 'relative',
+          zIndex: 10,
+          padding: '24px 48px',
+          background: 'linear-gradient(to top, rgba(5, 5, 8, 0.85) 0%, transparent 100%)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '24px',
+          flexWrap: 'wrap',
+        }}
+      >
+        {['FAQ', 'Help Centre', 'Terms of Use', 'Privacy', 'Cookie Preferences', 'Corporate Info', 'Contact Us'].map((txt) => (
+          <a
+            key={txt}
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              showToast(txt, `Opening ${txt} documentation…`);
+            }}
+            style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.4)', textDecoration: 'none', transition: 'color 0.2s' }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.8)')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.4)')}
+          >
+            {txt}
+          </a>
+        ))}
+      </footer>
+
+      {/* ── INTERACTIVE TOAST ── */}
+      <div
+        style={{
+          position: 'fixed',
+          top: '84px',
+          right: '24px',
+          zIndex: 200,
+          backgroundColor: 'rgba(15, 15, 22, 0.95)',
+          border: '1px solid rgba(255, 255, 255, 0.12)',
+          borderLeft: '4px solid #e50914',
+          borderRadius: '8px',
+          padding: '14px 20px',
+          fontSize: '13px',
+          color: '#ffffff',
+          boxShadow: '0 12px 36px rgba(0, 0, 0, 0.75)',
+          backdropFilter: 'blur(16px)',
+          transform: toast.show ? 'translateX(0)' : 'translateX(120%)',
+          opacity: toast.show ? 1 : 0,
+          transition: 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
+          minWidth: '260px',
+        }}
+      >
+        <div style={{ fontWeight: 800, marginBottom: '3px', color: '#fda4af' }}>{toast.title}</div>
+        <div style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '12px' }}>{toast.msg}</div>
       </div>
     </div>
   );
 };
+
+export default AdminLoginView;
