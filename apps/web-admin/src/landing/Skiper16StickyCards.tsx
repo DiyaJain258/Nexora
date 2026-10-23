@@ -389,13 +389,13 @@ export const Skiper16StickyCards: React.FC<{ onPlayMovie?: (movie: any) => void 
       style={{
         position: 'relative',
         width: '100%',
-        paddingBottom: '12vh',
-        paddingTop: '60px',
+        paddingBottom: '6vh',
+        paddingTop: '36px',
         backgroundColor: '#050507',
       }}
     >
       {/* Section Headline */}
-      <div style={{ textAlign: 'center', marginBottom: '60px', padding: '0 24px' }}>
+      <div style={{ textAlign: 'center', marginBottom: '28px', padding: '0 24px' }}>
         <div
           style={{
             display: 'inline-flex',

@@ -206,3 +206,77 @@
 .animate-marquee:hover {
   animation-play-state: paused;
 }
+
+/* Navbar Animated Button Styles & Keyframes */
+@keyframes liveRadarRing {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 6px rgba(225, 29, 72, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(225, 29, 72, 0);
+  }
+}
+
+.live-beacon-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #e11d48;
+  display: inline-block;
+  animation: liveRadarRing 1.8s infinite;
+  box-shadow: 0 0 8px #e11d48;
+}
+
+@keyframes keyBounce {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(-12deg) scale(1.12); }
+}
+
+.key-animate-icon {
+  animation: keyBounce 2.4s ease-in-out infinite;
+}
+
+@keyframes shimmerSweep {
+  0% { transform: translateX(-150%) skewX(-20deg); }
+  40%, 100% { transform: translateX(250%) skewX(-20deg); }
+}
+
+.btn-shimmer-wrap {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-shimmer-sweep {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.35) 50%,
+    transparent 100%
+  );
+  animation: shimmerSweep 3.2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes adminAuraPulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.4), 0 0 10px rgba(225, 29, 72, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.7), 0 0 18px rgba(225, 29, 72, 0.6);
+  }
+}
+
+.admin-aura-btn {
+  animation: adminAuraPulse 2.8s ease-in-out infinite;
+}

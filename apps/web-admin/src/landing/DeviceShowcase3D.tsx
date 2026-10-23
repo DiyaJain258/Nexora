@@ -50,10 +50,10 @@ export const DeviceShowcase3D: React.FC = () => {
   const current = devices.find((d) => d.id === activeDevice) || devices[0];
 
   return (
-    <section id="devices" style={{ padding: '80px 0', position: 'relative' }}>
+    <section id="devices" style={{ padding: '40px 0 28px', position: 'relative' }}>
       <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 24px' }}>
         
-        <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+        <div style={{ textAlign: 'center', marginBottom: '24px' }}>
           <div style={{ fontSize: '13px', fontWeight: 800, color: '#fda4af', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '8px' }}>
             CROSS-PLATFORM ARCHITECTURE
           </div>

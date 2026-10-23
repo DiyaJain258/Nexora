@@ -29,19 +29,19 @@ export const FaqSection: React.FC = () => {
   ];
 
   return (
-    <section id="faq" style={{ padding: '80px 0', position: 'relative' }}>
+    <section id="faq" style={{ padding: '40px 0 28px', position: 'relative' }}>
       <div style={{ maxWidth: '900px', margin: '0 auto', padding: '0 24px' }}>
         
-        <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+        <div style={{ textAlign: 'center', marginBottom: '22px' }}>
           <div style={{ fontSize: '13px', fontWeight: 800, color: '#fda4af', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '8px' }}>
             FREQUENTLY ASKED QUESTIONS
           </div>
-          <h2 style={{ fontSize: '38px', fontWeight: 900, color: '#f8fafc', letterSpacing: '-1px', marginBottom: '16px' }}>
+          <h2 style={{ fontSize: '38px', fontWeight: 900, color: '#f8fafc', letterSpacing: '-1px', marginBottom: '14px' }}>
             Got Questions? <span className="gradient-text">We Have Answers</span>
           </h2>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '64px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '32px' }}>
           {faqs.map((faq, idx) => {
             const isOpen = openIndex === idx;
             return (

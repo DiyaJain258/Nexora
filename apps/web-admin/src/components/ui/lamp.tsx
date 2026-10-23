@@ -12,7 +12,7 @@ export const LampContainer: React.FC<{
       style={{
         position: "relative",
         display: "flex",
-        minHeight: "36rem",
+        minHeight: "22rem",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
@@ -20,8 +20,8 @@ export const LampContainer: React.FC<{
         backgroundColor: "#050507",
         width: "100%",
         zIndex: 0,
-        paddingTop: "120px",
-        paddingBottom: "40px",
+        paddingTop: "40px",
+        paddingBottom: "20px",
       }}
     >
       <div

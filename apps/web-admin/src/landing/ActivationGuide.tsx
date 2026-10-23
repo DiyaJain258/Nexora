@@ -23,10 +23,10 @@ export const ActivationGuide: React.FC = () => {
   };
 
   return (
-    <section id="activation" style={{ padding: '80px 0', position: 'relative' }}>
+    <section id="activation" style={{ padding: '40px 0 28px', position: 'relative' }}>
       <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 24px' }}>
         
-        <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+        <div style={{ textAlign: 'center', marginBottom: '24px' }}>
           <div style={{ fontSize: '13px', fontWeight: 800, color: '#fda4af', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '8px' }}>
             ZERO FRICTION ONBOARDING
           </div>

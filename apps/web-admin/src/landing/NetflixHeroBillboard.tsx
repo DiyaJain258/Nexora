@@ -151,12 +151,12 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
       style={{
         position: 'relative',
         width: '100%',
-        minHeight: '94vh',
+        minHeight: '720px',
         backgroundColor: '#050507',
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'flex-end',
+        justifyContent: 'flex-start',
       }}
     >
       {/* Background Cinematic Movie Live Video & Backdrop with Smooth Crossfade */}
@@ -208,8 +208,8 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
                 top: 0,
                 left: 0,
                 right: 0,
-                height: '160px',
-                background: 'linear-gradient(180deg, #050507 0%, rgba(5, 5, 7, 0.7) 40%, transparent 100%)',
+                height: '120px',
+                background: 'linear-gradient(180deg, #050507 0%, rgba(5, 5, 7, 0.6) 40%, transparent 100%)',
                 pointerEvents: 'none',
               }}
             />
@@ -231,7 +231,7 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
                 bottom: 0,
                 left: 0,
                 right: 0,
-                height: '240px',
+                height: '180px',
                 background: 'linear-gradient(0deg, #050507 0%, rgba(5, 5, 7, 0.8) 45%, transparent 100%)',
                 pointerEvents: 'none',
               }}
@@ -259,7 +259,7 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
           zIndex: 10,
           maxWidth: '1380px',
           margin: '0 auto',
-          padding: '110px 32px 30px',
+          padding: '84px 32px 14px',
           width: '100%',
         }}
       >
@@ -441,9 +441,9 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
         {/* Unified Bottom Strip: Flex layout with ZERO overlap */}
         <div
           style={{
-            marginTop: '28px',
+            marginTop: '20px',
             borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-            paddingTop: '18px',
+            paddingTop: '14px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',

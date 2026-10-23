@@ -44,7 +44,7 @@ export const PlatformLampShowcase: React.FC<PlatformLampShowcaseProps> = ({
               background: 'rgba(225, 29, 72, 0.15)',
               border: '1px solid rgba(225, 29, 72, 0.4)',
               boxShadow: '0 0 25px rgba(225, 29, 72, 0.25)',
-              marginBottom: '20px',
+              marginBottom: '14px',
             }}
           >
             <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#e11d48', boxShadow: '0 0 10px #e11d48' }} />
@@ -55,12 +55,12 @@ export const PlatformLampShowcase: React.FC<PlatformLampShowcaseProps> = ({
 
           <h2
             style={{
-              fontSize: '52px',
+              fontSize: '44px',
               fontWeight: 900,
-              lineHeight: 1.12,
+              lineHeight: 1.15,
               letterSpacing: '-1.5px',
               color: '#ffffff',
-              marginBottom: '20px',
+              marginBottom: '14px',
             }}
           >
             The Ultimate 4K IPTV & <br />
@@ -69,17 +69,17 @@ export const PlatformLampShowcase: React.FC<PlatformLampShowcaseProps> = ({
 
           <p
             style={{
-              fontSize: '17px',
-              lineHeight: 1.65,
+              fontSize: '16px',
+              lineHeight: 1.6,
               color: '#a1a1aa',
               maxWidth: '680px',
-              marginBottom: '36px',
+              marginBottom: '24px',
             }}
           >
             Experience instant 0.4-second channel zapping, 4K 60FPS HEVC 10-bit cinema feeds, and synchronization across all your living room screens without contracts or cumbersome passwords.
           </p>
 
-          <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '24px' }}>
+          <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '12px' }}>
             <button
               onClick={onOpenActivation}
               className="btn-radiant"
