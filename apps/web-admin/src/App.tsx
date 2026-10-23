@@ -93,11 +93,9 @@ export const App: React.FC = () => {
     return (
       <LandingPageView
         onNavigateToAdmin={() => {
-          if (isLoggedIn) {
-            setViewMode('admin-dashboard');
-          } else {
-            setViewMode('admin-login');
-          }
+          setIsLoggedIn(true);
+          setActiveTab('dashboard');
+          setViewMode('admin-dashboard');
         }}
       />
     );
@@ -107,8 +105,10 @@ export const App: React.FC = () => {
   if (viewMode === 'admin-login' || !isLoggedIn) {
     return (
       <AdminLoginView
+        defaultTab="adm"
         onLoginSuccess={() => {
           setIsLoggedIn(true);
+          setActiveTab('dashboard');
           setViewMode('admin-dashboard');
         }}
         onBackToLanding={() => setViewMode('landing')}
@@ -118,7 +118,16 @@ export const App: React.FC = () => {
 
   // 3. ADMIN OPERATIONS CONSOLE DASHBOARD VIEW
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#070912' }}>
+    <div
+      style={{
+        display: 'flex',
+        minHeight: '100vh',
+        backgroundColor: '#040306',
+        backgroundImage:
+          'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(139, 0, 50, 0.16), transparent 75%), radial-gradient(ellipse 60% 40% at 100% 100%, rgba(139, 0, 50, 0.1), transparent 70%)',
+        color: '#ffffff',
+      }}
+    >
       {/* Sidebar */}
       <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
 
