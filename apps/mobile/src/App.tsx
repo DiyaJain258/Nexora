@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { MobileHeader } from './components/MobileHeader';
 import { MobileBottomNav, MobileTab } from './components/MobileBottomNav';
+import { SplashScreen } from './components/SplashScreen';
 import { HomeScreen } from './screens/HomeScreen';
 import { LiveTvScreen } from './screens/LiveTvScreen';
 import { CatalogScreen } from './screens/CatalogScreen';
@@ -12,6 +13,7 @@ import { VideoPlayerModal } from './components/VideoPlayerModal';
 import { ContentItem, Channel } from '@nexora/shared';
 
 export const App: React.FC = () => {
+  const [showSplash, setShowSplash] = useState(true);
   const [activeTab, setActiveTab] = useState<MobileTab>('home');
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -42,6 +44,17 @@ export const App: React.FC = () => {
         <SearchScreen
           onSelectItem={(item) => setSelectedItem(item)}
           onPlayChannel={(ch) => setPlayingItem(ch)}
+        />
+      );
+    }
+
+    if (activeCategory === 'Series') {
+      return (
+        <CatalogScreen
+          title="Binge-Worthy TV Series"
+          typeFilter="series"
+          onSelectItem={(item) => setSelectedItem(item)}
+          onPlayItem={(item) => setPlayingItem(item)}
         />
       );
     }
@@ -113,6 +126,9 @@ export const App: React.FC = () => {
 
   return (
     <div id="mobile-simulator-frame">
+      {/* Animated Splash Screen */}
+      {showSplash && <SplashScreen onFinish={() => setShowSplash(false)} />}
+
       {/* Top Mobile Status Header */}
       <MobileHeader
         onSearchClick={() => setIsSearchOpen(!isSearchOpen)}

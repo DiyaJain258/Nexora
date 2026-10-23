@@ -21,9 +21,9 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
       position: 'sticky',
       top: 0,
       zIndex: 20,
-      backgroundColor: 'rgba(7, 9, 18, 0.92)',
+      backgroundColor: 'rgba(5, 5, 5, 0.95)',
       backdropFilter: 'blur(16px)',
-      borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
+      borderBottom: '1px solid #303030',
       padding: '12px 16px 8px',
     }}>
       {/* Top row */}
@@ -32,21 +32,20 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
           <div style={{
             width: '28px',
             height: '28px',
-            borderRadius: '8px',
-            background: 'linear-gradient(135deg, #8B5CF6 0%, #22D3EE 100%)',
+            borderRadius: '6px',
+            background: 'linear-gradient(135deg, #E50914 0%, #7F0000 100%)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            border: '1px solid #E50914',
           }}>
             <Sparkles size={16} color="#FFFFFF" />
           </div>
           <span style={{
-            fontSize: '18px',
-            fontWeight: 800,
-            letterSpacing: '1px',
-            background: 'linear-gradient(135deg, #FFFFFF 0%, #22D3EE 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
+            fontSize: '20px',
+            fontWeight: 900,
+            letterSpacing: '1.5px',
+            color: '#E50914',
           }}>
             NEXORA
           </span>
@@ -54,14 +53,14 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
           <button
-            onClick={() => alert('Chromecast / AirPlay scan initialized... Discovered Living Room Apple TV 4K')}
-            style={{ background: 'none', border: 'none', color: '#94A3B8', cursor: 'pointer', padding: 0 }}
+            onClick={() => alert('AirPlay / Cast scan: Discovered Living Room 4K Apple TV')}
+            style={{ background: 'none', border: 'none', color: '#B3B3B3', cursor: 'pointer', padding: 0 }}
           >
             <Cast size={19} />
           </button>
           <button
             onClick={onSearchClick}
-            style={{ background: 'none', border: 'none', color: '#94A3B8', cursor: 'pointer', padding: 0 }}
+            style={{ background: 'none', border: 'none', color: '#B3B3B3', cursor: 'pointer', padding: 0 }}
           >
             <Search size={19} />
           </button>
@@ -73,7 +72,7 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
               width: '28px',
               height: '28px',
               borderRadius: '50%',
-              border: '2px solid #8B5CF6',
+              border: '2px solid #E50914',
               overflow: 'hidden',
             }}>
               <img
@@ -104,11 +103,11 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
                 flexShrink: 0,
                 padding: '5px 12px',
                 borderRadius: '20px',
-                border: isActive ? '1px solid #8B5CF6' : '1px solid rgba(255, 255, 255, 0.08)',
-                backgroundColor: isActive ? 'rgba(139, 92, 246, 0.25)' : 'rgba(255, 255, 255, 0.04)',
-                color: isActive ? '#22D3EE' : '#94A3B8',
+                border: isActive ? '1px solid #E50914' : '1px solid #303030',
+                backgroundColor: isActive ? 'rgba(229, 9, 20, 0.25)' : '#151515',
+                color: isActive ? '#FFFFFF' : '#B3B3B3',
                 fontSize: '12px',
-                fontWeight: isActive ? 700 : 500,
+                fontWeight: isActive ? 800 : 500,
                 cursor: 'pointer',
               }}
             >
