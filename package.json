@@ -1,0 +1,22 @@
+{
+  "name": "nexora-platform",
+  "version": "1.0.0",
+  "description": "NEXORA Multi-Platform IPTV & Live TV Streaming Platform",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:admin": "npm --workspace=@nexora/web-admin run dev",
+    "dev:mobile": "npm --workspace=@nexora/mobile run dev",
+    "dev:tv": "npm --workspace=@nexora/tv run dev",
+    "build:admin": "npm --workspace=@nexora/web-admin run build",
+    "build:mobile": "npm --workspace=@nexora/mobile run build",
+    "build:tv": "npm --workspace=@nexora/tv run build",
+    "build:all": "npm --workspace=@nexora/shared run build && npm --workspace=@nexora/web-admin run build && npm --workspace=@nexora/mobile run build && npm --workspace=@nexora/tv run build"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  }
+}
