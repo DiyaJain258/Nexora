@@ -112,22 +112,7 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
   };
 
   return (
-    <div
-      style={{
-        height: '100vh',
-        width: '100vw',
-        position: 'fixed',
-        inset: 0,
-        backgroundColor: '#050507',
-        color: '#ffffff',
-        fontFamily: "'Montserrat', sans-serif",
-        overflow: 'hidden',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        userSelect: 'none',
-      }}
-    >
+    <div className="netflix-login-root">
       <style>{`
         @keyframes slowZoom {
           from { transform: scale(1.08) rotate(-2deg); }
@@ -151,6 +136,33 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
           60% { transform: translateX(-5px); }
           80% { transform: translateX(5px); }
         }
+
+        /* ─── BASE & RESPONSIVE RULES ─── */
+        .netflix-login-root {
+          position: fixed;
+          inset: 0;
+          width: 100vw;
+          height: 100vh;
+          background-color: #050507;
+          color: #ffffff;
+          font-family: 'Montserrat', sans-serif;
+          overflow-y: auto;
+          overflow-x: hidden;
+          -webkit-overflow-scrolling: touch;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          user-select: none;
+        }
+
+        /* Desktop: strictly locked to 100vh with no scrollbar when screen height permits */
+        @media (min-width: 992px) and (min-height: 720px) {
+          .netflix-login-root {
+            overflow: hidden;
+          }
+        }
+
+        /* Buttons & Interactions */
         .btn-signin-netflix {
           position: relative;
           overflow: hidden;
@@ -169,23 +181,384 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
         .btn-signin-netflix:hover::before {
           left: 100%;
         }
+
+        /* Top Navbar */
+        .netflix-login-nav {
+          position: relative;
+          z-index: 50;
+          padding: 16px 48px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          background: linear-gradient(to bottom, rgba(5, 5, 8, 0.88) 0%, transparent 100%);
+          flex-shrink: 0;
+        }
+        .netflix-brand-logo {
+          font-size: 28px;
+          font-weight: 900;
+          letter-spacing: 4px;
+          background: linear-gradient(135deg, #e50914, #ff4d4d);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          filter: drop-shadow(0 0 20px rgba(229, 9, 20, 0.55));
+          transition: transform 0.2s;
+        }
+        .netflix-nav-btn {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          border-radius: 6px;
+          padding: 7px 14px;
+          font-size: 12px;
+          font-weight: 600;
+          color: #ffffff;
+          cursor: pointer;
+          backdrop-filter: blur(8px);
+          transition: all 0.2s;
+        }
+
+        @media (max-width: 991px) {
+          .netflix-login-nav {
+            padding: 14px 24px;
+          }
+        }
+        @media (max-width: 540px) {
+          .netflix-login-nav {
+            padding: 12px 16px;
+          }
+          .netflix-brand-logo {
+            font-size: 22px !important;
+            letter-spacing: 2.5px !important;
+          }
+          .netflix-nav-back-text {
+            display: none;
+          }
+          .netflix-nav-btn {
+            padding: 6px 10px !important;
+            font-size: 11px !important;
+          }
+        }
+
+        /* Center Layout Container */
+        .netflix-login-content {
+          position: relative;
+          z-index: 10;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0 48px;
+          width: 100%;
+          max-width: 1220px;
+          margin: 0 auto;
+          gap: 56px;
+          flex: 1;
+        }
+        @media (max-width: 1100px) {
+          .netflix-login-content {
+            gap: 36px;
+            padding: 0 32px;
+          }
+        }
+        @media (max-width: 991px) {
+          .netflix-login-content {
+            flex-direction: column;
+            justify-content: center;
+            padding: 24px 20px;
+            gap: 28px;
+            margin: auto 0;
+            flex: none;
+          }
+        }
+        @media (max-width: 540px) {
+          .netflix-login-content {
+            padding: 14px 14px 22px;
+            gap: 18px;
+          }
+        }
+
+        /* Left Hero Column */
+        .netflix-login-hero {
+          flex: 1.1;
+          max-width: 540px;
+          animation: heroEntry 0.8s 0.15s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+        .netflix-hero-pill {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 6px 14px;
+          border-radius: 999px;
+          background-color: rgba(229, 9, 20, 0.16);
+          border: 1px solid rgba(229, 9, 20, 0.4);
+          margin-bottom: 16px;
+          backdrop-filter: blur(10px);
+        }
+        .netflix-login-title {
+          font-size: clamp(34px, 3.6vw, 48px);
+          font-weight: 900;
+          line-height: 1.1;
+          text-shadow: 0 4px 24px rgba(0, 0, 0, 0.85);
+          margin-bottom: 14px;
+          letter-spacing: -1px;
+        }
+        .netflix-login-sub {
+          font-size: 17px;
+          font-weight: 500;
+          color: rgba(255, 255, 255, 0.9);
+          text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+          margin-bottom: 8px;
+        }
+        .netflix-login-specs {
+          font-size: 13px;
+          color: 'rgba(255, 255, 255, 0.6)';
+          letter-spacing: 0.3px;
+          margin-bottom: 26px;
+          line-height: 1.5;
+        }
+        .netflix-login-hero-badges {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 12px;
+          max-width: 460px;
+        }
+        .netflix-badge-item {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 9px 12px;
+          background-color: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.09);
+          border-radius: 10px;
+          backdrop-filter: blur(10px);
+          transition: transform 0.2s, background-color 0.2s;
+        }
+        .netflix-badge-item:hover {
+          transform: translateY(-2px);
+          background-color: rgba(255, 255, 255, 0.08);
+        }
+        .netflix-badge-icon {
+          width: 34px;
+          height: 34px;
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+        }
+        .netflix-badge-title {
+          font-size: 14px;
+          font-weight: 800;
+          color: #ffffff;
+          line-height: 1.1;
+        }
+        .netflix-badge-sub {
+          font-size: 11px;
+          color: rgba(255, 255, 255, 0.6);
+        }
+
+        @media (max-width: 991px) {
+          .netflix-login-hero {
+            flex: none;
+            max-width: 520px;
+            text-align: center;
+            margin: 0 auto;
+          }
+          .netflix-login-hero-badges {
+            margin: 0 auto;
+            max-width: 480px;
+          }
+        }
+        @media (max-width: 540px) {
+          .netflix-login-hero {
+            max-width: 100%;
+          }
+          .netflix-hero-pill {
+            padding: 5px 12px !important;
+            margin-bottom: 10px !important;
+          }
+          .netflix-login-title {
+            font-size: clamp(23px, 6.4vw, 29px) !important;
+            line-height: 1.15 !important;
+            margin-bottom: 8px !important;
+          }
+          .netflix-login-sub {
+            font-size: 13.5px !important;
+            margin-bottom: 5px !important;
+          }
+          .netflix-login-specs {
+            font-size: 11px !important;
+            margin-bottom: 14px !important;
+            line-height: 1.4 !important;
+          }
+          .netflix-login-hero-badges {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 8px !important;
+            max-width: 100% !important;
+          }
+          .netflix-badge-item {
+            padding: 7px 10px !important;
+          }
+          .netflix-badge-icon {
+            width: 28px !important;
+            height: 28px !important;
+          }
+          .netflix-badge-title {
+            font-size: 12px !important;
+          }
+          .netflix-badge-sub {
+            font-size: 10px !important;
+          }
+        }
+
+        /* Right Column (Sign-In Card) */
+        .netflix-login-card {
+          width: 100%;
+          max-width: 410px;
+          background: rgba(5, 5, 8, 0.88);
+          border-radius: 16px;
+          padding: 28px 32px 24px;
+          backdrop-filter: blur(28px) saturate(1.5);
+          -webkit-backdrop-filter: blur(28px) saturate(1.5);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          box-shadow: 0 32px 80px rgba(0, 0, 0, 0.85), 0 0 80px rgba(229, 9, 20, 0.12);
+          animation: cardEntry 0.8s 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+          flex-shrink: 0;
+        }
+        .netflix-card-title {
+          font-size: 24px;
+          font-weight: 800;
+          margin-bottom: 16px;
+          letter-spacing: -0.3px;
+          color: #ffffff;
+        }
+        .netflix-input-elem {
+          width: 100%;
+          padding: 18px 14px 6px;
+          background: rgba(255, 255, 255, 0.08);
+          border: 1px solid rgba(255, 255, 255, 0.14);
+          border-radius: 6px;
+          color: #ffffff;
+          font-size: 14px;
+          outline: none;
+          transition: all 0.2s;
+        }
+        .netflix-btn-submit {
+          width: 100%;
+          padding: 14px;
+          border: none;
+          border-radius: 6px;
+          color: #ffffff;
+          font-size: 14px;
+          font-weight: 700;
+          letter-spacing: 0.04em;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+        }
+        .netflix-btn-activation {
+          width: 100%;
+          padding: 11px;
+          background: rgba(255, 255, 255, 0.08);
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          border-radius: 6px;
+          color: #ffffff;
+          font-size: 13px;
+          font-weight: 600;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          backdrop-filter: blur(6px);
+          transition: all 0.2s;
+        }
+
+        @media (max-width: 991px) {
+          .netflix-login-card {
+            max-width: 440px;
+            margin: 0 auto;
+          }
+        }
+        @media (max-width: 540px) {
+          .netflix-login-card {
+            max-width: 100%;
+            padding: 20px 16px 18px;
+            border-radius: 14px;
+          }
+          .netflix-card-title {
+            font-size: 20px !important;
+            margin-bottom: 12px !important;
+          }
+          .netflix-input-elem {
+            font-size: 15px !important;
+            padding: 16px 12px 6px !important;
+          }
+          .netflix-btn-submit {
+            padding: 12px !important;
+            font-size: 13.5px !important;
+          }
+          .netflix-btn-activation {
+            padding: 10px !important;
+            font-size: 12px !important;
+          }
+        }
+
+        /* Footer */
+        .netflix-login-footer {
+          position: relative;
+          z-index: 10;
+          padding: 14px 48px;
+          background: linear-gradient(to top, rgba(5, 5, 8, 0.85) 0%, transparent 100%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 24px;
+          flex-wrap: wrap;
+          flex-shrink: 0;
+        }
+        .netflix-footer-link {
+          font-size: 11px;
+          color: rgba(255, 255, 255, 0.4);
+          text-decoration: none;
+          transition: color 0.2s;
+        }
+        .netflix-footer-link:hover {
+          color: rgba(255, 255, 255, 0.8);
+        }
+        @media (max-width: 768px) {
+          .netflix-login-footer {
+            padding: 16px 14px 24px;
+            gap: 10px 16px;
+          }
+          .netflix-footer-link {
+            font-size: 10.5px !important;
+          }
+        }
+
+        /* Background Poster collage */
+        .netflix-posters-grid {
+          position: absolute;
+          inset: -5%;
+          display: grid;
+          grid-template-columns: repeat(7, 1fr);
+          grid-template-rows: repeat(3, 1fr);
+          gap: 4px;
+          transform: scale(1.08) rotate(-2deg);
+          animation: slowZoom 25s ease-in-out infinite alternate;
+        }
+        @media (max-width: 768px) {
+          .netflix-posters-grid {
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(5, 1fr);
+          }
+        }
       `}</style>
 
       {/* ── CINEMATIC POSTER WALL ── */}
       <div style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none', overflow: 'hidden' }}>
-        {/* 7x3 Collage Grid */}
-        <div
-          style={{
-            position: 'absolute',
-            inset: '-5%',
-            display: 'grid',
-            gridTemplateColumns: 'repeat(7, 1fr)',
-            gridTemplateRows: 'repeat(3, 1fr)',
-            gap: '4px',
-            transform: 'scale(1.08) rotate(-2deg)',
-            animation: 'slowZoom 25s ease-in-out infinite alternate',
-          }}
-        >
+        <div className="netflix-posters-grid">
           {CINEMATIC_POSTERS.map((src, i) => (
             <div
               key={i}
@@ -232,81 +605,40 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
       </div>
 
       {/* ── TOP NAVBAR ── */}
-      <nav
-        style={{
-          position: 'relative',
-          zIndex: 50,
-          padding: '16px 48px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          background: 'linear-gradient(to bottom, rgba(5, 5, 8, 0.85) 0%, transparent 100%)',
-          flexShrink: 0,
-        }}
-      >
+      <nav className="netflix-login-nav">
         {/* Brand Logo */}
         <div
           onClick={handleBack}
           style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px' }}
           title="Return to NEXORA"
         >
-          <div
-            style={{
-              fontSize: '28px',
-              fontWeight: 900,
-              letterSpacing: '4px',
-              background: 'linear-gradient(135deg, #e50914, #ff4d4d)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              filter: 'drop-shadow(0 0 20px rgba(229, 9, 20, 0.55))',
-            }}
-          >
+          <div className="netflix-brand-logo">
             NEXORA
           </div>
         </div>
 
         {/* Nav Right Controls */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <button
             onClick={handleBack}
+            className="netflix-nav-btn"
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
               backgroundColor: 'rgba(255, 255, 255, 0.08)',
               border: '1px solid rgba(255, 255, 255, 0.18)',
-              borderRadius: '6px',
-              padding: '7px 14px',
-              fontSize: '12px',
-              fontWeight: 600,
-              color: '#ffffff',
-              cursor: 'pointer',
-              backdropFilter: 'blur(8px)',
-              transition: 'all 0.2s',
             }}
             onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.15)')}
             onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.08)')}
           >
             <ArrowLeft size={13} />
-            <span>Back to Home</span>
+            <span className="netflix-nav-back-text">Back to Home</span>
           </button>
 
           <button
             onClick={() => showToast('Language', 'English (UK) selected')}
+            className="netflix-nav-btn"
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
               border: '1px solid rgba(255, 255, 255, 0.3)',
-              borderRadius: '6px',
-              padding: '7px 14px',
-              fontSize: '12px',
-              fontWeight: 600,
-              color: '#ffffff',
-              cursor: 'pointer',
               background: 'rgba(5, 5, 8, 0.45)',
-              backdropFilter: 'blur(8px)',
-              transition: 'border-color 0.2s',
             }}
             onMouseEnter={(e) => (e.currentTarget.style.borderColor = '#ffffff')}
             onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.3)')}
@@ -318,249 +650,107 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
         </div>
       </nav>
 
-      {/* ── CENTER: SPACIOUS SIDE-BY-SIDE LAYOUT ── */}
-      <div
-        style={{
-          position: 'relative',
-          zIndex: 10,
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: '0 48px',
-          width: '100%',
-          maxWidth: '1220px',
-          margin: '0 auto',
-          gap: '56px',
-          flex: 1,
-        }}
-      >
+      {/* ── CENTER: SPACIOUS SIDE-BY-SIDE / RESPONSIVE LAYOUT ── */}
+      <div className="netflix-login-content">
         {/* LEFT COLUMN: Hero Title, Brand Messaging & 4 Feature Badges */}
-        <div
-          style={{
-            flex: 1.1,
-            maxWidth: '540px',
-            animation: 'heroEntry 0.8s 0.15s cubic-bezier(0.16, 1, 0.3, 1) both',
-          }}
-        >
+        <div className="netflix-login-hero">
           {/* Top Pill */}
-          <div
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '6px 14px',
-              borderRadius: '999px',
-              backgroundColor: 'rgba(229, 9, 20, 0.16)',
-              border: '1px solid rgba(229, 9, 20, 0.4)',
-              marginBottom: '16px',
-              backdropFilter: 'blur(10px)',
-            }}
-          >
+          <div className="netflix-hero-pill">
             <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#e50914', boxShadow: '0 0 8px #e50914' }} />
             <span style={{ fontSize: '11px', fontWeight: 800, color: '#fda4af', letterSpacing: '0.8px', textTransform: 'uppercase' }}>
               4K STREAMING PLATFORM
             </span>
           </div>
 
-          <h1
-            style={{
-              fontSize: 'clamp(34px, 3.6vw, 48px)',
-              fontWeight: 900,
-              lineHeight: 1.1,
-              textShadow: '0 4px 24px rgba(0, 0, 0, 0.85)',
-              marginBottom: '14px',
-              letterSpacing: '-1px',
-            }}
-          >
+          <h1 className="netflix-login-title">
             Unlimited Movies,<br />
             Shows <span style={{ color: '#e50914' }}>&amp; More.</span>
           </h1>
 
-          <div
-            style={{
-              fontSize: '17px',
-              fontWeight: 500,
-              color: 'rgba(255, 255, 255, 0.9)',
-              textShadow: '0 2px 10px rgba(0, 0, 0, 0.6)',
-              marginBottom: '8px',
-            }}
-          >
+          <div className="netflix-login-sub">
             Stream anywhere. Cancel anytime.
           </div>
 
           <div
+            className="netflix-login-specs"
             style={{
-              fontSize: '13px',
               color: 'rgba(255, 255, 255, 0.6)',
-              letterSpacing: '0.3px',
-              marginBottom: '26px',
-              lineHeight: 1.5,
             }}
           >
             4K Ultra HD · Dolby Audio 7.1 · 1,400+ Live Channels · Instant Smart TV 1-Tap Pairing
           </div>
 
-          {/* 4 Feature Badges in 2x2 Grid on Left */}
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: '12px',
-              maxWidth: '460px',
-            }}
-          >
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                padding: '9px 12px',
-                backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                border: '1px solid rgba(255, 255, 255, 0.09)',
-                borderRadius: '10px',
-                backdropFilter: 'blur(10px)',
-              }}
-            >
+          {/* 4 Feature Badges in 2x2 Grid */}
+          <div className="netflix-login-hero-badges">
+            <div className="netflix-badge-item">
               <div
+                className="netflix-badge-icon"
                 style={{
-                  width: '34px',
-                  height: '34px',
-                  borderRadius: '8px',
                   backgroundColor: 'rgba(229, 9, 20, 0.16)',
                   border: '1px solid rgba(229, 9, 20, 0.35)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0,
                 }}
               >
                 <Tv size={16} color="#fda4af" />
               </div>
               <div>
-                <div style={{ fontSize: '14px', fontWeight: 800, color: '#ffffff', lineHeight: 1.1 }}>1,400+</div>
-                <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.6)' }}>Live Channels</div>
+                <div className="netflix-badge-title">1,400+</div>
+                <div className="netflix-badge-sub">Live Channels</div>
               </div>
             </div>
 
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                padding: '9px 12px',
-                backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                border: '1px solid rgba(255, 255, 255, 0.09)',
-                borderRadius: '10px',
-                backdropFilter: 'blur(10px)',
-              }}
-            >
+            <div className="netflix-badge-item">
               <div
+                className="netflix-badge-icon"
                 style={{
-                  width: '34px',
-                  height: '34px',
-                  borderRadius: '8px',
                   backgroundColor: 'rgba(255, 255, 255, 0.08)',
                   border: '1px solid rgba(255, 255, 255, 0.16)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0,
                 }}
               >
                 <Monitor size={16} color="#ffffff" />
               </div>
               <div>
-                <div style={{ fontSize: '14px', fontWeight: 800, color: '#ffffff', lineHeight: 1.1 }}>4K UHD</div>
-                <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.6)' }}>Cinema HDR</div>
+                <div className="netflix-badge-title">4K UHD</div>
+                <div className="netflix-badge-sub">Cinema HDR</div>
               </div>
             </div>
 
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                padding: '9px 12px',
-                backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                border: '1px solid rgba(255, 255, 255, 0.09)',
-                borderRadius: '10px',
-                backdropFilter: 'blur(10px)',
-              }}
-            >
+            <div className="netflix-badge-item">
               <div
+                className="netflix-badge-icon"
                 style={{
-                  width: '34px',
-                  height: '34px',
-                  borderRadius: '8px',
                   backgroundColor: 'rgba(229, 9, 20, 0.16)',
                   border: '1px solid rgba(229, 9, 20, 0.35)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0,
                 }}
               >
                 <ShieldCheck size={16} color="#fda4af" />
               </div>
               <div>
-                <div style={{ fontSize: '14px', fontWeight: 800, color: '#ffffff', lineHeight: 1.1 }}>5 Screens</div>
-                <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.6)' }}>Simultaneous</div>
+                <div className="netflix-badge-title">5 Screens</div>
+                <div className="netflix-badge-sub">Simultaneous</div>
               </div>
             </div>
 
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                padding: '9px 12px',
-                backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                border: '1px solid rgba(255, 255, 255, 0.09)',
-                borderRadius: '10px',
-                backdropFilter: 'blur(10px)',
-              }}
-            >
+            <div className="netflix-badge-item">
               <div
+                className="netflix-badge-icon"
                 style={{
-                  width: '34px',
-                  height: '34px',
-                  borderRadius: '8px',
                   backgroundColor: 'rgba(255, 255, 255, 0.08)',
                   border: '1px solid rgba(255, 255, 255, 0.16)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0,
                 }}
               >
                 <Globe size={16} color="#ffffff" />
               </div>
               <div>
-                <div style={{ fontSize: '14px', fontWeight: 800, color: '#ffffff', lineHeight: 1.1 }}>190+</div>
-                <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.6)' }}>Global CDN</div>
+                <div className="netflix-badge-title">190+</div>
+                <div className="netflix-badge-sub">Global CDN</div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* RIGHT COLUMN: Spacious, Proportioned Sign-In Card */}
-        <div
-          style={{
-            width: '100%',
-            maxWidth: '410px',
-            background: 'rgba(5, 5, 8, 0.88)',
-            borderRadius: '16px',
-            padding: '28px 32px 24px',
-            backdropFilter: 'blur(28px) saturate(1.5)',
-            WebkitBackdropFilter: 'blur(28px) saturate(1.5)',
-            border: '1px solid rgba(255, 255, 255, 0.12)',
-            boxShadow: '0 32px 80px rgba(0, 0, 0, 0.85), 0 0 80px rgba(229, 9, 20, 0.12)',
-            animation: 'cardEntry 0.8s 0.25s cubic-bezier(0.16, 1, 0.3, 1) both',
-            flexShrink: 0,
-          }}
-        >
-          <div style={{ fontSize: '24px', fontWeight: 800, marginBottom: '16px', letterSpacing: '-0.3px', color: '#ffffff' }}>
+        {/* RIGHT COLUMN: Spacious Sign-In Card */}
+        <div className="netflix-login-card">
+          <div className="netflix-card-title">
             Sign In
           </div>
 
@@ -622,17 +812,7 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder=" "
-                style={{
-                  width: '100%',
-                  padding: '18px 14px 6px',
-                  background: 'rgba(255, 255, 255, 0.08)',
-                  border: '1px solid rgba(255, 255, 255, 0.14)',
-                  borderRadius: '6px',
-                  color: '#ffffff',
-                  fontSize: '14px',
-                  outline: 'none',
-                  transition: 'all 0.2s',
-                }}
+                className="netflix-input-elem"
                 onFocus={(e) => {
                   e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.4)';
                   e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.12)';
@@ -675,16 +855,9 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder=" "
+                className="netflix-input-elem"
                 style={{
-                  width: '100%',
-                  padding: '18px 42px 6px 14px',
-                  background: 'rgba(255, 255, 255, 0.08)',
-                  border: '1px solid rgba(255, 255, 255, 0.14)',
-                  borderRadius: '6px',
-                  color: '#ffffff',
-                  fontSize: '14px',
-                  outline: 'none',
-                  transition: 'all 0.2s',
+                  paddingRight: '42px',
                 }}
                 onFocus={(e) => {
                   e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.4)';
@@ -739,25 +912,13 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
             <button
               type="submit"
               disabled={loading || success}
-              className="btn-signin-netflix"
+              className="btn-signin-netflix netflix-btn-submit"
               style={{
-                width: '100%',
-                padding: '14px',
                 background: success ? '#16a34a' : 'linear-gradient(135deg, #e50914 0%, #b20710 100%)',
-                border: 'none',
-                borderRadius: '6px',
-                color: '#ffffff',
-                fontSize: '14px',
-                fontWeight: 700,
                 cursor: loading || success ? 'not-allowed' : 'pointer',
-                letterSpacing: '0.04em',
                 boxShadow: success
                   ? '0 4px 20px rgba(22, 163, 74, 0.5)'
                   : '0 4px 20px rgba(229, 9, 20, 0.45)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
               }}
             >
               {loading ? (
@@ -802,23 +963,7 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
           <button
             type="button"
             onClick={() => showToast('Activation Code', 'Use 6-digit code: NX-8849 to link your Smart TV')}
-            style={{
-              width: '100%',
-              padding: '11px',
-              background: 'rgba(255, 255, 255, 0.08)',
-              border: '1px solid rgba(255, 255, 255, 0.15)',
-              borderRadius: '6px',
-              color: '#ffffff',
-              fontSize: '13px',
-              fontWeight: 600,
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '6px',
-              backdropFilter: 'blur(6px)',
-              transition: 'all 0.2s',
-            }}
+            className="netflix-btn-activation"
             onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.14)')}
             onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.08)')}
           >
@@ -855,31 +1000,16 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
       </div>
 
       {/* ── FOOTER ── */}
-      <footer
-        style={{
-          position: 'relative',
-          zIndex: 10,
-          padding: '14px 48px',
-          background: 'linear-gradient(to top, rgba(5, 5, 8, 0.85) 0%, transparent 100%)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '24px',
-          flexWrap: 'wrap',
-          flexShrink: 0,
-        }}
-      >
+      <footer className="netflix-login-footer">
         {['FAQ', 'Help Centre', 'Terms of Use', 'Privacy', 'Cookie Preferences', 'Corporate Info', 'Contact Us'].map((txt) => (
           <a
             key={txt}
             href="#"
+            className="netflix-footer-link"
             onClick={(e) => {
               e.preventDefault();
               showToast(txt, `Opening ${txt} documentation…`);
             }}
-            style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.4)', textDecoration: 'none', transition: 'color 0.2s' }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.8)')}
-            onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.4)')}
           >
             {txt}
           </a>
