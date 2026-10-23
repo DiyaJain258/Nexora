@@ -12,6 +12,8 @@ import {
   Sliders,
   LogOut,
   Sparkles,
+  QrCode,
+  ShieldCheck,
 } from 'lucide-react';
 
 export type AdminTab =
@@ -22,8 +24,10 @@ export type AdminTab =
   | 'categories-genres'
   | 'epg-schedules'
   | 'users-devices'
+  | 'device-activations'
   | 'subscription-plans'
   | 'notifications'
+  | 'roles-permissions'
   | 'reports-settings';
 
 interface SidebarProps {
@@ -40,8 +44,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, onTabChange }) => {
     { id: 'categories-genres', label: 'Categories & Genres', icon: Tag },
     { id: 'epg-schedules', label: 'EPG Schedules', icon: Calendar },
     { id: 'users-devices', label: 'Users & Devices', icon: Users, badge: '421K' },
+    { id: 'device-activations', label: 'TV Device Activations', icon: QrCode, badge: 'New' },
     { id: 'subscription-plans', label: 'Subscription Plans', icon: CreditCard },
     { id: 'notifications', label: 'Push Notifications', icon: Bell },
+    { id: 'roles-permissions', label: 'Roles & Permissions', icon: ShieldCheck },
     { id: 'reports-settings', label: 'Reports & Settings', icon: Sliders },
   ];
 
@@ -49,8 +55,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, onTabChange }) => {
     <aside style={{
       width: '280px',
       height: '100vh',
-      backgroundColor: '#0B1020',
-      borderRight: '1px solid #1E293B',
+      backgroundColor: '#0D0D0D',
+      borderRight: '1px solid #303030',
       display: 'flex',
       flexDirection: 'column',
       flexShrink: 0,
@@ -60,7 +66,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, onTabChange }) => {
       {/* Brand Header */}
       <div style={{
         padding: '24px 20px',
-        borderBottom: '1px solid #1E293B',
+        borderBottom: '1px solid #303030',
         display: 'flex',
         alignItems: 'center',
         gap: '12px',
@@ -68,27 +74,26 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, onTabChange }) => {
         <div style={{
           width: '42px',
           height: '42px',
-          borderRadius: '12px',
-          background: 'linear-gradient(135deg, #8B5CF6 0%, #22D3EE 100%)',
+          borderRadius: '10px',
+          background: 'linear-gradient(135deg, #E50914 0%, #7F0000 100%)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          boxShadow: '0 0 20px rgba(139, 92, 246, 0.45)',
+          boxShadow: '0 0 20px rgba(229, 9, 20, 0.45)',
+          border: '1px solid #E50914',
         }}>
           <Sparkles size={22} color="#FFFFFF" />
         </div>
         <div>
           <div style={{
-            fontSize: '20px',
-            fontWeight: 800,
-            letterSpacing: '1px',
-            background: 'linear-gradient(135deg, #FFFFFF 0%, #22D3EE 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
+            fontSize: '22px',
+            fontWeight: 900,
+            letterSpacing: '1.5px',
+            color: '#E50914',
           }}>
             NEXORA
           </div>
-          <div style={{ fontSize: '11px', color: '#94A3B8', letterSpacing: '0.5px' }}>
+          <div style={{ fontSize: '11px', color: '#B3B3B3', letterSpacing: '0.5px' }}>
             ADMIN CONSOLE v2.4
           </div>
         </div>
@@ -105,8 +110,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, onTabChange }) => {
       }}>
         <div style={{
           fontSize: '11px',
-          fontWeight: 700,
-          color: '#64748B',
+          fontWeight: 800,
+          color: '#737373',
           textTransform: 'uppercase',
           letterSpacing: '1px',
           padding: '8px 12px 4px',
@@ -127,13 +132,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, onTabChange }) => {
                 gap: '12px',
                 width: '100%',
                 padding: '11px 14px',
-                borderRadius: '10px',
+                borderRadius: '8px',
                 border: 'none',
-                background: isActive ? 'linear-gradient(90deg, rgba(139, 92, 246, 0.18) 0%, rgba(34, 211, 238, 0.08) 100%)' : 'transparent',
-                color: isActive ? '#22D3EE' : '#94A3B8',
-                borderLeft: isActive ? '3px solid #22D3EE' : '3px solid transparent',
+                background: isActive ? 'linear-gradient(90deg, rgba(229, 9, 20, 0.18) 0%, rgba(229, 9, 20, 0.05) 100%)' : 'transparent',
+                color: isActive ? '#FFFFFF' : '#B3B3B3',
+                borderLeft: isActive ? '4px solid #E50914' : '4px solid transparent',
                 fontSize: '14px',
-                fontWeight: isActive ? 600 : 500,
+                fontWeight: isActive ? 700 : 500,
                 cursor: 'pointer',
                 textAlign: 'left',
                 transition: 'all 0.15s ease',
@@ -141,26 +146,27 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, onTabChange }) => {
               onMouseEnter={(e) => {
                 if (!isActive) {
                   e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.04)';
-                  e.currentTarget.style.color = '#F8FAFC';
+                  e.currentTarget.style.color = '#FFFFFF';
                 }
               }}
               onMouseLeave={(e) => {
                 if (!isActive) {
                   e.currentTarget.style.backgroundColor = 'transparent';
-                  e.currentTarget.style.color = '#94A3B8';
+                  e.currentTarget.style.color = '#B3B3B3';
                 }
               }}
             >
-              <Icon size={18} color={isActive ? '#22D3EE' : '#94A3B8'} />
+              <Icon size={18} color={isActive ? '#E50914' : '#B3B3B3'} />
               <span style={{ flex: 1 }}>{item.label}</span>
               {item.badge && (
                 <span style={{
                   fontSize: '10px',
-                  padding: '2px 7px',
-                  borderRadius: '20px',
-                  backgroundColor: isActive ? 'rgba(34, 211, 238, 0.2)' : 'rgba(139, 92, 246, 0.15)',
-                  color: isActive ? '#22D3EE' : '#A78BFA',
-                  fontWeight: 600,
+                  padding: '2px 8px',
+                  borderRadius: '12px',
+                  backgroundColor: isActive ? 'rgba(229, 9, 20, 0.25)' : 'rgba(255, 255, 255, 0.06)',
+                  color: isActive ? '#FF2B36' : '#B3B3B3',
+                  fontWeight: 700,
+                  border: isActive ? '1px solid rgba(229, 9, 20, 0.4)' : '1px solid #303030',
                 }}>
                   {item.badge}
                 </span>
@@ -173,8 +179,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, onTabChange }) => {
       {/* Cluster Status Footer */}
       <div style={{
         padding: '16px',
-        borderTop: '1px solid #1E293B',
-        backgroundColor: '#070912',
+        borderTop: '1px solid #303030',
+        backgroundColor: '#050505',
       }}>
         <div style={{
           display: 'flex',
@@ -190,13 +196,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, onTabChange }) => {
               backgroundColor: '#10B981',
               boxShadow: '0 0 8px #10B981',
             }} />
-            <span style={{ fontSize: '12px', fontWeight: 600, color: '#F8FAFC' }}>
+            <span style={{ fontSize: '12px', fontWeight: 600, color: '#FFFFFF' }}>
               Cluster Status
             </span>
           </div>
-          <span style={{ fontSize: '11px', color: '#10B981', fontWeight: 600 }}>99.98%</span>
+          <span style={{ fontSize: '11px', color: '#10B981', fontWeight: 700 }}>99.98%</span>
         </div>
-        <div style={{ fontSize: '11px', color: '#64748B' }}>
+        <div style={{ fontSize: '11px', color: '#737373' }}>
           Edge Node: FRA-04 • 482.6 Gbps
         </div>
       </div>

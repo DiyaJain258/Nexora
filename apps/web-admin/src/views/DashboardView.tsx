@@ -26,8 +26,8 @@ export const DashboardView: React.FC = () => {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
       {/* Top Banner Alert / Notice */}
       <div style={{
-        background: 'linear-gradient(90deg, rgba(139, 92, 246, 0.15) 0%, rgba(34, 211, 238, 0.12) 100%)',
-        border: '1px solid rgba(139, 92, 246, 0.35)',
+        background: 'linear-gradient(90deg, rgba(229, 9, 20, 0.15) 0%, rgba(127, 0, 0, 0.2) 100%)',
+        border: '1px solid rgba(229, 9, 20, 0.4)',
         borderRadius: '14px',
         padding: '16px 20px',
         display: 'flex',
@@ -39,23 +39,24 @@ export const DashboardView: React.FC = () => {
             width: '38px',
             height: '38px',
             borderRadius: '10px',
-            backgroundColor: 'rgba(34, 211, 238, 0.2)',
+            backgroundColor: 'rgba(229, 9, 20, 0.25)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            border: '1px solid #E50914',
           }}>
-            <ShieldCheck size={22} color="#22D3EE" />
+            <ShieldCheck size={22} color="#E50914" />
           </div>
           <div>
-            <div style={{ fontWeight: 600, fontSize: '14px', color: '#F8FAFC' }}>
+            <div style={{ fontWeight: 700, fontSize: '14px', color: '#FFFFFF' }}>
               All 148 Live Origin Streams Transcoding in 4K HDR & FHD 60FPS
             </div>
-            <div style={{ fontSize: '12px', color: '#94A3B8' }}>
+            <div style={{ fontSize: '12px', color: '#B3B3B3' }}>
               Global Edge CDN caching efficiency at 98.4%. Zero packet degradation recorded in last 24h.
             </div>
           </div>
         </div>
-        <span className="badge badge-cyan">Cluster Healthy</span>
+        <span className="badge badge-red">Cluster Healthy</span>
       </div>
 
       {/* Metrics Row */}
@@ -66,90 +67,95 @@ export const DashboardView: React.FC = () => {
       }}>
         {/* Metric 1 */}
         <div style={{
-          backgroundColor: '#111827',
-          border: '1px solid #1E293B',
+          backgroundColor: '#151515',
+          border: '1px solid #303030',
           borderRadius: '14px',
           padding: '20px',
           position: 'relative',
           overflow: 'hidden',
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-            <span style={{ fontSize: '13px', color: '#94A3B8', fontWeight: 500 }}>Active Viewers</span>
-            <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(139, 92, 246, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Users size={18} color="#8B5CF6" />
+            <span style={{ fontSize: '13px', color: '#B3B3B3', fontWeight: 600 }}>Active Viewers</span>
+            <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(229, 9, 20, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Users size={18} color="#E50914" />
             </div>
           </div>
-          <div style={{ fontSize: '28px', fontWeight: 800, color: '#F8FAFC', marginBottom: '4px' }}>
+          <div style={{ fontSize: '28px', fontWeight: 900, color: '#FFFFFF', marginBottom: '4px' }}>
             {MOCK_ADMIN_METRICS.activeViewers.toLocaleString()}
           </div>
-          <div style={{ fontSize: '12px', color: '#10B981', display: 'flex', alignItems: 'center', gap: '4px' }}>
+          <div style={{ fontSize: '12px', color: '#10B981', display: 'flex', alignItems: 'center', gap: '4px', fontWeight: 600 }}>
             <TrendingUp size={14} /> +12.4% vs last hour
           </div>
-          <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, #8B5CF6, #22D3EE)' }} />
+          <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, #E50914, #7F0000)' }} />
         </div>
 
         {/* Metric 2 */}
         <div style={{
-          backgroundColor: '#111827',
-          border: '1px solid #1E293B',
+          backgroundColor: '#151515',
+          border: '1px solid #303030',
           borderRadius: '14px',
           padding: '20px',
           position: 'relative',
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-            <span style={{ fontSize: '13px', color: '#94A3B8', fontWeight: 500 }}>Total Bandwidth</span>
-            <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(34, 211, 238, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Activity size={18} color="#22D3EE" />
+            <span style={{ fontSize: '13px', color: '#B3B3B3', fontWeight: 600 }}>Total Bandwidth</span>
+            <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(229, 9, 20, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Activity size={18} color="#E50914" />
             </div>
           </div>
-          <div style={{ fontSize: '28px', fontWeight: 800, color: '#F8FAFC', marginBottom: '4px' }}>
-            {MOCK_ADMIN_METRICS.totalBandwidthGbps} <span style={{ fontSize: '16px', color: '#94A3B8' }}>Gbps</span>
+          <div style={{ fontSize: '28px', fontWeight: 900, color: '#FFFFFF', marginBottom: '4px' }}>
+            {MOCK_ADMIN_METRICS.totalBandwidthGbps} <span style={{ fontSize: '16px', color: '#B3B3B3' }}>Gbps</span>
           </div>
-          <div style={{ fontSize: '12px', color: '#22D3EE' }}>
+          <div style={{ fontSize: '12px', color: '#E50914', fontWeight: 600 }}>
             Peak capacity 1.2 Tbps
           </div>
+          <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '3px', backgroundColor: '#303030' }} />
         </div>
 
         {/* Metric 3 */}
         <div style={{
-          backgroundColor: '#111827',
-          border: '1px solid #1E293B',
+          backgroundColor: '#151515',
+          border: '1px solid #303030',
           borderRadius: '14px',
           padding: '20px',
+          position: 'relative',
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-            <span style={{ fontSize: '13px', color: '#94A3B8', fontWeight: 500 }}>Live Channels</span>
-            <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(16, 185, 129, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Tv size={18} color="#10B981" />
+            <span style={{ fontSize: '13px', color: '#B3B3B3', fontWeight: 600 }}>Live Channels</span>
+            <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(229, 9, 20, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Tv size={18} color="#E50914" />
             </div>
           </div>
-          <div style={{ fontSize: '28px', fontWeight: 800, color: '#F8FAFC', marginBottom: '4px' }}>
+          <div style={{ fontSize: '28px', fontWeight: 900, color: '#FFFFFF', marginBottom: '4px' }}>
             {MOCK_ADMIN_METRICS.activeLiveChannels}
           </div>
-          <div style={{ fontSize: '12px', color: '#10B981' }}>
+          <div style={{ fontSize: '12px', color: '#10B981', fontWeight: 600 }}>
             100% Online & Synchronized
           </div>
+          <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '3px', backgroundColor: '#303030' }} />
         </div>
 
         {/* Metric 4 */}
         <div style={{
-          backgroundColor: '#111827',
-          border: '1px solid #1E293B',
+          backgroundColor: '#151515',
+          border: '1px solid #303030',
           borderRadius: '14px',
           padding: '20px',
+          position: 'relative',
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-            <span style={{ fontSize: '13px', color: '#94A3B8', fontWeight: 500 }}>Active Subscribers</span>
-            <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(245, 158, 11, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <HardDrive size={18} color="#F59E0B" />
+            <span style={{ fontSize: '13px', color: '#B3B3B3', fontWeight: 600 }}>Active Subscribers</span>
+            <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(229, 9, 20, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <HardDrive size={18} color="#E50914" />
             </div>
           </div>
-          <div style={{ fontSize: '28px', fontWeight: 800, color: '#F8FAFC', marginBottom: '4px' }}>
+          <div style={{ fontSize: '28px', fontWeight: 900, color: '#FFFFFF', marginBottom: '4px' }}>
             {MOCK_ADMIN_METRICS.activeSubscribers.toLocaleString()}
           </div>
-          <div style={{ fontSize: '12px', color: '#F59E0B' }}>
+          <div style={{ fontSize: '12px', color: '#F59E0B', fontWeight: 600 }}>
             Churn rate {MOCK_ADMIN_METRICS.churnRatePercent}% (Lowest)
           </div>
+          <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '3px', backgroundColor: '#303030' }} />
         </div>
       </div>
 
@@ -161,21 +167,21 @@ export const DashboardView: React.FC = () => {
       }}>
         {/* Top Live Streams Now */}
         <div style={{
-          backgroundColor: '#111827',
-          border: '1px solid #1E293B',
+          backgroundColor: '#151515',
+          border: '1px solid #303030',
           borderRadius: '16px',
           padding: '22px',
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
             <div>
-              <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#F8FAFC', margin: 0 }}>
+              <h3 style={{ fontSize: '16px', fontWeight: 800, color: '#FFFFFF', margin: 0 }}>
                 Top Airing Live Streams
               </h3>
-              <p style={{ fontSize: '12px', color: '#94A3B8', margin: '4px 0 0 0' }}>
+              <p style={{ fontSize: '12px', color: '#B3B3B3', margin: '4px 0 0 0' }}>
                 Real-time active audience on origin transcoders
               </p>
             </div>
-            <span className="badge badge-violet">Live Transcoding</span>
+            <span className="badge badge-red">Live Transcoding</span>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -186,10 +192,10 @@ export const DashboardView: React.FC = () => {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                  padding: '12px',
-                  backgroundColor: '#0B1020',
+                  padding: '12px 14px',
+                  backgroundColor: '#0D0D0D',
                   borderRadius: '10px',
-                  border: '1px solid #1E293B',
+                  border: '1px solid #303030',
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -199,20 +205,20 @@ export const DashboardView: React.FC = () => {
                     style={{ width: '42px', height: '42px', borderRadius: '8px', objectFit: 'cover' }}
                   />
                   <div>
-                    <div style={{ fontSize: '14px', fontWeight: 600, color: '#F8FAFC' }}>
+                    <div style={{ fontSize: '14px', fontWeight: 700, color: '#FFFFFF' }}>
                       {ch.name}
                     </div>
-                    <div style={{ fontSize: '12px', color: '#22D3EE' }}>
+                    <div style={{ fontSize: '12px', color: '#E50914', fontWeight: 600 }}>
                       {ch.currentProgram?.title || 'Program stream'}
                     </div>
                   </div>
                 </div>
 
                 <div style={{ textAlign: 'right' }}>
-                  <span className={`badge ${ch.resolution === '4K' ? 'badge-cyan' : 'badge-violet'}`}>
+                  <span className="badge badge-red">
                     {ch.resolution} • {ch.fps}fps
                   </span>
-                  <div style={{ fontSize: '11px', color: '#94A3B8', marginTop: '4px' }}>
+                  <div style={{ fontSize: '11px', color: '#B3B3B3', marginTop: '4px' }}>
                     {(ch.bitrateKbps || 0) / 1000} Mbps
                   </div>
                 </div>
@@ -223,21 +229,21 @@ export const DashboardView: React.FC = () => {
 
         {/* Global CDN & Edge Node Telemetry */}
         <div style={{
-          backgroundColor: '#111827',
-          border: '1px solid #1E293B',
+          backgroundColor: '#151515',
+          border: '1px solid #303030',
           borderRadius: '16px',
           padding: '22px',
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
             <div>
-              <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#F8FAFC', margin: 0 }}>
+              <h3 style={{ fontSize: '16px', fontWeight: 800, color: '#FFFFFF', margin: 0 }}>
                 Edge Transcoding & CDN Clusters
               </h3>
-              <p style={{ fontSize: '12px', color: '#94A3B8', margin: '4px 0 0 0' }}>
+              <p style={{ fontSize: '12px', color: '#B3B3B3', margin: '4px 0 0 0' }}>
                 Hardware NVENC / QuickSync load per datacenter
               </p>
             </div>
-            <Server size={18} color="#22D3EE" />
+            <Server size={18} color="#E50914" />
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -246,33 +252,33 @@ export const DashboardView: React.FC = () => {
                 key={node.name}
                 style={{
                   padding: '12px 14px',
-                  backgroundColor: '#0B1020',
+                  backgroundColor: '#0D0D0D',
                   borderRadius: '10px',
-                  border: '1px solid #1E293B',
+                  border: '1px solid #303030',
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
                   <div>
-                    <span style={{ fontSize: '13px', fontWeight: 600, color: '#F8FAFC' }}>{node.name}</span>
-                    <span style={{ fontSize: '11px', color: '#64748B', marginLeft: '8px' }}>{node.ip}</span>
+                    <span style={{ fontSize: '13px', fontWeight: 700, color: '#FFFFFF' }}>{node.name}</span>
+                    <span style={{ fontSize: '11px', color: '#737373', marginLeft: '8px' }}>{node.ip}</span>
                   </div>
-                  <span style={{ fontSize: '12px', fontWeight: 700, color: '#22D3EE' }}>{node.load}</span>
+                  <span style={{ fontSize: '12px', fontWeight: 800, color: '#E50914' }}>{node.load}</span>
                 </div>
 
                 {/* Progress bars for CPU & RAM */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px', fontSize: '11px', color: '#94A3B8' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px', fontSize: '11px', color: '#B3B3B3' }}>
                   <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '6px' }}>
                     <span>CPU</span>
-                    <div style={{ flex: 1, height: '6px', backgroundColor: '#1E293B', borderRadius: '4px', overflow: 'hidden' }}>
-                      <div style={{ width: `${node.cpu}%`, height: '100%', backgroundColor: '#8B5CF6' }} />
+                    <div style={{ flex: 1, height: '6px', backgroundColor: '#1C1C1C', borderRadius: '4px', overflow: 'hidden' }}>
+                      <div style={{ width: `${node.cpu}%`, height: '100%', backgroundColor: '#E50914' }} />
                     </div>
                     <span>{node.cpu}%</span>
                   </div>
 
                   <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '6px' }}>
                     <span>RAM</span>
-                    <div style={{ flex: 1, height: '6px', backgroundColor: '#1E293B', borderRadius: '4px', overflow: 'hidden' }}>
-                      <div style={{ width: `${node.ram}%`, height: '100%', backgroundColor: '#22D3EE' }} />
+                    <div style={{ flex: 1, height: '6px', backgroundColor: '#1C1C1C', borderRadius: '4px', overflow: 'hidden' }}>
+                      <div style={{ width: `${node.ram}%`, height: '100%', backgroundColor: '#7F0000' }} />
                     </div>
                     <span>{node.ram}%</span>
                   </div>

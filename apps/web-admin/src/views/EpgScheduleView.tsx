@@ -69,8 +69,8 @@ export const EpgScheduleView: React.FC = () => {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
       {/* Top EPG Source Info */}
       <div style={{
-        backgroundColor: '#111827',
-        border: '1px solid #1E293B',
+        backgroundColor: '#151515',
+        border: '1px solid #303030',
         borderRadius: '14px',
         padding: '16px 20px',
         display: 'flex',
@@ -81,19 +81,19 @@ export const EpgScheduleView: React.FC = () => {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
           <div>
-            <label style={{ fontSize: '11px', color: '#94A3B8', fontWeight: 600 }}>CHANNEL SCHEDULE</label>
+            <label style={{ fontSize: '11px', color: '#B3B3B3', fontWeight: 700 }}>CHANNEL SCHEDULE</label>
             <select
               value={selectedChannelId}
               onChange={(e) => setSelectedChannelId(e.target.value)}
               style={{
                 display: 'block',
                 marginTop: '4px',
-                backgroundColor: '#070912',
-                border: '1px solid #1E293B',
+                backgroundColor: '#050505',
+                border: '1px solid #303030',
                 borderRadius: '8px',
                 padding: '8px 14px',
-                color: '#F8FAFC',
-                fontWeight: 600,
+                color: '#FFFFFF',
+                fontWeight: 700,
               }}
             >
               {MOCK_CHANNELS.map((c) => (
@@ -104,8 +104,8 @@ export const EpgScheduleView: React.FC = () => {
             </select>
           </div>
 
-          <div style={{ fontSize: '12px', color: '#64748B', borderLeft: '1px solid #1E293B', paddingLeft: '14px' }}>
-            <div>XMLTV Source URL: <span style={{ color: '#22D3EE', fontFamily: 'JetBrains Mono' }}>https://epg.nexora.io/guide.xml</span></div>
+          <div style={{ fontSize: '12px', color: '#737373', borderLeft: '1px solid #303030', paddingLeft: '14px' }}>
+            <div>XMLTV Source URL: <span style={{ color: '#E50914', fontFamily: 'JetBrains Mono', fontWeight: 700 }}>https://epg.nexora.io/guide.xml</span></div>
             <div>Timezone: UTC+00:00 (Auto-adjust to subscriber device)</div>
           </div>
         </div>
@@ -124,14 +124,14 @@ export const EpgScheduleView: React.FC = () => {
 
       {/* Visual Timeline Schedule */}
       <div style={{
-        backgroundColor: '#111827',
-        border: '1px solid #1E293B',
+        backgroundColor: '#151515',
+        border: '1px solid #303030',
         borderRadius: '14px',
         padding: '20px',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
-          <Calendar size={18} color="#8B5CF6" />
-          <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 700, color: '#F8FAFC' }}>
+          <Calendar size={18} color="#E50914" />
+          <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 800, color: '#FFFFFF' }}>
             Interactive EPG Guide for {channel.name}
           </h3>
         </div>
@@ -140,11 +140,11 @@ export const EpgScheduleView: React.FC = () => {
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(8, 1fr)',
-          borderBottom: '1px solid #1E293B',
+          borderBottom: '1px solid #303030',
           paddingBottom: '10px',
           fontSize: '12px',
-          color: '#94A3B8',
-          fontWeight: 600,
+          color: '#B3B3B3',
+          fontWeight: 700,
           textAlign: 'center',
         }}>
           {timeSlots.map((time) => (
@@ -158,8 +158,8 @@ export const EpgScheduleView: React.FC = () => {
             <div
               key={prog.id}
               style={{
-                backgroundColor: prog.isLiveNow ? 'rgba(139, 92, 246, 0.15)' : '#0B1020',
-                border: prog.isLiveNow ? '1px solid #8B5CF6' : '1px solid #1E293B',
+                backgroundColor: prog.isLiveNow ? 'rgba(229, 9, 20, 0.12)' : '#0D0D0D',
+                border: prog.isLiveNow ? '1px solid #E50914' : '1px solid #303030',
                 borderRadius: '10px',
                 padding: '14px 18px',
                 display: 'flex',
@@ -169,7 +169,7 @@ export const EpgScheduleView: React.FC = () => {
             >
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <span style={{ fontSize: '12px', fontWeight: 700, color: '#22D3EE' }}>
+                  <span style={{ fontSize: '12px', fontWeight: 800, color: '#E50914' }}>
                     {prog.startTime} - {prog.endTime}
                   </span>
                   {prog.isLiveNow && (
@@ -177,24 +177,24 @@ export const EpgScheduleView: React.FC = () => {
                       <span className="live-dot" /> ON AIR NOW
                     </span>
                   )}
-                  <span className="badge badge-violet">{prog.category}</span>
+                  <span className="badge badge-elevated">{prog.category}</span>
                 </div>
 
-                <h4 style={{ margin: '6px 0 2px 0', fontSize: '15px', color: '#F8FAFC' }}>
+                <h4 style={{ margin: '6px 0 2px 0', fontSize: '15px', fontWeight: 700, color: '#FFFFFF' }}>
                   {prog.title}
                 </h4>
-                <p style={{ margin: 0, fontSize: '12px', color: '#94A3B8' }}>
+                <p style={{ margin: 0, fontSize: '12px', color: '#B3B3B3' }}>
                   {prog.description}
                 </p>
               </div>
 
               {prog.isLiveNow && (
                 <div style={{ textAlign: 'right', minWidth: '140px' }}>
-                  <div style={{ fontSize: '11px', color: '#94A3B8', marginBottom: '4px' }}>
+                  <div style={{ fontSize: '11px', color: '#B3B3B3', marginBottom: '4px' }}>
                     Broadcast Progress ({prog.progressPercent}%)
                   </div>
-                  <div style={{ width: '100%', height: '6px', backgroundColor: '#1E293B', borderRadius: '4px', overflow: 'hidden' }}>
-                    <div style={{ width: `${prog.progressPercent}%`, height: '100%', background: 'linear-gradient(90deg, #8B5CF6, #22D3EE)' }} />
+                  <div style={{ width: '100%', height: '6px', backgroundColor: '#1C1C1C', borderRadius: '4px', overflow: 'hidden' }}>
+                    <div style={{ width: `${prog.progressPercent}%`, height: '100%', background: 'linear-gradient(90deg, #E50914, #7F0000)' }} />
                   </div>
                 </div>
               )}

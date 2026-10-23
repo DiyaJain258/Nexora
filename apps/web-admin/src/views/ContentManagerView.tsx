@@ -85,25 +85,25 @@ export const ContentManagerView: React.FC = () => {
         alignItems: 'center',
         justifyContent: 'space-between',
         gap: '16px',
-        backgroundColor: '#111827',
-        border: '1px solid #1E293B',
+        backgroundColor: '#151515',
+        border: '1px solid #303030',
         borderRadius: '14px',
         padding: '16px 20px',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
           <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-            <Search size={16} color="#64748B" style={{ position: 'absolute', left: '12px' }} />
+            <Search size={16} color="#737373" style={{ position: 'absolute', left: '12px' }} />
             <input
               type="text"
               placeholder="Search movies, series, tags..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               style={{
-                backgroundColor: '#070912',
-                border: '1px solid #1E293B',
+                backgroundColor: '#050505',
+                border: '1px solid #303030',
                 borderRadius: '8px',
                 padding: '8px 14px 8px 36px',
-                color: '#F8FAFC',
+                color: '#FFFFFF',
                 fontSize: '13px',
                 width: '240px',
                 outline: 'none',
@@ -120,11 +120,11 @@ export const ContentManagerView: React.FC = () => {
                   padding: '6px 14px',
                   borderRadius: '8px',
                   fontSize: '12px',
-                  fontWeight: 600,
+                  fontWeight: 700,
                   textTransform: 'capitalize',
-                  border: activeTypeFilter === type ? '1px solid #8B5CF6' : '1px solid #1E293B',
-                  backgroundColor: activeTypeFilter === type ? 'rgba(139, 92, 246, 0.2)' : '#070912',
-                  color: activeTypeFilter === type ? '#22D3EE' : '#94A3B8',
+                  border: activeTypeFilter === type ? '1px solid #E50914' : '1px solid #303030',
+                  backgroundColor: activeTypeFilter === type ? 'rgba(229, 9, 20, 0.2)' : '#050505',
+                  color: activeTypeFilter === type ? '#FF2B36' : '#B3B3B3',
                   cursor: 'pointer',
                 }}
               >
@@ -150,8 +150,8 @@ export const ContentManagerView: React.FC = () => {
           <div
             key={item.id}
             style={{
-              backgroundColor: '#111827',
-              border: '1px solid #1E293B',
+              backgroundColor: '#151515',
+              border: '1px solid #303030',
               borderRadius: '14px',
               overflow: 'hidden',
               display: 'flex',
@@ -160,7 +160,7 @@ export const ContentManagerView: React.FC = () => {
             }}
           >
             {/* Backdrop thumbnail */}
-            <div style={{ position: 'relative', height: '160px', backgroundColor: '#0B1020' }}>
+            <div style={{ position: 'relative', height: '160px', backgroundColor: '#0D0D0D' }}>
               <img
                 src={item.backdropUrl}
                 alt={item.title}
@@ -173,10 +173,10 @@ export const ContentManagerView: React.FC = () => {
                 display: 'flex',
                 gap: '6px',
               }}>
-                <span className={`badge ${item.quality === '4K HDR' ? 'badge-cyan' : 'badge-violet'}`}>
+                <span className="badge badge-red">
                   {item.quality}
                 </span>
-                <span className="badge badge-violet" style={{ textTransform: 'capitalize' }}>
+                <span className="badge badge-elevated" style={{ textTransform: 'capitalize' }}>
                   {item.type}
                 </span>
               </div>
@@ -188,11 +188,11 @@ export const ContentManagerView: React.FC = () => {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '4px',
-                backgroundColor: 'rgba(7, 9, 18, 0.8)',
+                backgroundColor: 'rgba(5, 5, 5, 0.85)',
                 padding: '3px 8px',
                 borderRadius: '6px',
                 fontSize: '12px',
-                fontWeight: 700,
+                fontWeight: 800,
                 color: '#FBBF24',
               }}>
                 <Star size={13} fill="#FBBF24" color="#FBBF24" />
@@ -202,16 +202,16 @@ export const ContentManagerView: React.FC = () => {
 
             {/* Body */}
             <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: 1 }}>
-              <h4 style={{ margin: '0 0 6px 0', fontSize: '15px', fontWeight: 700, color: '#F8FAFC' }}>
+              <h4 style={{ margin: '0 0 6px 0', fontSize: '15px', fontWeight: 800, color: '#FFFFFF' }}>
                 {item.title}
               </h4>
-              <div style={{ fontSize: '12px', color: '#94A3B8', marginBottom: '8px' }}>
-                {item.releaseYear} • {item.duration} • <span style={{ color: '#C4B5FD' }}>{item.ageRating}</span>
+              <div style={{ fontSize: '12px', color: '#B3B3B3', marginBottom: '8px' }}>
+                {item.releaseYear} • {item.duration} • <span style={{ color: '#E50914', fontWeight: 700 }}>{item.ageRating}</span>
               </div>
 
               <p style={{
                 fontSize: '12px',
-                color: '#64748B',
+                color: '#737373',
                 lineHeight: '1.5',
                 margin: '0 0 12px 0',
                 display: '-webkit-box',
@@ -228,10 +228,11 @@ export const ContentManagerView: React.FC = () => {
                     key={g}
                     style={{
                       fontSize: '11px',
-                      backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                      backgroundColor: '#1C1C1C',
+                      border: '1px solid #303030',
                       padding: '2px 8px',
                       borderRadius: '4px',
-                      color: '#94A3B8',
+                      color: '#B3B3B3',
                     }}
                   >
                     {g}
@@ -246,18 +247,18 @@ export const ContentManagerView: React.FC = () => {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 paddingTop: '12px',
-                borderTop: '1px solid #1E293B',
+                borderTop: '1px solid #303030',
               }}>
-                <span style={{ fontSize: '11px', color: '#22D3EE', fontWeight: 600 }}>
+                <span style={{ fontSize: '12px', color: '#E50914', fontWeight: 800 }}>
                   {item.matchScore}% Match
                 </span>
                 <div style={{ display: 'flex', gap: '6px' }}>
                   <button
                     onClick={() => handleDelete(item.id)}
                     style={{
-                      background: 'rgba(239, 68, 68, 0.1)',
-                      border: '1px solid rgba(239, 68, 68, 0.3)',
-                      color: '#EF4444',
+                      background: 'rgba(229, 9, 20, 0.1)',
+                      border: '1px solid rgba(229, 9, 20, 0.3)',
+                      color: '#E50914',
                       padding: '6px 8px',
                       borderRadius: '6px',
                       cursor: 'pointer',
@@ -280,7 +281,7 @@ export const ContentManagerView: React.FC = () => {
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundColor: 'rgba(7, 9, 18, 0.85)',
+          backgroundColor: 'rgba(5, 5, 5, 0.88)',
           backdropFilter: 'blur(8px)',
           display: 'flex',
           alignItems: 'center',
@@ -289,8 +290,8 @@ export const ContentManagerView: React.FC = () => {
           padding: '20px',
         }}>
           <div style={{
-            backgroundColor: '#111827',
-            border: '1px solid #1E293B',
+            backgroundColor: '#151515',
+            border: '1px solid #303030',
             borderRadius: '16px',
             width: '100%',
             maxWidth: '560px',
@@ -299,23 +300,23 @@ export const ContentManagerView: React.FC = () => {
           }}>
             <div style={{
               padding: '18px 24px',
-              borderBottom: '1px solid #1E293B',
+              borderBottom: '1px solid #303030',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              backgroundColor: '#0B1020',
+              backgroundColor: '#0D0D0D',
             }}>
-              <h3 style={{ margin: 0, fontSize: '17px', fontWeight: 700, color: '#F8FAFC' }}>
+              <h3 style={{ margin: 0, fontSize: '17px', fontWeight: 800, color: '#FFFFFF' }}>
                 Add New Movie / Series
               </h3>
-              <button onClick={() => setIsAddModalOpen(false)} style={{ background: 'none', border: 'none', color: '#94A3B8', cursor: 'pointer' }}>
+              <button onClick={() => setIsAddModalOpen(false)} style={{ background: 'none', border: 'none', color: '#B3B3B3', cursor: 'pointer' }}>
                 <X size={20} />
               </button>
             </div>
 
             <form onSubmit={handleCreate} style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
               <div>
-                <label style={{ fontSize: '12px', color: '#94A3B8', fontWeight: 600 }}>Title</label>
+                <label style={{ fontSize: '12px', color: '#B3B3B3', fontWeight: 700 }}>Title</label>
                 <input
                   type="text"
                   required
@@ -324,11 +325,11 @@ export const ContentManagerView: React.FC = () => {
                   onChange={(e) => setNewItem({ ...newItem, title: e.target.value })}
                   style={{
                     width: '100%',
-                    backgroundColor: '#070912',
-                    border: '1px solid #1E293B',
+                    backgroundColor: '#050505',
+                    border: '1px solid #303030',
                     borderRadius: '8px',
                     padding: '8px 12px',
-                    color: '#F8FAFC',
+                    color: '#FFFFFF',
                     marginTop: '6px',
                   }}
                 />
@@ -336,17 +337,17 @@ export const ContentManagerView: React.FC = () => {
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '10px' }}>
                 <div>
-                  <label style={{ fontSize: '12px', color: '#94A3B8', fontWeight: 600 }}>Type</label>
+                  <label style={{ fontSize: '12px', color: '#B3B3B3', fontWeight: 700 }}>Type</label>
                   <select
                     value={newItem.type}
                     onChange={(e) => setNewItem({ ...newItem, type: e.target.value as any })}
                     style={{
                       width: '100%',
-                      backgroundColor: '#070912',
-                      border: '1px solid #1E293B',
+                      backgroundColor: '#050505',
+                      border: '1px solid #303030',
                       borderRadius: '8px',
                       padding: '8px 12px',
-                      color: '#F8FAFC',
+                      color: '#FFFFFF',
                       marginTop: '6px',
                     }}
                   >
@@ -357,34 +358,34 @@ export const ContentManagerView: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label style={{ fontSize: '12px', color: '#94A3B8', fontWeight: 600 }}>Year</label>
+                  <label style={{ fontSize: '12px', color: '#B3B3B3', fontWeight: 700 }}>Year</label>
                   <input
                     type="number"
                     value={newItem.releaseYear}
                     onChange={(e) => setNewItem({ ...newItem, releaseYear: Number(e.target.value) })}
                     style={{
                       width: '100%',
-                      backgroundColor: '#070912',
-                      border: '1px solid #1E293B',
+                      backgroundColor: '#050505',
+                      border: '1px solid #303030',
                       borderRadius: '8px',
                       padding: '8px 12px',
-                      color: '#F8FAFC',
+                      color: '#FFFFFF',
                       marginTop: '6px',
                     }}
                   />
                 </div>
                 <div>
-                  <label style={{ fontSize: '12px', color: '#94A3B8', fontWeight: 600 }}>Quality</label>
+                  <label style={{ fontSize: '12px', color: '#B3B3B3', fontWeight: 700 }}>Quality</label>
                   <select
                     value={newItem.quality}
                     onChange={(e) => setNewItem({ ...newItem, quality: e.target.value as any })}
                     style={{
                       width: '100%',
-                      backgroundColor: '#070912',
-                      border: '1px solid #1E293B',
+                      backgroundColor: '#050505',
+                      border: '1px solid #303030',
                       borderRadius: '8px',
                       padding: '8px 12px',
-                      color: '#F8FAFC',
+                      color: '#FFFFFF',
                       marginTop: '6px',
                     }}
                   >
@@ -396,37 +397,36 @@ export const ContentManagerView: React.FC = () => {
               </div>
 
               <div>
-                <label style={{ fontSize: '12px', color: '#94A3B8', fontWeight: 600 }}>Genres (comma-separated)</label>
+                <label style={{ fontSize: '12px', color: '#B3B3B3', fontWeight: 700 }}>Genres</label>
                 <input
                   type="text"
-                  placeholder="Action, Sci-Fi, Thriller"
                   value={newItem.genres}
                   onChange={(e) => setNewItem({ ...newItem, genres: e.target.value })}
                   style={{
                     width: '100%',
-                    backgroundColor: '#070912',
-                    border: '1px solid #1E293B',
+                    backgroundColor: '#050505',
+                    border: '1px solid #303030',
                     borderRadius: '8px',
                     padding: '8px 12px',
-                    color: '#F8FAFC',
+                    color: '#FFFFFF',
                     marginTop: '6px',
                   }}
                 />
               </div>
 
               <div>
-                <label style={{ fontSize: '12px', color: '#94A3B8', fontWeight: 600 }}>Synopsis</label>
+                <label style={{ fontSize: '12px', color: '#B3B3B3', fontWeight: 700 }}>Synopsis</label>
                 <textarea
                   rows={3}
                   value={newItem.synopsis}
                   onChange={(e) => setNewItem({ ...newItem, synopsis: e.target.value })}
                   style={{
                     width: '100%',
-                    backgroundColor: '#070912',
-                    border: '1px solid #1E293B',
+                    backgroundColor: '#050505',
+                    border: '1px solid #303030',
                     borderRadius: '8px',
                     padding: '8px 12px',
-                    color: '#F8FAFC',
+                    color: '#FFFFFF',
                     marginTop: '6px',
                   }}
                 />

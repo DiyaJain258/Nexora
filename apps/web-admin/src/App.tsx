@@ -8,8 +8,10 @@ import { SeasonsEpisodesView } from './views/SeasonsEpisodesView';
 import { CategoriesView } from './views/CategoriesView';
 import { EpgScheduleView } from './views/EpgScheduleView';
 import { UsersDevicesView } from './views/UsersDevicesView';
+import { DeviceActivationAdminView } from './views/DeviceActivationAdminView';
 import { SubscriptionPlansView } from './views/SubscriptionPlansView';
 import { NotificationsView } from './views/NotificationsView';
+import { RolesPermissionsView } from './views/RolesPermissionsView';
 import { ReportsSettingsView } from './views/ReportsSettingsView';
 
 export const App: React.FC = () => {
@@ -23,8 +25,10 @@ export const App: React.FC = () => {
     'categories-genres': 'Categories, Genres & Tag Hierarchy',
     'epg-schedules': 'Electronic Program Guide (EPG) Schedules',
     'users-devices': 'Subscribers & Multi-Device Sessions',
+    'device-activations': 'TV Device Activation & Handshake Tokens',
     'subscription-plans': 'Subscription Tiers & Monetization',
     'notifications': 'Emergency & Push Notifications Broadcast',
+    'roles-permissions': 'Roles & Granular Access Control (RBAC)',
     'reports-settings': 'System Reports & Infrastructure Settings',
   };
 
@@ -44,10 +48,14 @@ export const App: React.FC = () => {
         return <EpgScheduleView />;
       case 'users-devices':
         return <UsersDevicesView />;
+      case 'device-activations':
+        return <DeviceActivationAdminView />;
       case 'subscription-plans':
         return <SubscriptionPlansView />;
       case 'notifications':
         return <NotificationsView />;
+      case 'roles-permissions':
+        return <RolesPermissionsView />;
       case 'reports-settings':
         return <ReportsSettingsView />;
       default:

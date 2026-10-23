@@ -13,8 +13,8 @@ export const Header: React.FC<HeaderProps> = ({ currentTabName, onRefresh }) => 
   return (
     <header style={{
       height: '70px',
-      backgroundColor: '#0B1020',
-      borderBottom: '1px solid #1E293B',
+      backgroundColor: '#0D0D0D',
+      borderBottom: '1px solid #303030',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
@@ -27,8 +27,8 @@ export const Header: React.FC<HeaderProps> = ({ currentTabName, onRefresh }) => 
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
         <h1 style={{
           fontSize: '20px',
-          fontWeight: 700,
-          color: '#F8FAFC',
+          fontWeight: 800,
+          color: '#FFFFFF',
           margin: 0,
         }}>
           {currentTabName}
@@ -37,16 +37,16 @@ export const Header: React.FC<HeaderProps> = ({ currentTabName, onRefresh }) => 
           display: 'flex',
           alignItems: 'center',
           gap: '6px',
-          backgroundColor: 'rgba(16, 185, 129, 0.12)',
-          border: '1px solid rgba(16, 185, 129, 0.25)',
+          backgroundColor: 'rgba(229, 9, 20, 0.12)',
+          border: '1px solid rgba(229, 9, 20, 0.35)',
           padding: '4px 10px',
           borderRadius: '20px',
           fontSize: '12px',
-          color: '#34D399',
-          fontWeight: 600,
+          color: '#FF2B36',
+          fontWeight: 700,
         }}>
           <Radio size={14} className="live-dot" />
-          <span>CDN LIVE</span>
+          <span>ORIGIN LIVE</span>
         </div>
       </div>
 
@@ -58,23 +58,23 @@ export const Header: React.FC<HeaderProps> = ({ currentTabName, onRefresh }) => 
           display: 'flex',
           alignItems: 'center',
         }}>
-          <Search size={16} color="#64748B" style={{ position: 'absolute', left: '12px' }} />
+          <Search size={16} color="#737373" style={{ position: 'absolute', left: '12px' }} />
           <input
             type="text"
             placeholder="Search channels, streams, users..."
             style={{
-              backgroundColor: '#070912',
-              border: '1px solid #1E293B',
+              backgroundColor: '#050505',
+              border: '1px solid #303030',
               borderRadius: '8px',
               padding: '8px 14px 8px 36px',
-              color: '#F8FAFC',
+              color: '#FFFFFF',
               fontSize: '13px',
               width: '260px',
               outline: 'none',
               transition: 'border-color 0.2s',
             }}
-            onFocus={(e) => (e.target.style.borderColor = '#8B5CF6')}
-            onBlur={(e) => (e.target.style.borderColor = '#1E293B')}
+            onFocus={(e) => (e.target.style.borderColor = '#E50914')}
+            onBlur={(e) => (e.target.style.borderColor = '#303030')}
           />
         </div>
 
@@ -83,19 +83,26 @@ export const Header: React.FC<HeaderProps> = ({ currentTabName, onRefresh }) => 
           onClick={onRefresh}
           title="Refresh stream metrics"
           style={{
-            background: 'rgba(255, 255, 255, 0.05)',
-            border: '1px solid #1E293B',
+            background: '#1C1C1C',
+            border: '1px solid #303030',
             borderRadius: '8px',
             padding: '8px 12px',
-            color: '#94A3B8',
+            color: '#B3B3B3',
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
             gap: '6px',
             fontSize: '13px',
+            fontWeight: 600,
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = '#22D3EE')}
-          onMouseLeave={(e) => (e.currentTarget.style.color = '#94A3B8')}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.color = '#FFFFFF';
+            e.currentTarget.style.borderColor = '#E50914';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.color = '#B3B3B3';
+            e.currentTarget.style.borderColor = '#303030';
+          }}
         >
           <RefreshCw size={15} />
           <span>Sync</span>
@@ -107,7 +114,7 @@ export const Header: React.FC<HeaderProps> = ({ currentTabName, onRefresh }) => 
           alignItems: 'center',
           gap: '10px',
           paddingLeft: '14px',
-          borderLeft: '1px solid #1E293B',
+          borderLeft: '1px solid #303030',
         }}>
           <img
             src={currentUser.avatarUrl}
@@ -117,14 +124,14 @@ export const Header: React.FC<HeaderProps> = ({ currentTabName, onRefresh }) => 
               height: '36px',
               borderRadius: '50%',
               objectFit: 'cover',
-              border: '2px solid #8B5CF6',
+              border: '2px solid #E50914',
             }}
           />
           <div>
-            <div style={{ fontSize: '13px', fontWeight: 600, color: '#F8FAFC' }}>
+            <div style={{ fontSize: '13px', fontWeight: 700, color: '#FFFFFF' }}>
               {currentUser.name}
             </div>
-            <div style={{ fontSize: '11px', color: '#8B5CF6', fontWeight: 600 }}>
+            <div style={{ fontSize: '11px', color: '#E50914', fontWeight: 800 }}>
               SUPERADMIN
             </div>
           </div>

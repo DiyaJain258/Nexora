@@ -34,14 +34,14 @@ export const NotificationsView: React.FC = () => {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
       {/* Broadcast Composer */}
       <div style={{
-        backgroundColor: '#111827',
-        border: '1px solid #1E293B',
+        backgroundColor: '#151515',
+        border: '1px solid #303030',
         borderRadius: '16px',
         padding: '24px',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
-          <Bell size={20} color="#8B5CF6" />
-          <h3 style={{ margin: 0, fontSize: '17px', fontWeight: 700, color: '#F8FAFC' }}>
+          <Bell size={20} color="#E50914" />
+          <h3 style={{ margin: 0, fontSize: '17px', fontWeight: 800, color: '#FFFFFF' }}>
             Broadcast Instant Notification to Subscribers
           </h3>
         </div>
@@ -49,17 +49,17 @@ export const NotificationsView: React.FC = () => {
         <form onSubmit={handleSend} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
             <div>
-              <label style={{ fontSize: '12px', color: '#94A3B8', fontWeight: 600 }}>Target Device / OS</label>
+              <label style={{ fontSize: '12px', color: '#B3B3B3', fontWeight: 700 }}>Target Device / OS</label>
               <select
                 value={targetPlatform}
                 onChange={(e) => setTargetPlatform(e.target.value as any)}
                 style={{
                   width: '100%',
-                  backgroundColor: '#070912',
-                  border: '1px solid #1E293B',
+                  backgroundColor: '#050505',
+                  border: '1px solid #303030',
                   borderRadius: '8px',
                   padding: '10px 14px',
-                  color: '#F8FAFC',
+                  color: '#FFFFFF',
                   marginTop: '6px',
                 }}
               >
@@ -71,17 +71,17 @@ export const NotificationsView: React.FC = () => {
             </div>
 
             <div>
-              <label style={{ fontSize: '12px', color: '#94A3B8', fontWeight: 600 }}>Notification Category</label>
+              <label style={{ fontSize: '12px', color: '#B3B3B3', fontWeight: 700 }}>Notification Category</label>
               <select
                 value={notifType}
                 onChange={(e) => setNotifType(e.target.value as any)}
                 style={{
                   width: '100%',
-                  backgroundColor: '#070912',
-                  border: '1px solid #1E293B',
+                  backgroundColor: '#050505',
+                  border: '1px solid #303030',
                   borderRadius: '8px',
                   padding: '10px 14px',
-                  color: '#F8FAFC',
+                  color: '#FFFFFF',
                   marginTop: '6px',
                 }}
               >
@@ -94,7 +94,7 @@ export const NotificationsView: React.FC = () => {
           </div>
 
           <div>
-            <label style={{ fontSize: '12px', color: '#94A3B8', fontWeight: 600 }}>Alert Title</label>
+            <label style={{ fontSize: '12px', color: '#B3B3B3', fontWeight: 700 }}>Alert Title</label>
             <input
               type="text"
               required
@@ -103,18 +103,18 @@ export const NotificationsView: React.FC = () => {
               onChange={(e) => setTitle(e.target.value)}
               style={{
                 width: '100%',
-                backgroundColor: '#070912',
-                border: '1px solid #1E293B',
+                backgroundColor: '#050505',
+                border: '1px solid #303030',
                 borderRadius: '8px',
                 padding: '10px 14px',
-                color: '#F8FAFC',
+                color: '#FFFFFF',
                 marginTop: '6px',
               }}
             />
           </div>
 
           <div>
-            <label style={{ fontSize: '12px', color: '#94A3B8', fontWeight: 600 }}>Message Payload</label>
+            <label style={{ fontSize: '12px', color: '#B3B3B3', fontWeight: 700 }}>Message Payload</label>
             <textarea
               rows={3}
               required
@@ -123,11 +123,11 @@ export const NotificationsView: React.FC = () => {
               onChange={(e) => setMessage(e.target.value)}
               style={{
                 width: '100%',
-                backgroundColor: '#070912',
-                border: '1px solid #1E293B',
+                backgroundColor: '#050505',
+                border: '1px solid #303030',
                 borderRadius: '8px',
                 padding: '10px 14px',
-                color: '#F8FAFC',
+                color: '#FFFFFF',
                 marginTop: '6px',
               }}
             />
@@ -144,13 +144,13 @@ export const NotificationsView: React.FC = () => {
 
       {/* Broadcast History */}
       <div style={{
-        backgroundColor: '#111827',
-        border: '1px solid #1E293B',
+        backgroundColor: '#151515',
+        border: '1px solid #303030',
         borderRadius: '16px',
         padding: '20px',
       }}>
-        <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', color: '#F8FAFC' }}>
-          Broadcast History & Delivery Delivery Audit
+        <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 800, color: '#FFFFFF' }}>
+          Broadcast History & Delivery Audit
         </h4>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -158,8 +158,8 @@ export const NotificationsView: React.FC = () => {
             <div
               key={n.id}
               style={{
-                backgroundColor: '#0B1020',
-                border: '1px solid #1E293B',
+                backgroundColor: '#0D0D0D',
+                border: '1px solid #303030',
                 borderRadius: '10px',
                 padding: '14px 18px',
                 display: 'flex',
@@ -169,23 +169,23 @@ export const NotificationsView: React.FC = () => {
             >
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <span className={`badge ${n.type === 'maintenance' ? 'badge-warning' : n.type === 'promotion' ? 'badge-cyan' : 'badge-violet'}`}>
+                  <span className={`badge ${n.type === 'maintenance' ? 'badge-warning' : 'badge-red'}`}>
                     {n.type}
                   </span>
-                  <span className="badge badge-cyan" style={{ textTransform: 'uppercase' }}>
+                  <span className="badge badge-elevated" style={{ textTransform: 'uppercase' }}>
                     {n.targetPlatform}
                   </span>
-                  <span style={{ fontSize: '12px', color: '#64748B' }}>{n.sentAt}</span>
+                  <span style={{ fontSize: '12px', color: '#737373' }}>{n.sentAt}</span>
                 </div>
-                <h5 style={{ margin: '6px 0 2px 0', fontSize: '14px', color: '#F8FAFC' }}>{n.title}</h5>
-                <p style={{ margin: 0, fontSize: '12px', color: '#94A3B8' }}>{n.message}</p>
+                <h5 style={{ margin: '6px 0 2px 0', fontSize: '14px', fontWeight: 700, color: '#FFFFFF' }}>{n.title}</h5>
+                <p style={{ margin: 0, fontSize: '12px', color: '#B3B3B3' }}>{n.message}</p>
               </div>
 
               <div style={{ textAlign: 'right', minWidth: '120px' }}>
-                <div style={{ fontSize: '12px', fontWeight: 700, color: '#10B981' }}>
+                <div style={{ fontSize: '12px', fontWeight: 800, color: '#10B981' }}>
                   {n.deliveredCount.toLocaleString()} Sent
                 </div>
-                <div style={{ fontSize: '11px', color: '#64748B' }}>
+                <div style={{ fontSize: '11px', color: '#737373' }}>
                   Delivery: 99.8%
                 </div>
               </div>

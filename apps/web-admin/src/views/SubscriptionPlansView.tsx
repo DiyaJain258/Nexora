@@ -14,27 +14,27 @@ export const SubscriptionPlansView: React.FC = () => {
         alignItems: 'center',
         justifyContent: 'space-between',
         flexWrap: 'wrap',
-        backgroundColor: '#111827',
-        border: '1px solid #1E293B',
+        backgroundColor: '#151515',
+        border: '1px solid #303030',
         borderRadius: '14px',
         padding: '16px 20px',
         gap: '16px',
       }}>
         <div>
-          <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 700, color: '#F8FAFC' }}>
+          <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 800, color: '#FFFFFF' }}>
             Subscription Tiers & Monetization Matrix
           </h3>
-          <p style={{ margin: '4px 0 0 0', fontSize: '12px', color: '#94A3B8' }}>
+          <p style={{ margin: '4px 0 0 0', fontSize: '12px', color: '#B3B3B3' }}>
             Configure maximum streams, bitrate caps, and VIP features
           </p>
         </div>
 
         <div style={{
           display: 'flex',
-          backgroundColor: '#070912',
+          backgroundColor: '#050505',
           padding: '4px',
           borderRadius: '10px',
-          border: '1px solid #1E293B',
+          border: '1px solid #303030',
         }}>
           <button
             onClick={() => setBillingCycle('monthly')}
@@ -42,10 +42,10 @@ export const SubscriptionPlansView: React.FC = () => {
               padding: '6px 14px',
               borderRadius: '6px',
               border: 'none',
-              backgroundColor: billingCycle === 'monthly' ? '#8B5CF6' : 'transparent',
+              backgroundColor: billingCycle === 'monthly' ? '#E50914' : 'transparent',
               color: '#FFFFFF',
               fontSize: '12px',
-              fontWeight: 600,
+              fontWeight: 700,
               cursor: 'pointer',
             }}
           >
@@ -57,10 +57,10 @@ export const SubscriptionPlansView: React.FC = () => {
               padding: '6px 14px',
               borderRadius: '6px',
               border: 'none',
-              backgroundColor: billingCycle === 'yearly' ? '#8B5CF6' : 'transparent',
+              backgroundColor: billingCycle === 'yearly' ? '#E50914' : 'transparent',
               color: '#FFFFFF',
               fontSize: '12px',
-              fontWeight: 600,
+              fontWeight: 700,
               cursor: 'pointer',
             }}
           >
@@ -83,14 +83,14 @@ export const SubscriptionPlansView: React.FC = () => {
             <div
               key={plan.id}
               style={{
-                backgroundColor: '#111827',
-                border: isVip ? '2px solid #8B5CF6' : '1px solid #1E293B',
+                backgroundColor: '#151515',
+                border: isVip ? '2px solid #E50914' : '1px solid #303030',
                 borderRadius: '16px',
                 padding: '28px',
                 display: 'flex',
                 flexDirection: 'column',
                 position: 'relative',
-                boxShadow: isVip ? '0 10px 30px rgba(139, 92, 246, 0.2)' : 'none',
+                boxShadow: isVip ? '0 10px 30px rgba(229, 9, 20, 0.25)' : 'none',
               }}
             >
               {plan.badge && (
@@ -98,69 +98,71 @@ export const SubscriptionPlansView: React.FC = () => {
                   position: 'absolute',
                   top: '-12px',
                   right: '20px',
-                  background: 'linear-gradient(135deg, #8B5CF6 0%, #22D3EE 100%)',
+                  background: 'linear-gradient(135deg, #E50914 0%, #7F0000 100%)',
                   color: '#FFFFFF',
                   padding: '3px 12px',
                   borderRadius: '20px',
                   fontSize: '11px',
-                  fontWeight: 700,
-                  boxShadow: '0 4px 12px rgba(139, 92, 246, 0.4)',
+                  fontWeight: 800,
+                  boxShadow: '0 4px 12px rgba(229, 9, 20, 0.4)',
+                  border: '1px solid #E50914',
                 }}>
                   {plan.badge}
                 </div>
               )}
 
-              <div style={{ fontSize: '18px', fontWeight: 800, color: '#F8FAFC', marginBottom: '8px' }}>
+              <div style={{ fontSize: '18px', fontWeight: 800, color: '#FFFFFF', marginBottom: '8px' }}>
                 {plan.name}
               </div>
 
               <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px', marginBottom: '16px' }}>
-                <span style={{ fontSize: '32px', fontWeight: 800, color: '#22D3EE' }}>
+                <span style={{ fontSize: '32px', fontWeight: 900, color: '#E50914' }}>
                   {plan.currency}{price}
                 </span>
-                <span style={{ fontSize: '13px', color: '#94A3B8' }}>
+                <span style={{ fontSize: '13px', color: '#B3B3B3' }}>
                   /{billingCycle === 'monthly' ? 'month' : 'year'}
                 </span>
               </div>
 
               <div style={{
-                backgroundColor: '#0B1020',
+                backgroundColor: '#0D0D0D',
                 padding: '12px 14px',
                 borderRadius: '10px',
                 marginBottom: '20px',
                 display: 'flex',
                 justifyContent: 'space-between',
                 fontSize: '12px',
+                border: '1px solid #303030',
               }}>
                 <div>
-                  <div style={{ color: '#94A3B8' }}>Max Screens</div>
-                  <div style={{ fontWeight: 700, color: '#F8FAFC' }}>{plan.maxStreams} Devices</div>
+                  <div style={{ color: '#B3B3B3' }}>Max Screens</div>
+                  <div style={{ fontWeight: 700, color: '#FFFFFF' }}>{plan.maxStreams} Devices</div>
                 </div>
                 <div>
-                  <div style={{ color: '#94A3B8' }}>Resolution</div>
-                  <div style={{ fontWeight: 700, color: '#8B5CF6' }}>{plan.resolution}</div>
+                  <div style={{ color: '#B3B3B3' }}>Resolution</div>
+                  <div style={{ fontWeight: 700, color: '#E50914' }}>{plan.resolution}</div>
                 </div>
                 <div>
-                  <div style={{ color: '#94A3B8' }}>Subscribers</div>
-                  <div style={{ fontWeight: 700, color: '#22D3EE' }}>{plan.subscriberCount?.toLocaleString()}</div>
+                  <div style={{ color: '#B3B3B3' }}>Subscribers</div>
+                  <div style={{ fontWeight: 700, color: '#FFFFFF' }}>{plan.subscriberCount?.toLocaleString()}</div>
                 </div>
               </div>
 
               {/* Feature Checklist */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: 1, marginBottom: '24px' }}>
                 {plan.features.map((feat) => (
-                  <div key={feat} style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13px', color: '#F8FAFC' }}>
+                  <div key={feat} style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13px', color: '#FFFFFF' }}>
                     <div style={{
                       width: '18px',
                       height: '18px',
                       borderRadius: '50%',
-                      backgroundColor: 'rgba(34, 211, 238, 0.15)',
+                      backgroundColor: 'rgba(229, 9, 20, 0.2)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       flexShrink: 0,
                     }}>
-                      <Check size={12} color="#22D3EE" />
+                      <Check size={12} color="#E50914" />
                     </div>
                     <span>{feat}</span>
                   </div>
