@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Tv, KeyRound, PlaySquare, ShieldCheck } from 'lucide-react';
+import { Tv, KeyRound, PlaySquare } from 'lucide-react';
 
 interface NavbarProps {
   onOpenActivation: () => void;
   onOpenLiveDemo: () => void;
   onOpenSignIn: (defaultTab?: 'subscriber' | 'admin') => void;
-  onNavigateToAdmin: () => void;
+  onNavigateToAdmin?: () => void;
 }
 
 const NAV_ITEMS = [
@@ -340,18 +340,6 @@ export const Navbar: React.FC<NavbarProps> = ({
           title="Subscriber Sign In"
         >
           <span>Sign In</span>
-        </motion.button>
-
-        {/* Direct Internal Switch to Admin Portal on Same Port */}
-        <motion.button
-          whileHover={{ scale: 1.04, y: -1 }}
-          whileTap={{ scale: 0.97 }}
-          onClick={onNavigateToAdmin}
-          className="nav-btn-admin"
-          title="Open Admin Operations Console"
-        >
-          <ShieldCheck size={15} color="#050507" strokeWidth={2.4} />
-          <span>Admin Portal</span>
         </motion.button>
       </div>
     </header>
