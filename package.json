@@ -13,7 +13,7 @@
     "dev:admin": "npm --workspace=@nexora/web-admin run dev",
     "dev:landing": "npm --workspace=@nexora/landing run dev",
     "dev:mobile": "npm --workspace=@nexora/mobile run dev",
-    "dev:tv": "npm --workspace=@nexora/tv run dev",
+    "build": "npm --workspace=@nexora/web-admin run build && node -e \"require('fs').cpSync('apps/web-admin/dist', 'dist', {recursive: true, force: true})\"",
     "build:admin": "npm --workspace=@nexora/web-admin run build",
     "build:landing": "npm --workspace=@nexora/landing run build",
     "build:mobile": "npm --workspace=@nexora/mobile run build",
