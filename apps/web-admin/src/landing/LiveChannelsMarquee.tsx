@@ -33,7 +33,7 @@ export const LiveChannelsMarquee: React.FC<LiveChannelsMarqueeProps> = ({ onTune
   const marqueeChannels = [...filteredChannels, ...filteredChannels, ...filteredChannels];
 
   return (
-    <section id="channels" style={{ padding: '44px 0', position: 'relative', overflow: 'hidden', backgroundColor: '#050507' }}>
+    <section id="channels" style={{ padding: '64px 0', position: 'relative', overflow: 'hidden', backgroundColor: '#050507' }}>
       
       {/* Background Ambient Glow */}
       <div
@@ -50,7 +50,7 @@ export const LiveChannelsMarquee: React.FC<LiveChannelsMarqueeProps> = ({ onTune
         }}
       />
 
-      <div style={{ maxWidth: '1320px', margin: '0 auto', padding: '0 24px', marginBottom: '20px', position: 'relative', zIndex: 2 }}>
+      <div style={{ maxWidth: '1320px', margin: '0 auto', padding: '0 24px', marginBottom: '28px', position: 'relative', zIndex: 2 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '20px' }}>
           <div>
             <div

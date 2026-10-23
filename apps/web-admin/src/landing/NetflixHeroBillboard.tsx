@@ -151,7 +151,7 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
       style={{
         position: 'relative',
         width: '100%',
-        minHeight: '76vh',
+        minHeight: '94vh',
         backgroundColor: '#050507',
         overflow: 'hidden',
         display: 'flex',
@@ -258,7 +258,7 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
           zIndex: 10,
           maxWidth: '1380px',
           margin: '0 auto',
-          padding: '82px 32px 24px',
+          padding: '112px 32px 32px',
           width: '100%',
         }}
       >
@@ -440,9 +440,9 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
         {/* Unified Bottom Strip: Flex layout with ZERO overlap */}
         <div
           style={{
-            marginTop: '18px',
+            marginTop: '28px',
             borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-            paddingTop: '14px',
+            paddingTop: '18px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
