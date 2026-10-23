@@ -19,8 +19,10 @@ type AppViewMode = 'landing' | 'admin-login' | 'admin-dashboard';
 export const App: React.FC = () => {
   // Determine initial view from URL hash or path
   const getInitialView = (): AppViewMode => {
-    if (window.location.hash.startsWith('#/admin/login')) return 'admin-login';
-    if (window.location.hash.startsWith('#/admin')) return 'admin-dashboard';
+    const hash = window.location.hash || '';
+    const path = window.location.pathname || '';
+    if (hash.startsWith('#/admin/login') || path.startsWith('/admin/login') || path === '/login') return 'admin-login';
+    if (hash.startsWith('#/admin') || path.startsWith('/admin') || path === '/dashboard') return 'admin-dashboard';
     return 'landing';
   };
 
