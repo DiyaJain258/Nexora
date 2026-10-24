@@ -29,10 +29,10 @@ export const FaqSection: React.FC = () => {
   ];
 
   return (
-    <section id="faq" style={{ padding: '80px 0', position: 'relative' }}>
+    <section id="faq" style={{ padding: '64px 0', position: 'relative' }}>
       <div style={{ maxWidth: '900px', margin: '0 auto', padding: '0 24px' }}>
         
-        <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+        <div style={{ textAlign: 'center', marginBottom: '32px' }}>
           <div style={{ fontSize: '13px', fontWeight: 800, color: '#fda4af', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '8px' }}>
             FREQUENTLY ASKED QUESTIONS
           </div>
@@ -41,7 +41,7 @@ export const FaqSection: React.FC = () => {
           </h2>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '64px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '40px' }}>
           {faqs.map((faq, idx) => {
             const isOpen = openIndex === idx;
             return (

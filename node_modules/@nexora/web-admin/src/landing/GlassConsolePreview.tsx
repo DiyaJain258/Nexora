@@ -117,13 +117,12 @@ export const GlassConsolePreview: React.FC<GlassConsolePreviewProps> = ({ onPlay
           boxShadow: '0 30px 90px rgba(0, 0, 0, 0.85), 0 0 50px rgba(225, 29, 72, 0.18), inset 0 1px 1px rgba(255, 255, 255, 0.2)',
           borderRadius: '32px',
           overflow: 'hidden',
-          display: 'grid',
-          gridTemplateColumns: '84px 1fr',
-          minHeight: '620px',
         }}
+        className="glass-console-wrapper"
       >
         {/* Left Vertical Slim Glass Sidebar */}
         <aside
+          className="glass-console-sidebar"
           style={{
             borderRight: '1px solid rgba(255, 255, 255, 0.08)',
             backgroundColor: 'rgba(8, 8, 12, 0.7)',

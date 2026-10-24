@@ -158,9 +158,9 @@ export const LiveChannelsView: React.FC = () => {
                     borderRadius: '8px',
                     fontSize: '12px',
                     fontWeight: 600,
-                    border: active ? '1px solid #8B5CF6' : '1px solid #1E293B',
-                    backgroundColor: active ? 'rgba(139, 92, 246, 0.2)' : '#070912',
-                    color: active ? '#22D3EE' : '#94A3B8',
+                    border: active ? '1px solid rgba(184, 29, 74, 0.6)' : '1px solid rgba(255, 255, 255, 0.08)',
+                    backgroundColor: active ? 'rgba(139, 0, 50, 0.35)' : '#070509',
+                    color: active ? '#fda4af' : '#94A3B8',
                     cursor: 'pointer',
                   }}
                 >
@@ -227,7 +227,7 @@ export const LiveChannelsView: React.FC = () => {
                   </div>
                 </td>
                 <td style={{ padding: '14px 18px' }}>
-                  <div style={{ color: '#22D3EE', fontWeight: 500 }}>
+                  <div style={{ color: '#fda4af', fontWeight: 500 }}>
                     {ch.currentProgram?.title || 'Continuous broadcast'}
                   </div>
                   <div style={{ fontSize: '11px', color: '#64748B' }}>
@@ -276,11 +276,11 @@ export const LiveChannelsView: React.FC = () => {
                       onClick={() => setPreviewChannel(ch)}
                       title="Preview HLS stream"
                       style={{
-                        backgroundColor: 'rgba(34, 211, 238, 0.1)',
-                        border: '1px solid rgba(34, 211, 238, 0.3)',
+                        backgroundColor: 'rgba(139, 0, 50, 0.25)',
+                        border: '1px solid rgba(184, 29, 74, 0.45)',
                         borderRadius: '6px',
                         padding: '6px 10px',
-                        color: '#22D3EE',
+                        color: '#fda4af',
                         cursor: 'pointer',
                         display: 'flex',
                         alignItems: 'center',
@@ -537,7 +537,7 @@ export const LiveChannelsView: React.FC = () => {
               backgroundColor: '#0B1020',
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <Radio size={18} color="#22D3EE" />
+                <Radio size={18} color="#fda4af" />
                 <span style={{ fontWeight: 700, color: '#F8FAFC' }}>
                   Live Monitor: {previewChannel.name} ({previewChannel.resolution})
                 </span>
@@ -593,7 +593,7 @@ export const LiveChannelsView: React.FC = () => {
                 <h2 style={{ fontSize: '22px', fontWeight: 800, color: '#F8FAFC', margin: '0 0 8px 0' }}>
                   {previewChannel.currentProgram?.title || previewChannel.name}
                 </h2>
-                <div style={{ fontSize: '13px', color: '#22D3EE' }}>
+                <div style={{ fontSize: '13px', color: '#fda4af' }}>
                   HLS Ingestion Endpoint Active • Bitrate: {(previewChannel.bitrateKbps || 0) / 1000} Mbps
                 </div>
               </div>
