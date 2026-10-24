@@ -169,7 +169,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         left: 0,
         right: 0,
         zIndex: 50,
-        padding: isScrolled ? '12px 32px' : '15px 32px',
+        padding: isScrolled ? '10px 24px' : '13px 24px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -187,7 +187,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       <motion.div
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
-        style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer' }}
+        style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', flexShrink: 0 }}
         onClick={handleLogoClick}
         title="NEXORA 4K Stream Platform"
       >
@@ -258,8 +258,8 @@ export const Navbar: React.FC<NavbarProps> = ({
               onMouseLeave={() => setHoveredSection(null)}
               style={{
                 position: 'relative',
-                padding: '7px 15px',
-                fontSize: '13px',
+                padding: '6px 11px',
+                fontSize: '12.5px',
                 fontWeight: isActive ? 700 : 500,
                 color: isActive ? '#ffffff' : isHovered ? '#ffffff' : '#a1a1aa',
                 backgroundColor: 'transparent',
@@ -331,7 +331,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       </nav>
 
       {/* Action CTA Buttons (Desktop) */}
-      <div className="desktop-nav-actions" style={{ alignItems: 'center', gap: '10px' }}>
+      <div className="desktop-nav-actions" style={{ alignItems: 'center', gap: '8px', flexShrink: 0 }}>
         {/* Instant Search Bar Button */}
         {onOpenSearch && (
           <motion.button
@@ -341,15 +341,17 @@ export const Navbar: React.FC<NavbarProps> = ({
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '8px',
-              padding: '7px 14px',
+              gap: '6px',
+              padding: '6px 12px',
               borderRadius: '999px',
               backgroundColor: 'rgba(255, 255, 255, 0.06)',
               border: '1px solid rgba(255, 255, 255, 0.14)',
               color: '#e2e8f0',
-              fontSize: '12.5px',
+              fontSize: '12px',
               fontWeight: 700,
               cursor: 'pointer',
+              whiteSpace: 'nowrap',
+              flexShrink: 0,
               transition: 'all 0.15s ease',
             }}
             onMouseEnter={(e) => {
@@ -362,7 +364,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             }}
             title="Search movies, series, channels (Ctrl + K)"
           >
-            <Search size={14} color="#fda4af" />
+            <Search size={13} color="#fda4af" />
             <span>Search</span>
             <kbd
               style={{
@@ -384,10 +386,11 @@ export const Navbar: React.FC<NavbarProps> = ({
           whileTap={{ scale: 0.97 }}
           onClick={onOpenLiveDemo}
           className="nav-btn-livedemo"
+          style={{ whiteSpace: 'nowrap', flexShrink: 0 }}
           title="Watch live streams"
         >
           <span className="nav-live-dot" />
-          <PlaySquare size={15} color="#fda4af" />
+          <PlaySquare size={14} color="#fda4af" />
           <span>Live Demo</span>
         </motion.button>
 
@@ -396,9 +399,10 @@ export const Navbar: React.FC<NavbarProps> = ({
           whileTap={{ scale: 0.97 }}
           onClick={onOpenActivation}
           className="nav-btn-activation"
+          style={{ whiteSpace: 'nowrap', flexShrink: 0 }}
           title="Pair your Smart TV"
         >
-          <KeyRound size={15} color="#fda4af" />
+          <KeyRound size={14} color="#fda4af" />
           <span>Enter TV Code</span>
         </motion.button>
 
@@ -418,6 +422,8 @@ export const Navbar: React.FC<NavbarProps> = ({
               boxShadow: '0 0 20px rgba(225, 29, 72, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.25)',
               cursor: 'pointer',
               color: '#ffffff',
+              whiteSpace: 'nowrap',
+              flexShrink: 0,
             }}
             title="Subscriber VIP Passholder • Click for TV Devices & Account"
           >
@@ -475,6 +481,8 @@ export const Navbar: React.FC<NavbarProps> = ({
               fontSize: '12.5px',
               fontWeight: 800,
               boxShadow: '0 0 18px rgba(190, 18, 60, 0.45)',
+              whiteSpace: 'nowrap',
+              flexShrink: 0,
             }}
           >
             <Shield size={14} />
@@ -486,6 +494,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             whileTap={{ scale: 0.97 }}
             onClick={() => onOpenSignIn('subscriber')}
             className="nav-btn-signin"
+            style={{ whiteSpace: 'nowrap', flexShrink: 0 }}
             title="Subscriber Sign In"
           >
             <span>Sign In</span>

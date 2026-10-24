@@ -234,13 +234,15 @@ html.lenis, html.lenis body {
   border: 1px solid rgba(255, 255, 255, 0.14);
   color: #f8fafc;
   border-radius: 10px;
-  padding: 8px 16px;
-  font-size: 13px;
+  padding: 7px 13px;
+  font-size: 12.5px;
   font-weight: 600;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
+  white-space: nowrap;
+  flex-shrink: 0;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
@@ -281,13 +283,15 @@ html.lenis, html.lenis body {
   border: 1px solid rgba(225, 29, 72, 0.48);
   color: #fda4af;
   border-radius: 10px;
-  padding: 8px 16px;
-  font-size: 13px;
+  padding: 7px 13px;
+  font-size: 12.5px;
   font-weight: 700;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 7px;
+  white-space: nowrap;
+  flex-shrink: 0;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   position: relative;
@@ -308,13 +312,15 @@ html.lenis, html.lenis body {
   border: 1px solid rgba(255, 255, 255, 0.14);
   color: #f8fafc;
   border-radius: 10px;
-  padding: 8px 16px;
-  font-size: 13px;
+  padding: 7px 14px;
+  font-size: 12.5px;
   font-weight: 600;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -373,7 +379,7 @@ html, body {
   display: none !important;
 }
 
-@media (max-width: 1080px) {
+@media (max-width: 1160px) {
   .desktop-nav-capsule {
     display: none !important;
   }
