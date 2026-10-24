@@ -9,12 +9,14 @@ import {
   FlatList,
   Modal,
   Platform,
+  StatusBar as RNStatusBar,
   NativeSyntheticEvent,
   NativeScrollEvent,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const { width, height } = Dimensions.get('window');
+const STATUSBAR_HEIGHT = Platform.OS === 'android' ? (RNStatusBar.currentHeight || 28) : 10;
 
 // 3-Column Posters exactly matching Image 2
 const COLUMN_1_POSTERS = [
@@ -218,10 +220,13 @@ export const NetflixWelcomeLandingScreen: React.FC<NetflixWelcomeLandingScreenPr
 
         {/* Soft, light vignette overlay (subtle so posters stay vibrant & clearly visible) */}
         <View style={styles.darkGradientOverlay} />
+
+        {/* Top Vignette so NEXORA, PRIVACY, and SIGN IN are 100% crystal clear */}
+        <View style={styles.topHeaderVignette} />
       </View>
 
       {/* 2. FOREGROUND INTERACTIVE CONTENT (Fixed to screen bounds) */}
-      <SafeAreaView style={styles.safeContainer} edges={['top', 'bottom']}>
+      <View style={styles.safeContainer}>
         {/* Top Header: NEXORA Logo on Left, PRIVACY + SIGN IN + Dots on Right */}
         <View style={styles.topHeader}>
           {/* NEXORA Logo (Red Netflix font style, NOT Netflix text) */}
@@ -308,7 +313,7 @@ export const NetflixWelcomeLandingScreen: React.FC<NetflixWelcomeLandingScreenPr
             </TouchableOpacity>
           </View>
         </View>
-      </SafeAreaView>
+      </View>
 
       {/* Privacy Policy Modal */}
       <Modal
@@ -559,12 +564,23 @@ const styles = StyleSheet.create({
     zIndex: 10,
     justifyContent: 'space-between',
   },
+  topHeaderVignette: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: STATUSBAR_HEIGHT + 60,
+    backgroundColor: 'rgba(0, 0, 0, 0.72)',
+    zIndex: 4,
+  },
   topHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingTop: Platform.OS === 'android' ? 14 : 6,
+    paddingHorizontal: 18,
+    paddingTop: STATUSBAR_HEIGHT + 6,
+    paddingBottom: 8,
+    zIndex: 10,
   },
   logoRow: {
     flexDirection: 'row',
@@ -575,6 +591,9 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: '900',
     letterSpacing: 2,
+    textShadowColor: 'rgba(0, 0, 0, 1)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 6,
   },
   playIconBox: {
     width: 22,
@@ -603,26 +622,38 @@ const styles = StyleSheet.create({
   headerRightGroup: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 16,
+    gap: 14,
   },
   headerTextBtn: {
     paddingVertical: 6,
-    paddingHorizontal: 4,
+    paddingHorizontal: 8,
+    borderRadius: 4,
+    backgroundColor: 'rgba(0, 0, 0, 0.35)',
   },
   headerTextBtnLabel: {
     color: '#FFFFFF',
-    fontSize: 13,
-    fontWeight: '700',
-    letterSpacing: 0.5,
+    fontSize: 14,
+    fontWeight: '900',
+    letterSpacing: 0.8,
+    textShadowColor: 'rgba(0, 0, 0, 1)',
+    textShadowOffset: { width: 0, height: 1.5 },
+    textShadowRadius: 6,
   },
   menuDotsBtn: {
     paddingVertical: 4,
     paddingHorizontal: 6,
+    borderRadius: 4,
+    backgroundColor: 'rgba(0, 0, 0, 0.35)',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   menuDotsIcon: {
     color: '#FFFFFF',
     fontSize: 22,
-    fontWeight: '700',
+    fontWeight: '900',
+    textShadowColor: 'rgba(0, 0, 0, 1)',
+    textShadowOffset: { width: 0, height: 1.5 },
+    textShadowRadius: 6,
   },
   middleSpacer: {
     flex: 1,
