@@ -33,6 +33,7 @@ export const CardsEffectSeriesDeck: React.FC<CardsEffectSeriesDeckProps> = ({
   favoriteIds = [],
 }) => {
   const [deck, setDeck] = useState<ContentItem[]>(items);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [isSwiping, setIsSwiping] = useState(false);
   const pan = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
   const idleBreath = useRef(new Animated.Value(1)).current;
@@ -40,6 +41,7 @@ export const CardsEffectSeriesDeck: React.FC<CardsEffectSeriesDeckProps> = ({
   useEffect(() => {
     if (items && items.length > 0) {
       setDeck(items);
+      setCurrentIndex(0);
     }
   }, [items]);
 
@@ -80,6 +82,7 @@ export const CardsEffectSeriesDeck: React.FC<CardsEffectSeriesDeckProps> = ({
         const [first, ...rest] = prev;
         return [...rest, first];
       });
+      setCurrentIndex((prev) => (prev + 1) % (items.length || 1));
       setIsSwiping(false);
     });
   };
@@ -97,6 +100,7 @@ export const CardsEffectSeriesDeck: React.FC<CardsEffectSeriesDeckProps> = ({
       const rest = prev.slice(0, prev.length - 1);
       return [last, ...rest];
     });
+    setCurrentIndex((prev) => (prev - 1 + (items.length || 1)) % (items.length || 1));
 
     pan.setValue({ x: -width * 0.7, y: 15 });
     Animated.spring(pan, {
@@ -106,6 +110,30 @@ export const CardsEffectSeriesDeck: React.FC<CardsEffectSeriesDeckProps> = ({
       useNativeDriver: true,
     }).start(() => {
       setIsSwiping(false);
+    });
+  };
+
+  const jumpToIndex = (targetIdx: number) => {
+    if (isSwiping || targetIdx === currentIndex || !items.length) return;
+    setIsSwiping(true);
+    const forward = targetIdx > currentIndex;
+    Animated.timing(pan, {
+      toValue: { x: forward ? -width * 0.4 : width * 0.4, y: 0 },
+      duration: 160,
+      useNativeDriver: true,
+    }).start(() => {
+      const reordered = [...items.slice(targetIdx), ...items.slice(0, targetIdx)];
+      setDeck(reordered);
+      setCurrentIndex(targetIdx);
+      pan.setValue({ x: forward ? width * 0.4 : -width * 0.4, y: 0 });
+      Animated.spring(pan, {
+        toValue: { x: 0, y: 0 },
+        friction: 6,
+        tension: 65,
+        useNativeDriver: true,
+      }).start(() => {
+        setIsSwiping(false);
+      });
     });
   };
 
@@ -414,15 +442,20 @@ export const CardsEffectSeriesDeck: React.FC<CardsEffectSeriesDeckProps> = ({
 
           {/* Animated Indicator Dots */}
           <View style={styles.dotPillsRow}>
-            {deck.slice(0, 6).map((d, i) => (
-              <View
-                key={d.id}
-                style={[
-                  styles.indicatorDot,
-                  i === 0 && styles.indicatorDotActive,
-                ]}
-              />
-            ))}
+            {items.map((item, i) => {
+              const isActive = i === currentIndex;
+              return (
+                <TouchableOpacity
+                  key={item.id}
+                  activeOpacity={0.7}
+                  onPress={() => jumpToIndex(i)}
+                  style={[
+                    styles.indicatorDot,
+                    isActive && styles.indicatorDotActive,
+                  ]}
+                />
+              );
+            })}
           </View>
         </View>
 
@@ -821,7 +854,9 @@ const styles = StyleSheet.create({
   },
   dotPillsRow: {
     flexDirection: 'row',
-    gap: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
     marginTop: 7,
   },
   indicatorDot: {
