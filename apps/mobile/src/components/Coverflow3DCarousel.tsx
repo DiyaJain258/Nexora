@@ -10,6 +10,7 @@ import {
   Platform,
 } from 'react-native';
 import { ContentItem } from '@nexora/shared';
+import { ShineBorder } from './ShineBorder';
 
 const { width } = Dimensions.get('window');
 
@@ -176,6 +177,9 @@ export const Coverflow3DCarousel: React.FC<Coverflow3DCarouselProps> = ({
 
                   {/* Dark Vignette Base Overlay */}
                   <View style={styles.cardBaseGradient} />
+
+                  {/* Animated Shine Border Effect */}
+                  <ShineBorder borderRadius={20} borderWidth={1.5} duration={7} />
 
                   {/* Swiper slideShadows simulation: dark shadow overlay on tilted cards */}
                   <Animated.View

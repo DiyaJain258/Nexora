@@ -36,6 +36,7 @@ import {
 import { LandingShowcaseView } from './src/components/LandingShowcaseView';
 import { NativeCinematicBackground } from './src/components/NativeCinematicBackground';
 import { NativeSignInCard } from './src/components/NativeSignInCard';
+import { ShineBorder } from './src/components/ShineBorder';
 
 const { width, height } = Dimensions.get('window');
 
@@ -648,6 +649,7 @@ export default function App() {
               <Text style={styles.top10RankText}>{index + 1}</Text>
               <View style={styles.top10PosterBox}>
                 <Image source={{ uri: item.posterUrl }} style={styles.top10Poster} />
+                <ShineBorder borderRadius={10} borderWidth={1.5} duration={7} />
                 <View style={styles.top10Badge}>
                   <Text style={styles.top10BadgeText}>{item.quality || '4K'}</Text>
                 </View>
@@ -674,6 +676,7 @@ export default function App() {
               onPress={() => setPlayingItem(ch)}
               style={styles.liveChannelCard}
             >
+              <ShineBorder borderRadius={12} borderWidth={1.5} duration={8} />
               <View style={styles.liveChannelHeader}>
                 <Image source={{ uri: ch.logo }} style={styles.liveChannelLogo} resizeMode="contain" />
                 <View style={styles.liveResBadge}>
@@ -713,6 +716,7 @@ export default function App() {
             >
               <View style={styles.topRatedPosterBox}>
                 <Image source={{ uri: film.posterUrl }} style={styles.topRatedPoster} />
+                <ShineBorder borderRadius={10} borderWidth={1.5} duration={6} />
                 <View style={styles.topRatedQualityBadge}>
                   <Text style={styles.topRatedQualityText}>{film.quality}</Text>
                 </View>
@@ -799,6 +803,7 @@ export default function App() {
             >
               <View style={styles.quickCatalogPosterBox}>
                 <Image source={{ uri: s.posterUrl }} style={styles.quickCatalogPoster} />
+                <ShineBorder borderRadius={10} borderWidth={1.5} duration={7} />
                 <View style={styles.quickCatalogBadge}>
                   <Text style={styles.quickCatalogBadgeText}>
                     {s.seasonsCount ? `${s.seasonsCount}S` : s.duration}
@@ -1299,6 +1304,8 @@ const styles = StyleSheet.create({
   liveChannelCard: {
     width: 140,
     borderRadius: 12,
+    overflow: 'hidden',
+    position: 'relative',
     backgroundColor: 'rgba(12, 17, 33, 0.75)',
     padding: 10,
     marginRight: 10,

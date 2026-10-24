@@ -8,6 +8,7 @@ import {
   Animated,
 } from 'react-native';
 import { ContinueWatchingItem } from '@nexora/shared';
+import { ShineBorder } from './ShineBorder';
 
 interface ContinueWatchingCardProps {
   item: ContinueWatchingItem;
@@ -85,6 +86,9 @@ export const ContinueWatchingCard: React.FC<ContinueWatchingCardProps> = ({
         }}
       >
         <View style={[styles.container, { width }]}>
+        {/* Animated Shine Border */}
+        <ShineBorder borderRadius={14} borderWidth={1.5} duration={7} />
+
         {/* Landscape Backdrop Image */}
         <View style={styles.imageBox}>
           <Image

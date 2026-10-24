@@ -92,11 +92,11 @@ export const TvRemoteControl: React.FC<TvRemoteControlProps> = ({
           position: 'fixed',
           bottom: '20px',
           right: '20px',
-          backgroundColor: '#151515',
-          border: '1px solid #E50914',
+          backgroundColor: '#111827',
+          border: '1px solid #8B5CF6',
           borderRadius: '30px',
           padding: '10px 18px',
-          color: '#FF2B36',
+          color: '#22D3EE',
           fontWeight: 700,
           fontSize: '12px',
           cursor: 'pointer',
@@ -104,7 +104,7 @@ export const TvRemoteControl: React.FC<TvRemoteControlProps> = ({
           display: 'flex',
           alignItems: 'center',
           gap: '8px',
-          boxShadow: '0 8px 24px rgba(0,0,0,0.9), 0 0 15px rgba(229, 9, 20, 0.3)',
+          boxShadow: '0 8px 24px rgba(0,0,0,0.8)',
         }}
       >
         <Tv size={16} />
@@ -119,12 +119,12 @@ export const TvRemoteControl: React.FC<TvRemoteControlProps> = ({
       bottom: '20px',
       right: '20px',
       width: '180px',
-      backgroundColor: 'rgba(13, 13, 13, 0.95)',
+      backgroundColor: 'rgba(11, 16, 32, 0.95)',
       backdropFilter: 'blur(16px)',
-      border: '1px solid #303030',
+      border: '1px solid rgba(139, 92, 246, 0.4)',
       borderRadius: '24px',
       padding: '16px 12px',
-      boxShadow: '0 20px 40px rgba(0, 0, 0, 0.9), 0 0 25px rgba(229, 9, 20, 0.25)',
+      boxShadow: '0 20px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(139, 92, 246, 0.25)',
       zIndex: 100,
       display: 'flex',
       flexDirection: 'column',
@@ -140,14 +140,14 @@ export const TvRemoteControl: React.FC<TvRemoteControlProps> = ({
         padding: '0 4px',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#E50914' }} />
-          <span style={{ fontSize: '11px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '0.5px' }}>
+          <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#22D3EE' }} />
+          <span style={{ fontSize: '11px', fontWeight: 800, color: '#F8FAFC', letterSpacing: '0.5px' }}>
             TV REMOTE
           </span>
         </div>
         <button
           onClick={() => setIsMinimized(true)}
-          style={{ background: 'none', border: 'none', color: '#B3B3B3', fontSize: '11px', cursor: 'pointer' }}
+          style={{ background: 'none', border: 'none', color: '#64748B', fontSize: '11px', cursor: 'pointer' }}
         >
           Min
         </button>
@@ -158,8 +158,8 @@ export const TvRemoteControl: React.FC<TvRemoteControlProps> = ({
         width: '128px',
         height: '128px',
         borderRadius: '50%',
-        backgroundColor: '#050505',
-        border: '2px solid #303030',
+        backgroundColor: '#070912',
+        border: '2px solid #1E293B',
         position: 'relative',
         display: 'flex',
         alignItems: 'center',
@@ -174,7 +174,7 @@ export const TvRemoteControl: React.FC<TvRemoteControlProps> = ({
             top: '6px',
             background: 'none',
             border: 'none',
-            color: '#B3B3B3',
+            color: '#94A3B8',
             cursor: 'pointer',
             padding: '4px',
           }}
@@ -191,7 +191,7 @@ export const TvRemoteControl: React.FC<TvRemoteControlProps> = ({
             bottom: '6px',
             background: 'none',
             border: 'none',
-            color: '#B3B3B3',
+            color: '#94A3B8',
             cursor: 'pointer',
             padding: '4px',
           }}
@@ -208,7 +208,7 @@ export const TvRemoteControl: React.FC<TvRemoteControlProps> = ({
             left: '6px',
             background: 'none',
             border: 'none',
-            color: '#B3B3B3',
+            color: '#94A3B8',
             cursor: 'pointer',
             padding: '4px',
           }}
@@ -225,7 +225,7 @@ export const TvRemoteControl: React.FC<TvRemoteControlProps> = ({
             right: '6px',
             background: 'none',
             border: 'none',
-            color: '#B3B3B3',
+            color: '#94A3B8',
             cursor: 'pointer',
             padding: '4px',
           }}
@@ -241,7 +241,7 @@ export const TvRemoteControl: React.FC<TvRemoteControlProps> = ({
             width: '46px',
             height: '46px',
             borderRadius: '50%',
-            background: 'linear-gradient(135deg, #E50914 0%, #7F0000 100%)',
+            background: 'linear-gradient(135deg, #8B5CF6 0%, #22D3EE 100%)',
             border: 'none',
             color: '#FFFFFF',
             fontWeight: 800,
@@ -250,7 +250,7 @@ export const TvRemoteControl: React.FC<TvRemoteControlProps> = ({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 0 16px rgba(229, 9, 20, 0.6)',
+            boxShadow: '0 0 12px rgba(139, 92, 246, 0.5)',
           }}
         >
           OK
@@ -266,9 +266,9 @@ export const TvRemoteControl: React.FC<TvRemoteControlProps> = ({
             width: '36px',
             height: '36px',
             borderRadius: '50%',
-            backgroundColor: '#1C1C1C',
-            border: '1px solid #303030',
-            color: '#FFFFFF',
+            backgroundColor: '#1E293B',
+            border: 'none',
+            color: '#F8FAFC',
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
@@ -285,9 +285,9 @@ export const TvRemoteControl: React.FC<TvRemoteControlProps> = ({
             width: '36px',
             height: '36px',
             borderRadius: '50%',
-            backgroundColor: '#1C1C1C',
-            border: '1px solid #303030',
-            color: '#FF2B36',
+            backgroundColor: '#1E293B',
+            border: 'none',
+            color: '#22D3EE',
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
@@ -304,20 +304,20 @@ export const TvRemoteControl: React.FC<TvRemoteControlProps> = ({
             width: '36px',
             height: '36px',
             borderRadius: '50%',
-            backgroundColor: '#1C1C1C',
-            border: '1px solid #303030',
-            color: '#E50914',
+            backgroundColor: '#1E293B',
+            border: 'none',
+            color: '#8B5CF6',
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
           }}
         >
-          <Play size={14} fill="#E50914" />
+          <Play size={14} fill="#8B5CF6" />
         </button>
       </div>
 
-      <div style={{ fontSize: '10px', color: '#B3B3B3', textAlign: 'center' }}>
+      <div style={{ fontSize: '10px', color: '#64748B', textAlign: 'center' }}>
         Use Keyboard Arrows + Enter
       </div>
     </div>
