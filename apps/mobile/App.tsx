@@ -47,6 +47,7 @@ import { TopTrendingRail } from './src/components/TopTrendingRail';
 import { PremiumContentDetailsModal } from './src/components/PremiumContentDetailsModal';
 import { NetflixSignUpScreen } from './src/components/NetflixSignUpScreen';
 import { YacineLiveTvView } from './src/components/YacineLiveTvView';
+import { PremiumSportsLiveView } from './src/components/PremiumSportsLiveView';
 
 const { width, height } = Dimensions.get('window');
 
@@ -76,7 +77,7 @@ export default function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  const categories = ['All', 'Live TV', 'Movies', 'Series', 'Sports', 'Kids'];
+  const categories = ['All', 'Sports', 'Live TV', 'Movies', 'Series', 'Kids'];
   const movies = MOCK_CONTENT.filter((c) => c.type === 'movie');
   const series = MOCK_CONTENT.filter((c) => c.type === 'series');
   const sports = MOCK_CONTENT.filter((c) => c.type === 'sports');
@@ -357,24 +358,15 @@ export default function App() {
 
     if (selectedCategory === 'Sports') {
       return (
-        <View style={styles.paddingSection}>
-          <SectionHeader
-            title={`Live & Apex Sports (${sports.length})`}
-            badge="4K 60FPS"
-          />
-          <View style={styles.moviesGrid}>
-            {sports.map((sp) => (
-              <MoviePosterCard
-                key={sp.id}
-                item={sp}
-                width={(width - 44) / 2}
-                height={240}
-                badgeType="4K"
-                onPress={(item) => setSelectedItem(item)}
-              />
-            ))}
-          </View>
-        </View>
+        <PremiumSportsLiveView
+          onBack={() => setSelectedCategory('All')}
+          onFullscreenPress={(match) => {
+            setPlayingItem({
+              title: match.title,
+              backdropUrl: match.thumbnail,
+            });
+          }}
+        />
       );
     }
 
@@ -416,6 +408,7 @@ export default function App() {
             setSelectedCategory(cat);
             if (cat === 'Movies') setActiveTab('movies');
             else if (cat === 'Live TV') setActiveTab('livetv');
+            else if (cat === 'Sports') setSelectedCategory('Sports');
             else if (cat === 'TV Show' || cat === 'Webseries') setSelectedCategory('Series');
           }}
         />
