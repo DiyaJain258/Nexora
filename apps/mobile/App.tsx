@@ -38,6 +38,7 @@ import { NativeCinematicBackground } from './src/components/NativeCinematicBackg
 import { NativeSignInCard } from './src/components/NativeSignInCard';
 import { ShineBorder } from './src/components/ShineBorder';
 import { NetflixTop10Rail } from './src/components/NetflixTop10Rail';
+import { ViaplayCatalogView } from './src/components/ViaplayCatalogView';
 
 const { width, height } = Dimensions.get('window');
 
@@ -300,145 +301,15 @@ export default function App() {
       );
     }
 
-    if (activeTab === 'movies') {
-      const movieGenres = ['Action', 'Drama', 'Comedy', 'Sci-Fi', 'Thriller', 'Animation', 'All'];
-      const filteredMoviesList =
-        selectedMovieGenre === 'All'
-          ? movies
-          : movies.filter((m) =>
-              m.genres.some((g) => g.toLowerCase().includes(selectedMovieGenre.toLowerCase()))
-            );
-
-      const trendingMovies = [
-        {
-          id: 'trend-1',
-          title: 'Neon Harbor',
-          category: 'Action • Cyberpunk',
-          rating: '9.3',
-          bgColor: '#4A0404',
-          image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500&auto=format&fit=crop&q=80',
-        },
-        {
-          id: 'trend-2',
-          title: 'Red Sands',
-          category: 'Sci-Fi • Odyssey',
-          rating: '9.6',
-          bgColor: '#6B0014',
-          image: 'https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?w=500&auto=format&fit=crop&q=80',
-        },
-        {
-          id: 'trend-3',
-          title: 'Deep Forest',
-          category: 'Mystery • Thriller',
-          rating: '9.1',
-          bgColor: '#2E000B',
-          image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&auto=format&fit=crop&q=80',
-        },
-      ];
-
+    if (activeTab === 'movies' || selectedCategory === 'Movies') {
       return (
-        <View style={styles.paddingSection}>
-          {/* Header Row: Movies + Search (Screenshot 1) */}
-          <View style={styles.moviesHeaderRow}>
-            <Text style={styles.moviesHeaderTitle}>Movies</Text>
-            <TouchableOpacity
-              style={styles.moviesHeaderSearchBtn}
-              onPress={() => setIsSearchOpen(true)}
-            >
-              <Text style={{ fontSize: 16 }}>🔍</Text>
-            </TouchableOpacity>
-          </View>
-
-          {/* Featured Hero Card (Screenshot 1) */}
-          <View style={styles.moviesHeroCard}>
-            <Image
-              source={{ uri: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=900&auto=format&fit=crop&q=85' }}
-              style={styles.moviesHeroBg}
-            />
-            <View style={styles.moviesHeroOverlay}>
-              <Text style={styles.moviesHeroTag}>Featured • Thriller</Text>
-              <Text style={styles.moviesHeroTitle}>Last Signal</Text>
-              <View style={styles.moviesHeroBtnsRow}>
-                <TouchableOpacity
-                  style={styles.moviesPlayBtn}
-                  onPress={() => setPlayingItem(movies[0])}
-                >
-                  <Text style={styles.moviesPlayBtnText}>▶  Play</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.moviesListBtn}
-                  onPress={() => toggleFavorite(movies[0].id)}
-                >
-                  <Text style={styles.moviesListBtnText}>
-                    {favoriteIds.includes(movies[0].id) ? '✓ In list' : '+ My list'}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-            <ShineBorder borderRadius={22} borderWidth={1.5} duration={8} />
-          </View>
-
-          {/* Netflix Signature Top 10 Movies Rail with Giant 1, 2, 3... Outlined Numbers */}
-          <NetflixTop10Rail
-            title="Top 10 Movies Today"
-            badge="#1 TRENDING"
-            items={movies}
-            onSelect={(item) => setSelectedItem(item)}
-            onSeeAll={() => setSelectedMovieGenre('All')}
-          />
-
-          {/* Browse by genre Section (Screenshot 1) */}
-          <Text style={[styles.moviesSectionTitle, { marginTop: 20, marginBottom: 10 }]}>
-            Browse by genre
-          </Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 18 }}>
-            <View style={{ flexDirection: 'row', gap: 8 }}>
-              {movieGenres.map((g) => {
-                const isActive = selectedMovieGenre === g;
-                return (
-                  <TouchableOpacity
-                    key={g}
-                    style={[
-                      styles.genrePill,
-                      isActive && styles.genrePillActive,
-                    ]}
-                    onPress={() => setSelectedMovieGenre(g)}
-                  >
-                    <Text
-                      style={[
-                        styles.genrePillText,
-                        isActive && styles.genrePillTextActive,
-                      ]}
-                    >
-                      {g}
-                    </Text>
-                  </TouchableOpacity>
-                );
-              })}
-            </View>
-          </ScrollView>
-
-          {/* Filtered Movies Grid */}
-          <View style={styles.moviesGridHeader}>
-            <Text style={{ color: '#FFFFFF', fontSize: 15, fontWeight: '800' }}>
-              {selectedMovieGenre === 'All' ? 'All Blockbusters' : `${selectedMovieGenre} Titles`}
-            </Text>
-            <Text style={{ color: '#71717a', fontSize: 12 }}>
-              {filteredMoviesList.length} movies
-            </Text>
-          </View>
-          <View style={styles.moviesGrid}>
-            {filteredMoviesList.map((m) => (
-              <MoviePosterCard
-                key={m.id}
-                item={m}
-                width={(width - 44) / 2}
-                height={240}
-                onPress={(item) => setSelectedItem(item)}
-              />
-            ))}
-          </View>
-        </View>
+        <ViaplayCatalogView
+          movies={movies}
+          onPlay={(item) => setPlayingItem(item)}
+          onDetails={(item) => setSelectedItem(item)}
+          onToggleFavorite={toggleFavorite}
+          favoriteIds={favoriteIds}
+        />
       );
     }
 
