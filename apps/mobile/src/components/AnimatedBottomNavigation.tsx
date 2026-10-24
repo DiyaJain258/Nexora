@@ -8,7 +8,7 @@ import {
   Platform,
 } from 'react-native';
 
-export type BottomTabType = 'landing' | 'home' | 'search' | 'livetv' | 'movies' | 'mylist' | 'account';
+export type BottomTabType = 'landing' | 'home' | 'search' | 'livetv' | 'movies' | 'series' | 'mylist' | 'account';
 
 interface AnimatedBottomNavigationProps {
   activeTab: BottomTabType;
@@ -23,8 +23,9 @@ interface TabItemConfig {
 
 const TABS: TabItemConfig[] = [
   { id: 'home', label: 'Home', icon: '🏠' },
-  { id: 'search', label: 'Search', icon: '🔍' },
-  { id: 'mylist', label: 'Saved', icon: '🤍' },
+  { id: 'livetv', label: 'Live TV', icon: '📺' },
+  { id: 'movies', label: 'Movies', icon: '🎬' },
+  { id: 'series', label: 'Series', icon: '🎞️' },
   { id: 'account', label: 'Profile', icon: '👤' },
 ];
 
@@ -64,7 +65,7 @@ const TabButton: React.FC<TabButtonProps> = ({ tab, isActive, onPress }) => {
     if (isActive) {
       Animated.sequence([
         Animated.timing(bounceAnim, {
-          toValue: 1.25,
+          toValue: 1.2,
           duration: 120,
           useNativeDriver: true,
         }),
@@ -95,7 +96,12 @@ const TabButton: React.FC<TabButtonProps> = ({ tab, isActive, onPress }) => {
         {tab.icon}
       </Animated.Text>
 
-      {/* Tiny active red/burgundy dot */}
+      {/* Label */}
+      <Text style={[styles.tabLabel, isActive && styles.tabLabelActive]}>
+        {tab.label}
+      </Text>
+
+      {/* Red indicator dot */}
       {isActive && <View style={styles.activeDot} />}
     </TouchableOpacity>
   );
@@ -106,14 +112,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#07080B',
     borderTopWidth: 1,
     borderTopColor: 'rgba(255, 255, 255, 0.08)',
-    paddingBottom: Platform.OS === 'ios' ? 20 : 8,
+    paddingBottom: Platform.OS === 'ios' ? 18 : 6,
   },
   surface: {
     height: 56,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
-    paddingHorizontal: 16,
+    paddingHorizontal: 10,
     backgroundColor: 'rgba(7, 8, 11, 0.98)',
   },
   tabItem: {
@@ -122,19 +128,30 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
+    paddingTop: 4,
   },
   tabIcon: {
-    fontSize: 22,
+    fontSize: 20,
     opacity: 0.45,
+    marginBottom: 2,
   },
   tabIconActive: {
     opacity: 1,
   },
+  tabLabel: {
+    color: '#8E8E93',
+    fontSize: 10.5,
+    fontWeight: '600',
+  },
+  tabLabelActive: {
+    color: '#E50914',
+    fontWeight: '800',
+  },
   activeDot: {
     position: 'absolute',
-    bottom: 6,
-    width: 4,
-    height: 4,
+    top: 0,
+    width: 18,
+    height: 2.5,
     borderRadius: 2,
     backgroundColor: '#E50914',
   },

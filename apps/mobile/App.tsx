@@ -46,6 +46,7 @@ import { ContinueWatchingRail } from './src/components/ContinueWatchingRail';
 import { TopTrendingRail } from './src/components/TopTrendingRail';
 import { PremiumContentDetailsModal } from './src/components/PremiumContentDetailsModal';
 import { NetflixSignUpScreen } from './src/components/NetflixSignUpScreen';
+import { YacineLiveTvView } from './src/components/YacineLiveTvView';
 
 const { width, height } = Dimensions.get('window');
 
@@ -245,66 +246,13 @@ export default function App() {
       );
     }
 
-    if (activeTab === 'livetv') {
+    if (activeTab === 'livetv' || selectedCategory === 'Live TV') {
       return (
-        <View style={styles.paddingSection}>
-          <View style={styles.liveHeroCard}>
-            <Image source={{ uri: MOCK_CHANNELS[0].logo }} style={styles.liveHeroBg} />
-            <View style={styles.liveHeroOverlay}>
-              <View style={styles.badgeRed}>
-                <Text style={styles.badgeRedText}>● LIVE TRANSMISSION</Text>
-              </View>
-              <Text style={styles.liveHeroTitle}>{MOCK_CHANNELS[0].name}</Text>
-              <Text style={styles.liveHeroProgram}>
-                {MOCK_CHANNELS[0].currentProgram?.title || 'Continuous Airing'}
-              </Text>
-              <TouchableOpacity
-                style={styles.liveHeroButton}
-                onPress={() => setPlayingItem(MOCK_CHANNELS[0])}
-              >
-                <Text style={styles.heroPrimaryButtonText}>▶ Watch Fullscreen 4K</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-
-          <SectionHeader
-            title={`Electronic Program Guide (${MOCK_CHANNELS.length} Channels)`}
-            badge="REAL-TIME"
-          />
-
-          {MOCK_CHANNELS.map((ch) => (
-            <TouchableOpacity
-              key={ch.id}
-              style={styles.channelRow}
-              onPress={() => setPlayingItem(ch)}
-            >
-              <Image source={{ uri: ch.logo }} style={styles.channelLogo} />
-              <View style={{ flex: 1 }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-                  <Text style={styles.channelNumber}>#{ch.channelNumber}</Text>
-                  <Text style={styles.channelName}>{ch.name}</Text>
-                  <View style={styles.resBadge}>
-                    <Text style={styles.resBadgeText}>{ch.resolution}</Text>
-                  </View>
-                </View>
-                <Text style={styles.channelProgram}>
-                  {ch.currentProgram?.title || 'Continuous Live Broadcast'}
-                </Text>
-                <View style={styles.channelProgressBar}>
-                  <View
-                    style={[
-                      styles.channelProgressFill,
-                      { width: `${ch.currentProgram?.progressPercent || 35}%` },
-                    ]}
-                  />
-                </View>
-              </View>
-              <View style={styles.channelPlayIcon}>
-                <Text style={{ color: '#E50914', fontSize: 14 }}>▶</Text>
-              </View>
-            </TouchableOpacity>
-          ))}
-        </View>
+        <YacineLiveTvView
+          onPlayChannel={(channelOrItem) => setPlayingItem(channelOrItem)}
+          onSearchPress={() => setIsSearchOpen(true)}
+          onMenuPress={() => setActiveTab('landing')}
+        />
       );
     }
 
@@ -365,8 +313,8 @@ export default function App() {
       );
     }
 
-    // Default: activeTab === 'home'
-    if (selectedCategory === 'Series') {
+    // Default: activeTab === 'home' or 'series'
+    if (activeTab === 'series' || selectedCategory === 'Series') {
       return (
         <View style={{ paddingBottom: 24 }}>
           <View style={styles.seriesDeckHeaderBox}>
@@ -669,14 +617,14 @@ export default function App() {
         {/* Cinematic Backdrop Layer with 7x3 Tilted Posters & Fog */}
         <NativeCinematicBackground />
 
-        {/* Top Header: Premium User Header on Home screen matching Screen 1, or AnimatedHeader */}
+        {/* Top Header: Premium User Header on Home screen, or AnimatedHeader (hidden on livetv and account tabs) */}
         {activeTab === 'home' && !isSearchOpen ? (
           <PremiumUserHeader
             userName="Venkatesh M"
             onNotificationPress={() => {}}
             onProfilePress={() => setActiveTab('account')}
           />
-        ) : (
+        ) : activeTab === 'livetv' || activeTab === 'account' ? null : (
           <AnimatedHeader
             isSearchActive={isSearchOpen}
             onSearchPress={() => setIsSearchOpen(!isSearchOpen)}
@@ -696,8 +644,8 @@ export default function App() {
           />
         )}
 
-        {/* Category Filter Pills (Shown only during non-home streaming modes) */}
-        {!isSearchOpen && activeTab !== 'landing' && activeTab !== 'home' && (
+        {/* Category Filter Pills (Shown only during non-home streaming modes like Movies or Sports) */}
+        {!isSearchOpen && activeTab !== 'landing' && activeTab !== 'home' && activeTab !== 'livetv' && activeTab !== 'account' && (
           <View style={styles.categoryBar}>
             <ScrollView
               horizontal
