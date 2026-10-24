@@ -335,10 +335,10 @@
    FULL MOBILE & TABLET RESPONSIVE SYSTEM (ZERO EFFECTS LOST)
    ═══════════════════════════════════════════════════════════ */
 
-/* Global Anti-Overflow */
+/* Global Anti-Overflow - Using clip ensures CSS position: sticky works reliably */
 html, body {
-  overflow-x: hidden;
-  max-width: 100vw;
+  overflow-x: clip;
+  max-width: 100%;
 }
 
 /* 1. Navbar Responsive */

@@ -36,14 +36,14 @@ const StickyCard_001: React.FC<StickyCardProps> = ({
   return (
     <div
       ref={container}
-      className="sticky top-0 flex items-center justify-center"
+      className="sticky flex items-center justify-center"
       style={{
         position: 'sticky',
-        top: '11vh',
+        top: `calc(10vh + ${i * 24}px)`,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        marginBottom: '28px',
+        marginBottom: '36px',
         zIndex: i + 1,
       }}
     >
@@ -51,7 +51,6 @@ const StickyCard_001: React.FC<StickyCardProps> = ({
         className="skiper-sticky-card"
         style={{
           scale,
-          top: `calc(${i * 20}px)`,
           width: '92%',
           maxWidth: '960px',
           borderRadius: '28px',
@@ -378,7 +377,7 @@ export const Skiper16StickyCards: React.FC<{ onPlayMovie?: (movie: any) => void 
       style={{
         position: 'relative',
         width: '100%',
-        paddingBottom: '8vh',
+        paddingBottom: '28vh',
         paddingTop: '48px',
         backgroundColor: '#050507',
       }}
