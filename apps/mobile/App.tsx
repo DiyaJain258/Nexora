@@ -47,6 +47,7 @@ import { PremiumContentDetailsModal } from './src/components/PremiumContentDetai
 import { NetflixSignUpScreen } from './src/components/NetflixSignUpScreen';
 import { NetflixWelcomeLandingScreen } from './src/components/NetflixWelcomeLandingScreen';
 import { CinematicLaunchSplashScreen } from './src/components/CinematicLaunchSplashScreen';
+import { NexoraMoviesHubView } from './src/components/NexoraMoviesHubView';
 import { YacineLiveTvView } from './src/components/YacineLiveTvView';
 import { PremiumSportsLiveView } from './src/components/PremiumSportsLiveView';
 
@@ -72,13 +73,7 @@ export default function App() {
   const [selectedSub, setSelectedSub] = useState('English [CC]');
   const [showTracksModal, setShowTracksModal] = useState(false);
 
-  // Auto-dismiss splash screen
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowSplash(false);
-    }, 1800);
-    return () => clearTimeout(timer);
-  }, []);
+  // Splash screen will auto-dismiss smoothly via CinematicLaunchSplashScreen onFinish
 
   const categories = ['All', 'Sports', 'Live TV', 'Movies', 'Series', 'Kids'];
   const movies = MOCK_CONTENT.filter((c) => c.type === 'movie');
@@ -282,12 +277,12 @@ export default function App() {
 
     if (activeTab === 'movies' || selectedCategory === 'Movies') {
       return (
-        <ViaplayCatalogView
-          movies={movies}
-          onPlay={(item) => setPlayingItem(item)}
-          onDetails={(item) => setSelectedItem(item)}
-          onToggleFavorite={toggleFavorite}
-          favoriteIds={favoriteIds}
+        <NexoraMoviesHubView
+          onPlayContent={(item) => setPlayingItem(item)}
+          onOpenDetails={(item) => setSelectedItem(item)}
+          onSearchPress={() => setIsSearchOpen(true)}
+          onCastPress={() => {}}
+          onDownloadPress={() => {}}
         />
       );
     }
@@ -649,7 +644,7 @@ export default function App() {
             onNotificationPress={() => {}}
             onProfilePress={() => setActiveTab('account')}
           />
-        ) : activeTab === 'livetv' || activeTab === 'account' ? null : (
+        ) : activeTab === 'livetv' || activeTab === 'account' || activeTab === 'movies' || selectedCategory === 'Movies' ? null : (
           <AnimatedHeader
             isSearchActive={isSearchOpen}
             onSearchPress={() => setIsSearchOpen(!isSearchOpen)}
