@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { LampContainer } from '@/components/ui/lamp';
-import { SparklesCore } from '@/components/ui/sparkles';
+import { LampContainer } from '../components/ui/lamp';
+import { SparklesCore } from '../components/ui/sparkles';
 import { Zap, Tv, ShieldCheck, Play, ArrowRight } from 'lucide-react';
 
 interface PlatformLampShowcaseProps {

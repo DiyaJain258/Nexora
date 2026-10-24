@@ -13,7 +13,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import 'swiper/css';
 import 'swiper/css/effect-cards';
-import { cn } from '@/lib/utils';
+import { cn } from '../../lib/utils';
 import { ContentItem } from '@nexora/shared';
 
 interface Skiper49Props {

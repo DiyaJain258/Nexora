@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Pause, Zap, Star, Volume2, VolumeX, ChevronLeft, ChevronRight, Activity, Sparkles, CheckCircle2, Film } from 'lucide-react';
-import { SparklesCore } from '@/components/ui/sparkles';
+import { SparklesCore } from '../components/ui/sparkles';
 import { MovieTrailerModal, MovieTrailerItem } from './MovieTrailerModal';
 
 interface NetflixHeroBillboardProps {
