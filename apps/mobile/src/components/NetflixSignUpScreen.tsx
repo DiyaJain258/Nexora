@@ -39,15 +39,21 @@ const POSTER_TILES = [
 ];
 
 interface NetflixSignUpScreenProps {
+  initialMode?: 'signin' | 'signup';
   onSuccess?: () => void;
   onClose?: () => void;
 }
 
 export const NetflixSignUpScreen: React.FC<NetflixSignUpScreenProps> = ({
+  initialMode = 'signin',
   onSuccess,
   onClose,
 }) => {
-  const [isSignInMode, setIsSignInMode] = useState(true);
+  const [isSignInMode, setIsSignInMode] = useState(initialMode !== 'signup');
+
+  React.useEffect(() => {
+    setIsSignInMode(initialMode !== 'signup');
+  }, [initialMode]);
   const [emailOrPhone, setEmailOrPhone] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(true);

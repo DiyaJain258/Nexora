@@ -45,6 +45,7 @@ import { ContinueWatchingRail } from './src/components/ContinueWatchingRail';
 import { TopTrendingRail } from './src/components/TopTrendingRail';
 import { PremiumContentDetailsModal } from './src/components/PremiumContentDetailsModal';
 import { NetflixSignUpScreen } from './src/components/NetflixSignUpScreen';
+import { NetflixWelcomeLandingScreen } from './src/components/NetflixWelcomeLandingScreen';
 import { YacineLiveTvView } from './src/components/YacineLiveTvView';
 import { PremiumSportsLiveView } from './src/components/PremiumSportsLiveView';
 
@@ -52,6 +53,8 @@ const { width, height } = Dimensions.get('window');
 
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
+  const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(false);
+  const [authScreenMode, setAuthScreenMode] = useState<'signin' | 'signup' | null>(null);
   const [activeTab, setActiveTab] = useState<BottomTabType>('home');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -171,6 +174,36 @@ export default function App() {
           <View style={styles.splashProgressBarFill} />
         </View>
         <Text style={styles.splashStatus}>INITIALIZING 3D CINEMATIC ENGINE...</Text>
+      </View>
+    );
+  }
+
+  // 🌟 First-Time Launch / Onboarding Welcome Screen Flow (Netflix Reference)
+  if (!hasCompletedOnboarding) {
+    if (authScreenMode) {
+      return (
+        <View style={{ flex: 1, backgroundColor: '#000000' }}>
+          <StatusBar style="light" />
+          <NetflixSignUpScreen
+            initialMode={authScreenMode}
+            onSuccess={() => {
+              setHasCompletedOnboarding(true);
+              setAuthScreenMode(null);
+              setActiveTab('home');
+            }}
+            onClose={() => setAuthScreenMode(null)}
+          />
+        </View>
+      );
+    }
+
+    return (
+      <View style={{ flex: 1, backgroundColor: '#000000' }}>
+        <StatusBar style="light" />
+        <NetflixWelcomeLandingScreen
+          onGetStarted={() => setAuthScreenMode('signup')}
+          onSignIn={() => setAuthScreenMode('signin')}
+        />
       </View>
     );
   }
