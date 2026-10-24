@@ -1,8 +1,17 @@
 import React, { useState } from 'react';
 import { Tv, Globe, ChevronDown, Eye, EyeOff, ArrowRight, ArrowLeft, Check, ShieldCheck, Monitor } from 'lucide-react';
 
+export interface UserSession {
+  role: 'admin' | 'subscriber';
+  name: string;
+  email: string;
+  plan: string;
+  activeScreens: number;
+  maxScreens: number;
+}
+
 interface AdminLoginViewProps {
-  onLoginSuccess: () => void;
+  onLoginSuccess: (session?: UserSession) => void;
   onBackToLanding?: () => void;
   defaultTab?: 'sub' | 'adm';
 }
@@ -87,10 +96,34 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
     setTimeout(() => {
       setLoading(false);
       setSuccess(true);
-      showToast('Success 🎬', activeTab === 'adm' ? 'Welcome Back Superadmin! Loading Admin Operations Console…' : 'Welcome to NEXORA! Opening Operations Console…');
+      const isAdm = activeTab === 'adm';
+      showToast(
+        'Success 🎬',
+        isAdm
+          ? 'Welcome Back Superadmin! Loading Admin Operations Console…'
+          : 'Welcome to NEXORA VIP! Opening 4K Cinematic Streaming…'
+      );
+
+      const session: UserSession = isAdm
+        ? {
+            role: 'admin',
+            name: 'Alexander Vance',
+            email: email || 'alexander@nexora.tv',
+            plan: 'Superadmin Console',
+            activeScreens: 1,
+            maxScreens: 1,
+          }
+        : {
+            role: 'subscriber',
+            name: 'VIP Member',
+            email: email || 'subscriber@nexora.tv',
+            plan: 'NEXORA 4K ULTRA VIP',
+            activeScreens: 3,
+            maxScreens: 5,
+          };
 
       setTimeout(() => {
-        onLoginSuccess();
+        onLoginSuccess(session);
       }, 700);
     }, 900);
   };

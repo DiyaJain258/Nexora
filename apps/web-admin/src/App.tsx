@@ -11,8 +11,10 @@ import { UsersDevicesView } from './views/UsersDevicesView';
 import { SubscriptionPlansView } from './views/SubscriptionPlansView';
 import { NotificationsView } from './views/NotificationsView';
 import { ReportsSettingsView } from './views/ReportsSettingsView';
-import { AdminLoginView } from './views/AdminLoginView';
+import { AdminLoginView, UserSession } from './views/AdminLoginView';
 import { LandingPageView } from './views/LandingPageView';
+
+export type { UserSession };
 
 type AppViewMode = 'landing' | 'admin-login' | 'admin-dashboard';
 
@@ -27,7 +29,29 @@ export const App: React.FC = () => {
   };
 
   const [viewMode, setViewState] = useState<AppViewMode>(getInitialView);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+
+  const [userSession, setUserSession] = useState<UserSession | null>(() => {
+    try {
+      const saved = localStorage.getItem('nexora_session');
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
+
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => {
+    try {
+      const saved = localStorage.getItem('nexora_session');
+      if (saved) {
+        const s = JSON.parse(saved);
+        return s.role === 'admin';
+      }
+      return false;
+    } catch {
+      return false;
+    }
+  });
+
   const [activeTab, setActiveTab] = useState<AdminTab>('dashboard');
 
   const setViewMode = (mode: AppViewMode) => {
@@ -39,6 +63,41 @@ export const App: React.FC = () => {
     } else if (mode === 'admin-dashboard') {
       window.location.hash = '#/admin';
     }
+  };
+
+  const handleLoginSuccess = (session?: UserSession) => {
+    if (session) {
+      setUserSession(session);
+      try {
+        localStorage.setItem('nexora_session', JSON.stringify(session));
+      } catch (err) {
+        console.error(err);
+      }
+
+      if (session.role === 'admin') {
+        setIsLoggedIn(true);
+        setActiveTab('dashboard');
+        setViewMode('admin-dashboard');
+      } else {
+        // Subscriber login -> Landing page in VIP Mode!
+        setViewMode('landing');
+      }
+    } else {
+      setIsLoggedIn(true);
+      setActiveTab('dashboard');
+      setViewMode('admin-dashboard');
+    }
+  };
+
+  const handleLogout = () => {
+    setUserSession(null);
+    setIsLoggedIn(false);
+    try {
+      localStorage.removeItem('nexora_session');
+    } catch (err) {
+      console.error(err);
+    }
+    setViewMode('landing');
   };
 
   // Sync with browser back/forward buttons
@@ -94,10 +153,17 @@ export const App: React.FC = () => {
   if (viewMode === 'landing') {
     return (
       <LandingPageView
+        userSession={userSession}
+        onLogout={handleLogout}
+        onLoginSuccess={handleLoginSuccess}
         onNavigateToAdmin={() => {
-          setIsLoggedIn(true);
-          setActiveTab('dashboard');
-          setViewMode('admin-dashboard');
+          if (userSession?.role === 'admin') {
+            setIsLoggedIn(true);
+            setActiveTab('dashboard');
+            setViewMode('admin-dashboard');
+          } else {
+            setViewMode('admin-login');
+          }
         }}
       />
     );
@@ -108,11 +174,7 @@ export const App: React.FC = () => {
     return (
       <AdminLoginView
         defaultTab="adm"
-        onLoginSuccess={() => {
-          setIsLoggedIn(true);
-          setActiveTab('dashboard');
-          setViewMode('admin-dashboard');
-        }}
+        onLoginSuccess={handleLoginSuccess}
         onBackToLanding={() => setViewMode('landing')}
       />
     );
@@ -137,10 +199,7 @@ export const App: React.FC = () => {
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
         <Header
           currentTabName={tabTitles[activeTab]}
-          onLogout={() => {
-            setIsLoggedIn(false);
-            setViewMode('admin-login');
-          }}
+          onLogout={handleLogout}
           onOpenSettings={() => setActiveTab('reports-settings')}
           onBackToLanding={() => setViewMode('landing')}
         />

@@ -16,22 +16,33 @@ import { Footer } from '../landing/Footer';
 import { LivePlayerModal } from '../landing/LivePlayerModal';
 import { ActivationModal } from '../landing/ActivationModal';
 import { AuthModal } from '../landing/AuthModal';
+import { SubscriberProfileModal } from '../landing/SubscriberProfileModal';
+import { UserSession } from '../views/AdminLoginView';
 import '../landing/landing.css';
 
 interface LandingPageViewProps {
   onNavigateToAdmin: () => void;
+  userSession?: UserSession | null;
+  onLogout?: () => void;
+  onLoginSuccess?: (session: UserSession) => void;
 }
 
-export const LandingPageView: React.FC<LandingPageViewProps> = ({ onNavigateToAdmin }) => {
+export const LandingPageView: React.FC<LandingPageViewProps> = ({
+  onNavigateToAdmin,
+  userSession,
+  onLogout,
+  onLoginSuccess,
+}) => {
   const [selectedChannelForPlayer, setSelectedChannelForPlayer] = useState<Channel | null>(null);
   const [isPlayerOpen, setIsPlayerOpen] = useState(false);
   const [isActivationOpen, setIsActivationOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const [isSubscriberModalOpen, setIsSubscriberModalOpen] = useState(false);
   const [authDefaultTab, setAuthDefaultTab] = useState<'subscriber' | 'admin'>('subscriber');
 
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 0.9,
+      duration: 0.5,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
@@ -122,6 +133,9 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({ onNavigateToAd
           setIsAuthOpen(true);
         }}
         onNavigateToAdmin={onNavigateToAdmin}
+        userSession={userSession}
+        onOpenSubscriberProfile={() => setIsSubscriberModalOpen(true)}
+        onLogout={onLogout}
       />
 
       {/* Grand Netflix-Style Cinematic Billboard Slider with Big Auto-Slides and Trailer Modal */}
@@ -174,8 +188,28 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({ onNavigateToAd
           defaultTab={authDefaultTab}
           onClose={() => setIsAuthOpen(false)}
           onNavigateToAdmin={onNavigateToAdmin}
+          onLoginSuccess={(session) => {
+            if (onLoginSuccess) {
+              onLoginSuccess(session);
+            }
+          }}
         />
       )}
+
+      {/* Subscriber Member Center / TV Devices & Account Modal */}
+      <SubscriberProfileModal
+        isOpen={isSubscriberModalOpen}
+        onClose={() => setIsSubscriberModalOpen(false)}
+        session={userSession || null}
+        onLogout={() => {
+          setIsSubscriberModalOpen(false);
+          if (onLogout) onLogout();
+        }}
+        onBrowseMovies={() => {
+          const el = document.getElementById('cinema');
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }}
+      />
     </div>
   );
 };

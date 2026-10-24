@@ -1,12 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Tv, KeyRound, PlaySquare, Menu, X, ChevronRight, Sparkles } from 'lucide-react';
+import { Tv, KeyRound, PlaySquare, Menu, X, ChevronRight, Sparkles, Crown, LogOut, Shield } from 'lucide-react';
+import { UserSession } from '../views/AdminLoginView';
 
 interface NavbarProps {
   onOpenActivation: () => void;
   onOpenLiveDemo: () => void;
   onOpenSignIn: (defaultTab?: 'subscriber' | 'admin') => void;
   onNavigateToAdmin?: () => void;
+  userSession?: UserSession | null;
+  onOpenSubscriberProfile?: () => void;
+  onLogout?: () => void;
 }
 
 const NAV_ITEMS = [
@@ -25,6 +29,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenLiveDemo,
   onOpenSignIn,
   onNavigateToAdmin,
+  userSession,
+  onOpenSubscriberProfile,
+  onLogout,
 }) => {
   const [activeSection, setActiveSection] = useState<string>('');
   const [hoveredSection, setHoveredSection] = useState<string | null>(null);
@@ -333,27 +340,129 @@ export const Navbar: React.FC<NavbarProps> = ({
           <span>Enter TV Code</span>
         </motion.button>
 
-        <motion.button
-          whileHover={{ scale: 1.03, y: -1 }}
-          whileTap={{ scale: 0.97 }}
-          onClick={() => onOpenSignIn('subscriber')}
-          className="nav-btn-signin"
-          title="Subscriber Sign In"
-        >
-          <span>Sign In</span>
-        </motion.button>
+        {userSession?.role === 'subscriber' ? (
+          <motion.button
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.96 }}
+            onClick={onOpenSubscriberProfile}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '6px 14px 6px 8px',
+              borderRadius: '999px',
+              background: 'linear-gradient(135deg, rgba(225, 29, 72, 0.25) 0%, rgba(136, 19, 55, 0.4) 100%)',
+              border: '1.5px solid rgba(225, 29, 72, 0.65)',
+              boxShadow: '0 0 20px rgba(225, 29, 72, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.25)',
+              cursor: 'pointer',
+              color: '#ffffff',
+            }}
+            title="Subscriber VIP Passholder • Click for TV Devices & Account"
+          >
+            <div
+              style={{
+                width: '26px',
+                height: '26px',
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, #e11d48 0%, #be123c 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 0 10px #e11d48',
+                position: 'relative',
+              }}
+            >
+              <Crown size={14} color="#ffffff" />
+              <span
+                style={{
+                  position: 'absolute',
+                  bottom: '-1px',
+                  right: '-1px',
+                  width: '7px',
+                  height: '7px',
+                  borderRadius: '50%',
+                  backgroundColor: '#10b981',
+                  border: '1px solid #050507',
+                }}
+              />
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+              <span style={{ fontSize: '12px', fontWeight: 900, lineHeight: 1.1, color: '#ffffff' }}>
+                VIP Member
+              </span>
+              <span style={{ fontSize: '9px', fontWeight: 800, color: '#fda4af', letterSpacing: '0.4px' }}>
+                4K UNLOCKED
+              </span>
+            </div>
+          </motion.button>
+        ) : userSession?.role === 'admin' ? (
+          <motion.button
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.96 }}
+            onClick={onNavigateToAdmin}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '7px 16px',
+              borderRadius: '999px',
+              background: 'linear-gradient(135deg, #be123c 0%, #881337 100%)',
+              border: '1px solid rgba(255, 255, 255, 0.25)',
+              cursor: 'pointer',
+              color: '#ffffff',
+              fontSize: '12.5px',
+              fontWeight: 800,
+              boxShadow: '0 0 18px rgba(190, 18, 60, 0.45)',
+            }}
+          >
+            <Shield size={14} />
+            <span>Admin Console</span>
+          </motion.button>
+        ) : (
+          <motion.button
+            whileHover={{ scale: 1.03, y: -1 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={() => onOpenSignIn('subscriber')}
+            className="nav-btn-signin"
+            title="Subscriber Sign In"
+          >
+            <span>Sign In</span>
+          </motion.button>
+        )}
       </div>
 
       {/* Mobile Right Controls: Sign In + Hamburger Menu Toggle */}
       <div className="mobile-nav-toggle-group" style={{ display: 'none', alignItems: 'center', gap: '8px' }}>
-        <motion.button
-          whileTap={{ scale: 0.95 }}
-          onClick={() => onOpenSignIn('subscriber')}
-          className="nav-btn-signin"
-          style={{ padding: '6px 12px', fontSize: '12px' }}
-        >
-          <span>Sign In</span>
-        </motion.button>
+        {userSession?.role === 'subscriber' ? (
+          <motion.button
+            whileTap={{ scale: 0.95 }}
+            onClick={onOpenSubscriberProfile}
+            style={{
+              padding: '6px 12px',
+              fontSize: '11px',
+              fontWeight: 800,
+              borderRadius: '999px',
+              background: '#e11d48',
+              color: '#ffffff',
+              border: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '5px',
+            }}
+          >
+            <Crown size={12} />
+            <span>VIP 4K</span>
+          </motion.button>
+        ) : (
+          <motion.button
+            whileTap={{ scale: 0.95 }}
+            onClick={() => onOpenSignIn('subscriber')}
+            className="nav-btn-signin"
+            style={{ padding: '6px 12px', fontSize: '12px' }}
+          >
+            <span>Sign In</span>
+          </motion.button>
+        )}
 
         <motion.button
           whileTap={{ scale: 0.92 }}
@@ -459,6 +568,62 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <KeyRound size={16} color="#fda4af" />
                 <span>Enter TV Code (Instant Pairing)</span>
               </button>
+
+              {userSession?.role === 'subscriber' && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      if (onOpenSubscriberProfile) onOpenSubscriberProfile();
+                    }}
+                    style={{
+                      width: '100%',
+                      padding: '12px',
+                      borderRadius: '12px',
+                      background: 'linear-gradient(135deg, rgba(225, 29, 72, 0.3) 0%, rgba(136, 19, 55, 0.5) 100%)',
+                      border: '1.5px solid rgba(225, 29, 72, 0.6)',
+                      color: '#ffffff',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                      fontSize: '13px',
+                      fontWeight: 800,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <Crown size={16} color="#fda4af" />
+                    <span>My VIP Profile & TV Devices</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      if (onLogout) onLogout();
+                    }}
+                    style={{
+                      width: '100%',
+                      padding: '10px',
+                      borderRadius: '12px',
+                      backgroundColor: 'rgba(239, 68, 68, 0.12)',
+                      border: '1px solid rgba(239, 68, 68, 0.3)',
+                      color: '#f87171',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                      fontSize: '12.5px',
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <LogOut size={15} />
+                    <span>Sign Out</span>
+                  </button>
+                </>
+              )}
             </div>
           </motion.div>
         )}
