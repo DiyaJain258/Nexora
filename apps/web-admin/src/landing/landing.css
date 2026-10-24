@@ -625,4 +625,29 @@ html, body {
   }
 }
 
+/* Modal Custom Scrollbar */
+.modal-custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(225, 29, 72, 0.45) rgba(255, 255, 255, 0.04);
+}
+
+.modal-custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 999px;
+}
+
+.modal-custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(225, 29, 72, 0.45);
+  border-radius: 999px;
+}
+
+.modal-custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(225, 29, 72, 0.75);
+}
+
+
 

@@ -129,12 +129,16 @@ export const SubscriberProfileModal: React.FC<SubscriberProfileModalProps> = ({
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.94, y: 20 }}
           transition={{ type: 'spring', damping: 28, stiffness: 350 }}
+          data-lenis-prevent="true"
+          className="modal-custom-scrollbar"
+          onWheel={(e) => e.stopPropagation()}
           style={{
             position: 'relative',
             width: '100%',
             maxWidth: '620px',
             maxHeight: '90vh',
             overflowY: 'auto',
+            overscrollBehavior: 'contain',
             backgroundColor: '#0a0710',
             border: '1.5px solid rgba(225, 29, 72, 0.4)',
             borderRadius: '26px',

@@ -101,6 +101,32 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
     };
   }, []);
 
+  // Pause Lenis background scrolling when any modal is open
+  useEffect(() => {
+    const lenis = (window as any).__lenis;
+    if (!lenis) return;
+    const isAnyModalOpen =
+      isSearchOpen ||
+      isSubscriberModalOpen ||
+      isAuthOpen ||
+      isPlayerOpen ||
+      isOttPlayerOpen ||
+      isActivationOpen;
+
+    if (isAnyModalOpen) {
+      lenis.stop();
+    } else {
+      lenis.start();
+    }
+  }, [
+    isSearchOpen,
+    isSubscriberModalOpen,
+    isAuthOpen,
+    isPlayerOpen,
+    isOttPlayerOpen,
+    isActivationOpen,
+  ]);
+
   const handleTuneChannel = (channel: Channel) => {
     setSelectedChannelForPlayer(channel);
     setIsPlayerOpen(true);

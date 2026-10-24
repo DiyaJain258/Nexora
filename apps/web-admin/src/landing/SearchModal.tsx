@@ -166,10 +166,13 @@ export const SearchModal: React.FC<SearchModalProps> = ({
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: -20 }}
           transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+          data-lenis-prevent="true"
+          onWheel={(e) => e.stopPropagation()}
           style={{
             position: 'relative',
             width: '100%',
             maxWidth: '780px',
+            height: '82vh',
             maxHeight: '85vh',
             display: 'flex',
             flexDirection: 'column',
@@ -185,6 +188,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
           {/* Search Header Bar & Input */}
           <div
             style={{
+              flexShrink: 0,
               padding: '20px 24px 16px',
               borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
               background: 'linear-gradient(180deg, rgba(225, 29, 72, 0.12) 0%, rgba(10, 7, 16, 0.8) 100%)',
@@ -292,10 +296,16 @@ export const SearchModal: React.FC<SearchModalProps> = ({
 
           {/* Search Content Body (Scrollable) */}
           <div
+            data-lenis-prevent="true"
+            className="modal-custom-scrollbar"
+            onWheel={(e) => e.stopPropagation()}
             style={{
-              padding: '20px 24px',
+              padding: '20px 24px 32px',
               overflowY: 'auto',
-              flex: 1,
+              flex: '1 1 0%',
+              minHeight: 0,
+              overscrollBehavior: 'contain',
+              WebkitOverflowScrolling: 'touch',
             }}
           >
             {/* If No Query: Show Trending Searches & Quick Suggestions */}
