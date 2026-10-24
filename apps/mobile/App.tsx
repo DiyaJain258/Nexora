@@ -46,6 +46,7 @@ import { TopTrendingRail } from './src/components/TopTrendingRail';
 import { PremiumContentDetailsModal } from './src/components/PremiumContentDetailsModal';
 import { NetflixSignUpScreen } from './src/components/NetflixSignUpScreen';
 import { NetflixWelcomeLandingScreen } from './src/components/NetflixWelcomeLandingScreen';
+import { CinematicLaunchSplashScreen } from './src/components/CinematicLaunchSplashScreen';
 import { YacineLiveTvView } from './src/components/YacineLiveTvView';
 import { PremiumSportsLiveView } from './src/components/PremiumSportsLiveView';
 
@@ -161,20 +162,10 @@ export default function App() {
 
   if (showSplash) {
     return (
-      <View style={styles.splashContainer}>
-        <StatusBar style="light" />
-        <View style={styles.splashLogoBox}>
-          <Text style={styles.splashLogoText}>NX</Text>
-        </View>
-        <Text style={styles.splashBrandTitle}>
-          NEX<Text style={{ color: '#E50914' }}>ORA</Text>
-        </Text>
-        <Text style={styles.splashSubtitle}>IPTV & 4K STREAMING</Text>
-        <View style={styles.splashProgressBarTrack}>
-          <View style={styles.splashProgressBarFill} />
-        </View>
-        <Text style={styles.splashStatus}>INITIALIZING 3D CINEMATIC ENGINE...</Text>
-      </View>
+      <CinematicLaunchSplashScreen
+        onFinish={() => setShowSplash(false)}
+        duration={2600}
+      />
     );
   }
 
