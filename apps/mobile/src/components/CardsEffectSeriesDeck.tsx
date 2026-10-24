@@ -13,8 +13,8 @@ import {
 import { ContentItem } from '@nexora/shared';
 
 const { width } = Dimensions.get('window');
-const CARD_WIDTH = Math.min(width * 0.76, 280);
-const CARD_HEIGHT = CARD_WIDTH * 1.45;
+const CARD_WIDTH = Math.min(width * 0.82, 310);
+const CARD_HEIGHT = CARD_WIDTH * 1.48;
 
 interface CardsEffectSeriesDeckProps {
   items: ContentItem[];
@@ -32,8 +32,9 @@ export const CardsEffectSeriesDeck: React.FC<CardsEffectSeriesDeckProps> = ({
   favoriteIds = [],
 }) => {
   const [deck, setDeck] = useState<ContentItem[]>(items);
-  const pan = useRef(new Animated.ValueXY()).current;
-  const cardScale = useRef(new Animated.Value(1)).current;
+  const [isSwiping, setIsSwiping] = useState(false);
+  const pan = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
+  const idleBreath = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
     if (items && items.length > 0) {
@@ -41,45 +42,44 @@ export const CardsEffectSeriesDeck: React.FC<CardsEffectSeriesDeckProps> = ({
     }
   }, [items]);
 
-  // Swipe gesture handler
-  const panResponder = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onMoveShouldSetPanResponder: (_, gesture) => Math.abs(gesture.dx) > 10,
-      onPanResponderMove: (_, gesture) => {
-        pan.setValue({ x: gesture.dx, y: gesture.dy * 0.4 });
-      },
-      onPanResponderRelease: (_, gesture) => {
-        if (gesture.dx > 100) {
-          swipeOut('right');
-        } else if (gesture.dx < -100) {
-          swipeOut('left');
-        } else {
-          Animated.spring(pan, {
-            toValue: { x: 0, y: 0 },
-            friction: 5,
-            tension: 50,
-            useNativeDriver: false,
-          }).start();
-        }
-      },
-    })
-  ).current;
+  // Subtle breathing idle animation for premium feel
+  useEffect(() => {
+    const loop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(idleBreath, {
+          toValue: 1.018,
+          duration: 2200,
+          useNativeDriver: true,
+        }),
+        Animated.timing(idleBreath, {
+          toValue: 1.0,
+          duration: 2200,
+          useNativeDriver: true,
+        }),
+      ])
+    );
+    loop.start();
+    return () => loop.stop();
+  }, [idleBreath]);
 
   const swipeOut = (direction: 'left' | 'right') => {
-    const toX = direction === 'right' ? width + 80 : -width - 80;
+    if (isSwiping) return;
+    setIsSwiping(true);
+    const toX = direction === 'right' ? width + 100 : -width - 100;
+    const toY = direction === 'right' ? 30 : -30;
+
     Animated.timing(pan, {
-      toValue: { x: toX, y: 0 },
-      duration: 250,
-      useNativeDriver: false,
+      toValue: { x: toX, y: toY },
+      duration: 240,
+      useNativeDriver: true,
     }).start(() => {
       pan.setValue({ x: 0, y: 0 });
-      // Cycle first card to end
       setDeck((prev) => {
         if (prev.length <= 1) return prev;
         const [first, ...rest] = prev;
         return [...rest, first];
       });
+      setIsSwiping(false);
     });
   };
 
@@ -88,55 +88,156 @@ export const CardsEffectSeriesDeck: React.FC<CardsEffectSeriesDeckProps> = ({
   };
 
   const handlePrev = () => {
-    // Take last card and bring it to front with smooth entrance
+    if (isSwiping) return;
+    setIsSwiping(true);
     setDeck((prev) => {
       if (prev.length <= 1) return prev;
       const last = prev[prev.length - 1];
       const rest = prev.slice(0, prev.length - 1);
       return [last, ...rest];
     });
-    pan.setValue({ x: -width * 0.6, y: 0 });
+
+    pan.setValue({ x: -width * 0.7, y: 15 });
     Animated.spring(pan, {
       toValue: { x: 0, y: 0 },
       friction: 6,
-      tension: 60,
-      useNativeDriver: false,
-    }).start();
+      tension: 65,
+      useNativeDriver: true,
+    }).start(() => {
+      setIsSwiping(false);
+    });
   };
 
-  if (!deck.length) return null;
+  // Pan Responder for fluid gestures
+  const panResponder = useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponder: (_, gesture) => Math.abs(gesture.dx) > 6 || Math.abs(gesture.dy) > 6,
+      onPanResponderGrant: () => {
+        pan.setOffset({ x: 0, y: 0 });
+      },
+      onPanResponderMove: (_, gesture) => {
+        pan.setValue({ x: gesture.dx, y: gesture.dy * 0.35 });
+      },
+      onPanResponderRelease: (_, gesture) => {
+        if (gesture.dx > 85 || gesture.vx > 0.5) {
+          swipeOut('right');
+        } else if (gesture.dx < -85 || gesture.vx < -0.5) {
+          swipeOut('left');
+        } else {
+          Animated.spring(pan, {
+            toValue: { x: 0, y: 0 },
+            friction: 5,
+            tension: 60,
+            useNativeDriver: true,
+          }).start();
+        }
+      },
+    })
+  ).current;
+
+  if (!deck || deck.length === 0) return null;
 
   const topCard = deck[0];
   const isFavorite = favoriteIds.includes(topCard.id);
 
-  // Rotation based on horizontal pan
+  // Interpolations for realistic 3D Card movements
   const rotateZ = pan.x.interpolate({
     inputRange: [-width, 0, width],
     outputRange: ['-16deg', '0deg', '16deg'],
+    extrapolate: 'clamp',
   });
+
+  const likeStampOpacity = pan.x.interpolate({
+    inputRange: [20, 80],
+    outputRange: [0, 1],
+    extrapolate: 'clamp',
+  });
+
+  const passStampOpacity = pan.x.interpolate({
+    inputRange: [-80, -20],
+    outputRange: [1, 0],
+    extrapolate: 'clamp',
+  });
+
+  // Scale of the card immediately behind top card as top card moves
+  const behindCardScale = pan.x.interpolate({
+    inputRange: [-width * 0.5, 0, width * 0.5],
+    outputRange: [1.0, 0.94, 1.0],
+    extrapolate: 'clamp',
+  });
+
+  const behindCardTranslateY = pan.x.interpolate({
+    inputRange: [-width * 0.5, 0, width * 0.5],
+    outputRange: [0, -16, 0],
+    extrapolate: 'clamp',
+  });
+
+  // Visible stack count up to 4 items
+  const visibleCardsCount = Math.min(deck.length, 4);
+  const visibleCards = deck.slice(0, visibleCardsCount);
 
   return (
     <View style={styles.deckSection}>
       {/* 3D Stack Viewport */}
       <View style={styles.deckViewport}>
-        {/* Render bottom cards first (reverse stack for proper zIndex) */}
-        {deck.slice(0, 4).reverse().map((item, reverseIndex) => {
-          const index = 3 - reverseIndex; // 0 is top, 1 is middle, 2 is bottom, 3 is furthest
-          if (index === 0) {
-            // Front / Top Interactive Card
+        {/* Render stacked cards behind first (index 3 -> 1) */}
+        {visibleCards
+          .map((item, idx) => ({ item, index: idx }))
+          .slice(1) // exclude index 0 (top card)
+          .reverse() // render furthest first
+          .map(({ item, index }) => {
+            const isImmediateBehind = index === 1;
+
+            if (isImmediateBehind) {
+              return (
+                <Animated.View
+                  key={item.id}
+                  style={[
+                    styles.card,
+                    styles.stackedCard,
+                    {
+                      transform: [
+                        { scale: behindCardScale },
+                        { translateY: behindCardTranslateY },
+                        { rotateZ: '-2deg' },
+                      ],
+                      opacity: 0.92,
+                      zIndex: 20,
+                    },
+                  ]}
+                >
+                  <Image
+                    source={{ uri: item.posterUrl }}
+                    style={styles.cardPoster}
+                    resizeMode="cover"
+                  />
+                  <View style={styles.stackedCardDimmer} />
+                  <View style={styles.stackedBorderAccent} />
+                </Animated.View>
+              );
+            }
+
+            // Further cards (index 2 and 3)
+            const scale = 1 - index * 0.06;
+            const translateY = -index * 14;
+            const rotateAngle = index % 2 === 0 ? '2.5deg' : '-2deg';
+            const opacity = 1 - index * 0.22;
+
             return (
-              <Animated.View
+              <View
                 key={item.id}
-                {...panResponder.panHandlers}
                 style={[
                   styles.card,
-                  styles.topCard,
+                  styles.stackedCard,
                   {
                     transform: [
-                      { translateX: pan.x },
-                      { translateY: pan.y },
-                      { rotateZ },
+                      { scale },
+                      { translateY },
+                      { rotateZ: rotateAngle },
                     ],
+                    opacity,
+                    zIndex: 10 - index,
                   },
                 ]}
               >
@@ -145,109 +246,155 @@ export const CardsEffectSeriesDeck: React.FC<CardsEffectSeriesDeckProps> = ({
                   style={styles.cardPoster}
                   resizeMode="cover"
                 />
-
-                {/* Dark Vignette Overlay */}
-                <View style={styles.cardGradient} />
-
-                {/* Red Focus Highlight Border */}
-                <View style={styles.topCardRedBorder} />
-
-                {/* Top Badges */}
-                <View style={styles.topBadgesRow}>
-                  <View style={styles.badgeSeries}>
-                    <Text style={styles.badgeSeriesText}>NEXORA SERIES</Text>
-                  </View>
-                  <View style={styles.ratingBadge}>
-                    <Text style={styles.ratingStar}>★</Text>
-                    <Text style={styles.ratingText}>{item.rating}</Text>
-                  </View>
-                </View>
-
-                {/* Card Content Footer */}
-                <View style={styles.cardFooter}>
-                  <Text style={styles.cardTitle} numberOfLines={1}>
-                    {item.title}
-                  </Text>
-                  <Text style={styles.cardMeta}>
-                    {item.seasonsCount ? `${item.seasonsCount} Seasons` : item.duration} •{' '}
-                    {item.genres ? item.genres[0] : 'Sci-Fi'} • {item.quality || '4K HDR'}
-                  </Text>
-
-                  {/* Actions inside card */}
-                  <View style={styles.cardButtonsRow}>
-                    <TouchableOpacity
-                      activeOpacity={0.88}
-                      onPress={() => onPlay(item)}
-                      style={styles.watchBtn}
-                    >
-                      <Text style={styles.watchBtnIcon}>▶</Text>
-                      <Text style={styles.watchBtnText}>Watch Now</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                      activeOpacity={0.8}
-                      onPress={() => onDetails(item)}
-                      style={styles.detailsBtn}
-                    >
-                      <Text style={styles.detailsBtnText}>Details</Text>
-                    </TouchableOpacity>
-
-                    {onToggleFavorite && (
-                      <TouchableOpacity
-                        activeOpacity={0.8}
-                        onPress={() => onToggleFavorite(item.id)}
-                        style={[
-                          styles.favBtn,
-                          isFavorite && styles.favBtnActive,
-                        ]}
-                      >
-                        <Text style={styles.favBtnText}>
-                          {isFavorite ? '✓' : '+'}
-                        </Text>
-                      </TouchableOpacity>
-                    )}
-                  </View>
-                </View>
-              </Animated.View>
+                <View style={styles.stackedCardDimmer} />
+                <View style={styles.stackedBorderAccent} />
+              </View>
             );
-          }
+          })}
 
-          // Stacked cards behind (0-based: index 1, 2, 3)
-          const scale = 1 - index * 0.06;
-          const translateY = index * 14;
-          const opacity = 1 - index * 0.22;
+        {/* ─────────────────────────────────────────────────────────────
+            FRONT INTERACTIVE TOP CARD (Index 0)
+        ───────────────────────────────────────────────────────────── */}
+        <Animated.View
+          key={topCard.id}
+          {...panResponder.panHandlers}
+          style={[
+            styles.card,
+            styles.topCard,
+            {
+              transform: [
+                { translateX: pan.x },
+                { translateY: pan.y },
+                { rotateZ },
+                { scale: idleBreath },
+              ],
+            },
+          ]}
+        >
+          {/* Main Cover Image */}
+          <Image
+            source={{ uri: topCard.posterUrl }}
+            style={styles.cardPoster}
+            resizeMode="cover"
+          />
 
-          return (
-            <View
-              key={item.id}
-              style={[
-                styles.card,
-                styles.stackedCard,
-                {
-                  transform: [
-                    { scale },
-                    { translateY },
-                  ],
-                  opacity,
-                  zIndex: 10 - index,
-                },
-              ]}
-            >
-              <Image
-                source={{ uri: item.posterUrl }}
-                style={styles.cardPoster}
-                resizeMode="cover"
-              />
-              <View style={styles.stackedCardOverlay} />
+          {/* Top Vignette for Badges */}
+          <View style={styles.topVignette} />
+
+          {/* Deep Cinematic Bottom Gradient for Rich Text Legibility */}
+          <View style={styles.bottomVignetteBase} />
+          <View style={styles.bottomVignetteCore} />
+
+          {/* Glowing Burgundy Focus Border */}
+          <View style={styles.topCardGlowBorder} />
+
+          {/* Floating Gesture Indicators (Like / Next) */}
+          <Animated.View
+            pointerEvents="none"
+            style={[styles.stampContainer, styles.stampLike, { opacity: likeStampOpacity }]}
+          >
+            <Text style={styles.stampLikeText}>WATCH NOW ▶</Text>
+          </Animated.View>
+
+          <Animated.View
+            pointerEvents="none"
+            style={[styles.stampContainer, styles.stampPass, { opacity: passStampOpacity }]}
+          >
+            <Text style={styles.stampPassText}>NEXT ❯</Text>
+          </Animated.View>
+
+          {/* Top Header Badges */}
+          <View style={styles.topBadgesRow}>
+            <View style={styles.badgeSeries}>
+              <View style={styles.redDot} />
+              <Text style={styles.badgeSeriesText}>NEXORA ORIGINAL</Text>
             </View>
-          );
-        })}
+
+            <View style={styles.topRightBadges}>
+              <View style={styles.ratingBadge}>
+                <Text style={styles.ratingStar}>★</Text>
+                <Text style={styles.ratingText}>{topCard.rating}</Text>
+              </View>
+
+              <View style={styles.qualityPill}>
+                <Text style={styles.qualityPillText}>{topCard.quality || '4K HDR'}</Text>
+              </View>
+            </View>
+          </View>
+
+          {/* Netflix Signature Bottom Content Block */}
+          <View style={styles.cardFooter}>
+            {/* Trending Rank Pill */}
+            <View style={styles.trendingPill}>
+              <Text style={styles.trendingPillIcon}>🔥</Text>
+              <Text style={styles.trendingPillText}>#1 IN SERIES TODAY</Text>
+            </View>
+
+            {/* Title */}
+            <Text style={styles.cardTitle} numberOfLines={1}>
+              {topCard.title}
+            </Text>
+
+            {/* Meta Tags */}
+            <View style={styles.cardMetaRow}>
+              <Text style={styles.matchScore}>{topCard.matchScore || 98}% Match</Text>
+              <Text style={styles.metaDot}>•</Text>
+              <Text style={styles.cardMetaText}>
+                {topCard.seasonsCount ? `${topCard.seasonsCount} Seasons` : topCard.duration}
+              </Text>
+              <Text style={styles.metaDot}>•</Text>
+              <Text style={styles.cardMetaText}>
+                {topCard.genres ? topCard.genres[0] : 'Sci-Fi'}
+              </Text>
+              <Text style={styles.metaDot}>•</Text>
+              <Text style={styles.cardMetaText}>{topCard.releaseYear || '2026'}</Text>
+            </View>
+
+            {/* Synopsis Preview */}
+            <Text style={styles.synopsisText} numberOfLines={2}>
+              {topCard.synopsis ||
+                'Stream this award-winning cinematic saga in ultra-high bitrate 4K HDR and spatial audio.'}
+            </Text>
+
+            {/* Premium CTA Buttons */}
+            <View style={styles.cardButtonsRow}>
+              <TouchableOpacity
+                activeOpacity={0.85}
+                onPress={() => onPlay(topCard)}
+                style={styles.watchBtn}
+              >
+                <Text style={styles.watchBtnIcon}>▶</Text>
+                <Text style={styles.watchBtnText}>Watch Now</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => onDetails(topCard)}
+                style={styles.detailsBtn}
+              >
+                <Text style={styles.detailsBtnText}>Details</Text>
+              </TouchableOpacity>
+
+              {onToggleFavorite && (
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  onPress={() => onToggleFavorite(topCard.id)}
+                  style={[styles.favBtn, isFavorite && styles.favBtnActive]}
+                >
+                  <Text style={[styles.favBtnText, isFavorite && styles.favBtnTextActive]}>
+                    {isFavorite ? '✓' : '+'}
+                  </Text>
+                </TouchableOpacity>
+              )}
+            </View>
+          </View>
+        </Animated.View>
       </View>
 
-      {/* Navigation Controls: Previous / Next & Hint */}
+      {/* Navigation Controls: Previous / Next & Interactive Hint */}
       <View style={styles.controlsRow}>
         <TouchableOpacity
-          activeOpacity={0.75}
+          activeOpacity={0.7}
           onPress={handlePrev}
           style={styles.navArrowBtn}
         >
@@ -255,11 +402,15 @@ export const CardsEffectSeriesDeck: React.FC<CardsEffectSeriesDeckProps> = ({
         </TouchableOpacity>
 
         <View style={styles.stackIndicator}>
-          <Text style={styles.stackIndicatorText}>
-            SWIPE CARD OR TAP ARROWS
-          </Text>
+          <View style={styles.indicatorHintRow}>
+            <Text style={styles.sparkleIcon}>✦</Text>
+            <Text style={styles.stackIndicatorText}>SWIPE CARD OR TAP ARROWS</Text>
+            <Text style={styles.sparkleIcon}>✦</Text>
+          </View>
+
+          {/* Animated Indicator Dots */}
           <View style={styles.dotPillsRow}>
-            {deck.slice(0, 5).map((d, i) => (
+            {deck.slice(0, 6).map((d, i) => (
               <View
                 key={d.id}
                 style={[
@@ -272,7 +423,7 @@ export const CardsEffectSeriesDeck: React.FC<CardsEffectSeriesDeckProps> = ({
         </View>
 
         <TouchableOpacity
-          activeOpacity={0.75}
+          activeOpacity={0.7}
           onPress={handleNext}
           style={styles.navArrowBtn}
         >
@@ -287,8 +438,8 @@ const styles = StyleSheet.create({
   deckSection: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 18,
-    backgroundColor: '#050505',
+    paddingVertical: 14,
+    backgroundColor: '#07080B',
   },
   deckViewport: {
     width: CARD_WIDTH,
@@ -296,65 +447,93 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
+    marginTop: 8,
   },
   card: {
     width: CARD_WIDTH,
     height: CARD_HEIGHT,
     borderRadius: 22,
     position: 'absolute',
-    backgroundColor: '#151515',
+    backgroundColor: '#121216',
     overflow: 'hidden',
   },
   topCard: {
-    zIndex: 20,
+    zIndex: 40,
     borderWidth: 1.5,
-    borderColor: 'rgba(128, 0, 32, 0.7)',
+    borderColor: 'rgba(128, 0, 32, 0.75)',
     shadowColor: '#800020',
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.8,
-    shadowRadius: 18,
-    elevation: 12,
+    shadowOffset: { width: 0, height: 14 },
+    shadowOpacity: 0.85,
+    shadowRadius: 22,
+    elevation: 16,
   },
-  topCardRedBorder: {
+  topCardGlowBorder: {
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
     borderRadius: 22,
-    borderWidth: 2,
-    borderColor: '#800020',
-    opacity: 0.9,
+    borderWidth: 1.5,
+    borderColor: '#990024',
     pointerEvents: 'none',
   },
   stackedCard: {
     borderWidth: 1,
-    borderColor: '#303030',
+    borderColor: 'rgba(128, 0, 32, 0.35)',
     shadowColor: '#000000',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.6,
-    shadowRadius: 10,
-    elevation: 6,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.7,
+    shadowRadius: 14,
+    elevation: 8,
   },
-  stackedCardOverlay: {
+  stackedCardDimmer: {
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(5, 5, 5, 0.45)',
+    backgroundColor: 'rgba(7, 8, 11, 0.55)',
+  },
+  stackedBorderAccent: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    borderRadius: 22,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.08)',
   },
   cardPoster: {
     width: '100%',
     height: '100%',
   },
-  cardGradient: {
+  topVignette: {
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
+    height: 90,
+    backgroundColor: 'rgba(7, 8, 11, 0.65)',
+  },
+  bottomVignetteBase: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(5, 5, 5, 0.35)',
+    height: 250,
+    backgroundColor: 'rgba(7, 8, 11, 0.75)',
+  },
+  bottomVignetteCore: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: 180,
+    backgroundColor: 'rgba(7, 8, 11, 0.96)',
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(128, 0, 32, 0.4)',
   },
   topBadgesRow: {
     position: 'absolute',
@@ -364,45 +543,106 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    zIndex: 2,
+    zIndex: 5,
   },
   badgeSeries: {
-    backgroundColor: 'rgba(128, 0, 32, 0.3)',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    backgroundColor: 'rgba(128, 0, 32, 0.85)',
     borderWidth: 1,
-    borderColor: '#800020',
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 6,
+    borderColor: '#990024',
+    paddingHorizontal: 9,
+    paddingVertical: 4,
+    borderRadius: 8,
     shadowColor: '#800020',
-    shadowOpacity: 0.8,
-    shadowRadius: 6,
-    elevation: 4,
+    shadowOpacity: 0.9,
+    shadowRadius: 8,
+    elevation: 6,
+  },
+  redDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: '#FFFFFF',
   },
   badgeSeriesText: {
-    color: '#FF6685',
-    fontWeight: '800',
+    color: '#FFFFFF',
+    fontWeight: '900',
     fontSize: 10,
     letterSpacing: 0.8,
+  },
+  topRightBadges: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
   },
   ratingBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 3,
-    backgroundColor: 'rgba(5, 5, 5, 0.85)',
+    gap: 4,
+    backgroundColor: 'rgba(7, 8, 11, 0.88)',
     borderWidth: 1,
-    borderColor: 'rgba(251, 191, 36, 0.4)',
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 6,
+    borderColor: 'rgba(251, 191, 36, 0.45)',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 7,
   },
   ratingStar: {
     color: '#FBBF24',
-    fontSize: 10,
+    fontSize: 11,
+    fontWeight: '900',
   },
   ratingText: {
     color: '#FFFFFF',
+    fontSize: 11,
+    fontWeight: '900',
+  },
+  qualityPill: {
+    backgroundColor: 'rgba(255, 255, 255, 0.12)',
+    paddingHorizontal: 7,
+    paddingVertical: 3,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
+  },
+  qualityPillText: {
+    color: '#FFFFFF',
     fontSize: 10,
     fontWeight: '800',
+  },
+  stampContainer: {
+    position: 'absolute',
+    top: 50,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 10,
+    borderWidth: 2,
+    zIndex: 10,
+  },
+  stampLike: {
+    right: 20,
+    backgroundColor: 'rgba(128, 0, 32, 0.88)',
+    borderColor: '#FF4D6D',
+    transform: [{ rotate: '12deg' }],
+  },
+  stampLikeText: {
+    color: '#FFFFFF',
+    fontWeight: '900',
+    fontSize: 14,
+    letterSpacing: 1,
+  },
+  stampPass: {
+    left: 20,
+    backgroundColor: 'rgba(25, 25, 30, 0.9)',
+    borderColor: '#71717A',
+    transform: [{ rotate: '-12deg' }],
+  },
+  stampPassText: {
+    color: '#E4E4E7',
+    fontWeight: '900',
+    fontSize: 14,
+    letterSpacing: 1,
   },
   cardFooter: {
     position: 'absolute',
@@ -410,23 +650,55 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     padding: 14,
-    backgroundColor: 'rgba(5, 5, 5, 0.92)',
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(48, 48, 48, 0.6)',
-    zIndex: 2,
+    zIndex: 5,
+  },
+  trendingPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    marginBottom: 5,
+  },
+  trendingPillIcon: {
+    fontSize: 12,
+  },
+  trendingPillText: {
+    color: '#FF6685',
+    fontSize: 10,
+    fontWeight: '900',
+    letterSpacing: 0.8,
   },
   cardTitle: {
     color: '#FFFFFF',
-    fontSize: 17,
+    fontSize: 18,
     fontWeight: '900',
     letterSpacing: 0.3,
   },
-  cardMeta: {
-    color: '#B3B3B3',
+  cardMetaRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+    marginTop: 4,
+    marginBottom: 6,
+  },
+  matchScore: {
+    color: '#FF4D6D',
     fontSize: 11,
-    fontWeight: '600',
-    marginTop: 3,
-    marginBottom: 10,
+    fontWeight: '900',
+  },
+  metaDot: {
+    color: '#71717A',
+    fontSize: 10,
+  },
+  cardMetaText: {
+    color: '#D4D4D8',
+    fontSize: 11,
+    fontWeight: '700',
+  },
+  synopsisText: {
+    color: '#A1A1AA',
+    fontSize: 11,
+    lineHeight: 15,
+    marginBottom: 12,
   },
   cardButtonsRow: {
     flexDirection: 'row',
@@ -434,85 +706,90 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   watchBtn: {
-    flex: 1.4,
-    height: 38,
+    flex: 1.5,
+    height: 40,
     backgroundColor: '#800020',
-    borderRadius: 8,
+    borderRadius: 9,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 6,
+    gap: 7,
     borderWidth: 1,
     borderColor: '#990024',
     shadowColor: '#800020',
-    shadowOpacity: 0.8,
-    shadowRadius: 8,
-    elevation: 5,
+    shadowOpacity: 0.9,
+    shadowRadius: 10,
+    elevation: 6,
   },
   watchBtnIcon: {
     color: '#FFFFFF',
-    fontSize: 11,
+    fontSize: 12,
     fontWeight: '900',
   },
   watchBtnText: {
     color: '#FFFFFF',
-    fontSize: 12,
-    fontWeight: '800',
+    fontSize: 13,
+    fontWeight: '900',
+    letterSpacing: 0.3,
   },
   detailsBtn: {
     flex: 1,
-    height: 38,
-    backgroundColor: 'rgba(255, 255, 255, 0.06)',
+    height: 40,
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.15)',
-    borderRadius: 8,
+    borderColor: 'rgba(255, 255, 255, 0.16)',
+    borderRadius: 9,
     alignItems: 'center',
     justifyContent: 'center',
   },
   detailsBtnText: {
     color: '#FFFFFF',
     fontSize: 12,
-    fontWeight: '700',
+    fontWeight: '800',
   },
   favBtn: {
-    width: 38,
-    height: 38,
-    borderRadius: 8,
-    backgroundColor: 'rgba(255, 255, 255, 0.06)',
+    width: 40,
+    height: 40,
+    borderRadius: 9,
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.15)',
+    borderColor: 'rgba(255, 255, 255, 0.16)',
     alignItems: 'center',
     justifyContent: 'center',
   },
   favBtnActive: {
-    backgroundColor: 'rgba(128, 0, 32, 0.35)',
+    backgroundColor: 'rgba(128, 0, 32, 0.45)',
     borderColor: '#800020',
   },
   favBtnText: {
-    color: '#FF4D6D',
-    fontSize: 16,
+    color: '#FFFFFF',
+    fontSize: 18,
     fontWeight: '700',
+    lineHeight: 20,
+  },
+  favBtnTextActive: {
+    color: '#FF4D6D',
   },
   controlsRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     width: CARD_WIDTH + 48,
-    marginTop: 10,
+    marginTop: 12,
   },
   navArrowBtn: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: 'rgba(255, 255, 255, 0.06)',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.12)',
+    width: 46,
+    height: 46,
+    borderRadius: 23,
+    backgroundColor: 'rgba(18, 18, 24, 0.92)',
+    borderWidth: 1.5,
+    borderColor: 'rgba(128, 0, 32, 0.4)',
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#000000',
-    shadowOpacity: 0.5,
-    shadowRadius: 6,
-    elevation: 4,
+    shadowOpacity: 0.6,
+    shadowRadius: 8,
+    elevation: 5,
   },
   navArrowText: {
     color: '#FFFFFF',
@@ -523,29 +800,38 @@ const styles = StyleSheet.create({
   stackIndicator: {
     alignItems: 'center',
   },
+  indicatorHintRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  sparkleIcon: {
+    color: '#FF4D6D',
+    fontSize: 10,
+  },
   stackIndicatorText: {
-    color: '#A1A1AA',
+    color: '#D4D4D8',
     fontSize: 9,
-    fontWeight: '800',
-    letterSpacing: 1.5,
+    fontWeight: '900',
+    letterSpacing: 1.2,
   },
   dotPillsRow: {
     flexDirection: 'row',
-    gap: 4,
-    marginTop: 6,
+    gap: 5,
+    marginTop: 7,
   },
   indicatorDot: {
     width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: '#303030',
+    backgroundColor: '#27272A',
   },
   indicatorDotActive: {
-    width: 16,
+    width: 22,
     backgroundColor: '#800020',
     shadowColor: '#800020',
-    shadowOpacity: 0.9,
-    shadowRadius: 5,
-    elevation: 3,
+    shadowOpacity: 0.95,
+    shadowRadius: 6,
+    elevation: 4,
   },
 });
