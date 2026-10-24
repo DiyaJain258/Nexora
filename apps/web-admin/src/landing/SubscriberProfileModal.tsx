@@ -17,7 +17,12 @@ import {
   Volume2,
   Layers,
   ChevronRight,
+  Bookmark,
+  Trash2,
+  Play,
+  Star,
 } from 'lucide-react';
+import { MOCK_CONTENT, ContentItem } from '@nexora/shared';
 import { UserSession } from '../App';
 
 interface SubscriberProfileModalProps {
@@ -26,6 +31,9 @@ interface SubscriberProfileModalProps {
   session: UserSession | null;
   onLogout: () => void;
   onBrowseMovies?: () => void;
+  watchlistIds?: string[];
+  onRemoveFromWatchlist?: (id: string) => void;
+  onPlayMovie?: (item: ContentItem) => void;
 }
 
 export const SubscriberProfileModal: React.FC<SubscriberProfileModalProps> = ({
@@ -34,10 +42,17 @@ export const SubscriberProfileModal: React.FC<SubscriberProfileModalProps> = ({
   session,
   onLogout,
   onBrowseMovies,
+  watchlistIds = [],
+  onRemoveFromWatchlist,
+  onPlayMovie,
 }) => {
-  const [activeTab, setActiveTab] = useState<'overview' | 'devices' | 'settings'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'devices' | 'settings' | 'watchlist'>('overview');
   const [copiedCode, setCopiedCode] = useState(false);
   const tvPairingCode = 'NEX-8821';
+
+  // Watchlisted movie items
+  const watchlistedItems = MOCK_CONTENT.filter((item) => watchlistIds.includes(item.id));
+
 
   if (!isOpen || !session) return null;
 
@@ -235,6 +250,7 @@ export const SubscriberProfileModal: React.FC<SubscriberProfileModalProps> = ({
           >
             {[
               { id: 'overview', label: 'Subscription Plan' },
+              { id: 'watchlist', label: `My Watchlist (${watchlistedItems.length})` },
               { id: 'devices', label: 'Linked TVs & Devices' },
               { id: 'settings', label: 'Playback & 4K' },
             ].map((tab) => {
@@ -649,6 +665,183 @@ export const SubscriberProfileModal: React.FC<SubscriberProfileModalProps> = ({
                   <span style={{ color: '#fda4af', fontSize: '12px', fontWeight: 800 }}>AUTO</span>
                 </div>
               </div>
+            </div>
+          )}
+
+          {/* Tab 4: My 4K Watchlist */}
+          {activeTab === 'watchlist' && (
+            <div style={{ padding: '24px 28px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px' }}>
+                <div>
+                  <h4 style={{ margin: 0, fontSize: '16px', fontWeight: 800, color: '#ffffff' }}>
+                    My Saved 4K Watchlist ({watchlistedItems.length})
+                  </h4>
+                  <p style={{ margin: '4px 0 0', fontSize: '13px', color: '#94a3b8' }}>
+                    Titles ready for instant Ultra-HD streaming across all your linked TVs.
+                  </p>
+                </div>
+              </div>
+
+              {watchlistedItems.length > 0 ? (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  {watchlistedItems.map((item) => (
+                    <div
+                      key={item.id}
+                      style={{
+                        backgroundColor: 'rgba(16, 12, 22, 0.85)',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        borderRadius: '16px',
+                        padding: '12px 18px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                        <div
+                          style={{
+                            width: '48px',
+                            height: '66px',
+                            borderRadius: '10px',
+                            overflow: 'hidden',
+                            position: 'relative',
+                            flexShrink: 0,
+                            border: '1px solid rgba(255, 255, 255, 0.12)',
+                          }}
+                        >
+                          <img
+                            src={item.posterUrl}
+                            alt={item.title}
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                          />
+                        </div>
+
+                        <div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <h5 style={{ margin: 0, fontSize: '14.5px', fontWeight: 800, color: '#ffffff' }}>
+                              {item.title}
+                            </h5>
+                            <span
+                              style={{
+                                backgroundColor: 'rgba(225, 29, 72, 0.2)',
+                                color: '#fda4af',
+                                padding: '2px 6px',
+                                borderRadius: '4px',
+                                fontSize: '10px',
+                                fontWeight: 800,
+                              }}
+                            >
+                              {item.quality}
+                            </span>
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
+                            <span style={{ fontSize: '12px', color: '#f59e0b', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '3px' }}>
+                              <Star size={11} fill="#f59e0b" color="#f59e0b" />
+                              <span>{item.rating}</span>
+                            </span>
+                            <span style={{ fontSize: '11px', color: '#71717a' }}>•</span>
+                            <span style={{ fontSize: '12px', color: '#94a3b8' }}>
+                              {item.releaseYear} • {item.duration}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        {onPlayMovie && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              onPlayMovie(item);
+                              onClose();
+                            }}
+                            className="btn-radiant"
+                            style={{
+                              padding: '8px 16px',
+                              borderRadius: '10px',
+                              fontSize: '12.5px',
+                              fontWeight: 800,
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '6px',
+                              cursor: 'pointer',
+                            }}
+                          >
+                            <Play size={13} fill="#050507" color="#050507" />
+                            <span>Play in 4K</span>
+                          </button>
+                        )}
+
+                        {onRemoveFromWatchlist && (
+                          <button
+                            type="button"
+                            onClick={() => onRemoveFromWatchlist(item.id)}
+                            style={{
+                              width: '34px',
+                              height: '34px',
+                              borderRadius: '10px',
+                              backgroundColor: 'rgba(239, 68, 68, 0.12)',
+                              border: '1px solid rgba(239, 68, 68, 0.25)',
+                              color: '#f87171',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              cursor: 'pointer',
+                              transition: 'all 0.15s',
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.backgroundColor = '#ef4444';
+                              e.currentTarget.style.color = '#ffffff';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.backgroundColor = 'rgba(239, 68, 68, 0.12)';
+                              e.currentTarget.style.color = '#f87171';
+                            }}
+                            title="Remove from Watchlist"
+                          >
+                            <Trash2 size={15} />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div
+                  style={{
+                    padding: '36px 20px',
+                    textAlign: 'center',
+                    backgroundColor: 'rgba(16, 12, 22, 0.6)',
+                    borderRadius: '18px',
+                    border: '1px dashed rgba(225, 29, 72, 0.35)',
+                  }}
+                >
+                  <Bookmark size={36} color="#fda4af" style={{ margin: '0 auto 12px' }} />
+                  <h5 style={{ margin: '0 0 6px', fontSize: '16px', fontWeight: 800, color: '#ffffff' }}>
+                    Your Watchlist is empty
+                  </h5>
+                  <p style={{ margin: '0 0 16px', fontSize: '13px', color: '#94a3b8' }}>
+                    Browse our 4K catalog and click the bookmark button on any movie to save it here.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onClose();
+                      if (onBrowseMovies) onBrowseMovies();
+                    }}
+                    className="btn-primary-glow"
+                    style={{
+                      padding: '10px 20px',
+                      borderRadius: '12px',
+                      fontSize: '13px',
+                      fontWeight: 800,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <span>Browse 4K Cinema Catalog</span>
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </motion.div>

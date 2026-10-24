@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Tv, KeyRound, PlaySquare, Menu, X, ChevronRight, Sparkles, Crown, LogOut, Shield } from 'lucide-react';
+import { Tv, KeyRound, PlaySquare, Menu, X, ChevronRight, Sparkles, Crown, LogOut, Shield, Search } from 'lucide-react';
 import { UserSession } from '../views/AdminLoginView';
 
 interface NavbarProps {
@@ -11,6 +11,7 @@ interface NavbarProps {
   userSession?: UserSession | null;
   onOpenSubscriberProfile?: () => void;
   onLogout?: () => void;
+  onOpenSearch?: () => void;
 }
 
 const NAV_ITEMS = [
@@ -32,6 +33,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   userSession,
   onOpenSubscriberProfile,
   onLogout,
+  onOpenSearch,
 }) => {
   const [activeSection, setActiveSection] = useState<string>('');
   const [hoveredSection, setHoveredSection] = useState<string | null>(null);
@@ -39,6 +41,19 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const isManualNavigatingRef = useRef(false);
   const navigatingTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Global Ctrl+K / Cmd+K Search Shortcut
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        onOpenSearch?.();
+      }
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [onOpenSearch]);
+
 
   // Sync active section based on current scroll position (Scroll Spy)
   useEffect(() => {
@@ -317,6 +332,53 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Action CTA Buttons (Desktop) */}
       <div className="desktop-nav-actions" style={{ alignItems: 'center', gap: '10px' }}>
+        {/* Instant Search Bar Button */}
+        {onOpenSearch && (
+          <motion.button
+            whileHover={{ scale: 1.03, y: -1 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={onOpenSearch}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '7px 14px',
+              borderRadius: '999px',
+              backgroundColor: 'rgba(255, 255, 255, 0.06)',
+              border: '1px solid rgba(255, 255, 255, 0.14)',
+              color: '#e2e8f0',
+              fontSize: '12.5px',
+              fontWeight: 700,
+              cursor: 'pointer',
+              transition: 'all 0.15s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(225, 29, 72, 0.16)';
+              e.currentTarget.style.borderColor = 'rgba(225, 29, 72, 0.4)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.06)';
+              e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.14)';
+            }}
+            title="Search movies, series, channels (Ctrl + K)"
+          >
+            <Search size={14} color="#fda4af" />
+            <span>Search</span>
+            <kbd
+              style={{
+                background: 'rgba(255, 255, 255, 0.1)',
+                padding: '1px 5px',
+                borderRadius: '4px',
+                fontSize: '10px',
+                color: '#94a3b8',
+                fontWeight: 800,
+              }}
+            >
+              ⌘K
+            </kbd>
+          </motion.button>
+        )}
+
         <motion.button
           whileHover={{ scale: 1.03, y: -1 }}
           whileTap={{ scale: 0.97 }}
@@ -431,8 +493,30 @@ export const Navbar: React.FC<NavbarProps> = ({
         )}
       </div>
 
-      {/* Mobile Right Controls: Sign In + Hamburger Menu Toggle */}
+      {/* Mobile Right Controls: Search + Sign In + Hamburger Menu Toggle */}
       <div className="mobile-nav-toggle-group" style={{ display: 'none', alignItems: 'center', gap: '8px' }}>
+        {onOpenSearch && (
+          <button
+            type="button"
+            onClick={onOpenSearch}
+            style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: '50%',
+              backgroundColor: 'rgba(255, 255, 255, 0.08)',
+              border: '1px solid rgba(255, 255, 255, 0.15)',
+              color: '#ffffff',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+            }}
+            title="Search (⌘K)"
+          >
+            <Search size={16} color="#fda4af" />
+          </button>
+        )}
+
         {userSession?.role === 'subscriber' ? (
           <motion.button
             whileTap={{ scale: 0.95 }}
@@ -544,6 +628,34 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             {/* Mobile Action Buttons */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '8px' }}>
+              {onOpenSearch && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    onOpenSearch();
+                  }}
+                  style={{
+                    width: '100%',
+                    padding: '12px',
+                    borderRadius: '12px',
+                    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                    border: '1px solid rgba(255, 255, 255, 0.16)',
+                    color: '#ffffff',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    fontSize: '13px',
+                    fontWeight: 800,
+                    cursor: 'pointer',
+                  }}
+                >
+                  <Search size={16} color="#fda4af" />
+                  <span>Search Movies, Shows & Channels</span>
+                </button>
+              )}
+
               <button
                 onClick={() => {
                   setIsMobileMenuOpen(false);

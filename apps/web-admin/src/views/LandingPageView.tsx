@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Lenis from 'lenis';
-import { Channel } from '@nexora/shared';
+import { Channel, MOCK_CHANNELS } from '@nexora/shared';
 import { Navbar } from '../landing/Navbar';
 import { NetflixHeroBillboard } from '../landing/NetflixHeroBillboard';
 import { PlatformLampShowcase } from '../landing/PlatformLampShowcase';
-import { LiveChannelsMarquee } from '../landing/LiveChannelsMarquee';
 import { GlassConsoleSection } from '../landing/GlassConsoleSection';
+import { LiveChannelsMarquee } from '../landing/LiveChannelsMarquee';
 import { Skiper16StickyCards } from '../landing/Skiper16StickyCards';
 import { MovieShowcaseSection } from '../landing/MovieShowcaseSection';
 import { DeviceShowcase3D } from '../landing/DeviceShowcase3D';
@@ -17,6 +17,9 @@ import { LivePlayerModal } from '../landing/LivePlayerModal';
 import { ActivationModal } from '../landing/ActivationModal';
 import { AuthModal } from '../landing/AuthModal';
 import { SubscriberProfileModal } from '../landing/SubscriberProfileModal';
+import { SearchModal } from '../landing/SearchModal';
+import { OttVideoPlayerModal } from '../landing/OttVideoPlayerModal';
+import { useWatchlist } from '../hooks/useWatchlist';
 import { UserSession } from '../views/AdminLoginView';
 import '../landing/landing.css';
 
@@ -39,6 +42,14 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isSubscriberModalOpen, setIsSubscriberModalOpen] = useState(false);
   const [authDefaultTab, setAuthDefaultTab] = useState<'subscriber' | 'admin'>('subscriber');
+
+  // Search & OTT Video Player Modal States
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isOttPlayerOpen, setIsOttPlayerOpen] = useState(false);
+  const [selectedMovieForOtt, setSelectedMovieForOtt] = useState<any | null>(null);
+
+  // Persistent Watchlist Hook
+  const { watchlist, toggleWatchlist, isInWatchlist, removeFromWatchlist, count: watchlistCount } = useWatchlist();
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -96,31 +107,8 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
   };
 
   const handlePlayMovie = (movie: any) => {
-    setSelectedChannelForPlayer({
-      id: movie.id,
-      channelNumber: 900,
-      name: movie.title,
-      streamUrl: movie.streamUrl || 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4',
-      logo: movie.posterUrl,
-      category: 'Movies',
-      resolution: '4K',
-      fps: 60,
-      bitrateKbps: 18500,
-      epgId: `epg-${movie.id}`,
-      status: 'active',
-      currentProgram: {
-        id: `epg-prog-${movie.id}`,
-        channelId: movie.id,
-        title: movie.title,
-        description: movie.synopsis || 'Blockbuster 4K Feature Film with Dolby Atmos 7.1',
-        category: 'Cinema',
-        startTime: 'NOW',
-        endTime: '2h 15m',
-        progressPercent: 35,
-        isLiveNow: true,
-      },
-    });
-    setIsPlayerOpen(true);
+    setSelectedMovieForOtt(movie);
+    setIsOttPlayerOpen(true);
   };
 
   return (
@@ -136,6 +124,7 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
         userSession={userSession}
         onOpenSubscriberProfile={() => setIsSubscriberModalOpen(true)}
         onLogout={onLogout}
+        onOpenSearch={() => setIsSearchOpen(true)}
       />
 
       {/* Grand Netflix-Style Cinematic Billboard Slider with Big Auto-Slides and Trailer Modal */}
@@ -157,7 +146,12 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
 
       <Skiper16StickyCards onPlayMovie={handlePlayMovie} />
 
-      <MovieShowcaseSection onPlayMovie={handlePlayMovie} />
+      <MovieShowcaseSection
+        onPlayMovie={handlePlayMovie}
+        isInWatchlist={isInWatchlist}
+        onToggleWatchlist={toggleWatchlist}
+        watchlistCount={watchlistCount}
+      />
 
       <DeviceShowcase3D />
 
@@ -169,6 +163,29 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
 
       <Footer onNavigateToAdmin={onNavigateToAdmin} />
 
+      {/* Instant Search Modal (Ctrl + K) */}
+      <SearchModal
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+        onPlayMovie={handlePlayMovie}
+        onPlayChannel={handleTuneChannel}
+        isInWatchlist={isInWatchlist}
+        onToggleWatchlist={toggleWatchlist}
+      />
+
+      {/* Full-Screen 4K OTT Cinema Video Player Modal */}
+      <OttVideoPlayerModal
+        isOpen={isOttPlayerOpen}
+        onClose={() => {
+          setIsOttPlayerOpen(false);
+          setSelectedMovieForOtt(null);
+        }}
+        item={selectedMovieForOtt}
+        isInWatchlist={selectedMovieForOtt ? isInWatchlist(selectedMovieForOtt.id) : false}
+        onToggleWatchlist={toggleWatchlist}
+      />
+
+      {/* Live TV Channels Player Modal */}
       {isPlayerOpen && (
         <LivePlayerModal
           channel={selectedChannelForPlayer}
@@ -179,10 +196,12 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
         />
       )}
 
+      {/* 6-Digit Smart TV Activation Modal */}
       {isActivationOpen && (
         <ActivationModal onClose={() => setIsActivationOpen(false)} />
       )}
 
+      {/* Auth Gateway Modal */}
       {isAuthOpen && (
         <AuthModal
           defaultTab={authDefaultTab}
@@ -196,7 +215,7 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
         />
       )}
 
-      {/* Subscriber Member Center / TV Devices & Account Modal */}
+      {/* Subscriber Member Center / TV Devices, Account & Watchlist Modal */}
       <SubscriberProfileModal
         isOpen={isSubscriberModalOpen}
         onClose={() => setIsSubscriberModalOpen(false)}
@@ -209,9 +228,13 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
           const el = document.getElementById('cinema');
           if (el) el.scrollIntoView({ behavior: 'smooth' });
         }}
+        watchlistIds={watchlist}
+        onRemoveFromWatchlist={removeFromWatchlist}
+        onPlayMovie={handlePlayMovie}
       />
     </div>
   );
 };
 
 export default LandingPageView;
+
