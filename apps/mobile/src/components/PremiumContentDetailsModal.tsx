@@ -12,7 +12,6 @@ import {
   Alert,
 } from 'react-native';
 import { ContentItem } from '@nexora/shared';
-import { ShineBorder } from './ShineBorder';
 
 const { width } = Dimensions.get('window');
 
@@ -210,7 +209,6 @@ export const PremiumContentDetailsModal: React.FC<PremiumContentDetailsModalProp
                       style={styles.relatedImage}
                       resizeMode="cover"
                     />
-                    <ShineBorder borderRadius={14} borderWidth={1.5} duration={7} />
                   </View>
                   <Text style={styles.relatedCardTitle} numberOfLines={1}>
                     {rel.title}

@@ -36,7 +36,6 @@ import {
 import { LandingShowcaseView } from './src/components/LandingShowcaseView';
 import { NativeCinematicBackground } from './src/components/NativeCinematicBackground';
 import { NativeSignInCard } from './src/components/NativeSignInCard';
-import { ShineBorder } from './src/components/ShineBorder';
 import { NetflixTop10Rail } from './src/components/NetflixTop10Rail';
 import { ViaplayCatalogView } from './src/components/ViaplayCatalogView';
 import { PremiumUserHeader } from './src/components/PremiumUserHeader';
@@ -457,7 +456,6 @@ export default function App() {
               onPress={() => setPlayingItem(ch)}
               style={styles.liveChannelCard}
             >
-              <ShineBorder borderRadius={12} borderWidth={1.5} duration={8} />
               <View style={styles.liveChannelHeader}>
                 <Image source={{ uri: ch.logo }} style={styles.liveChannelLogo} resizeMode="contain" />
                 <View style={styles.liveResBadge}>
@@ -497,7 +495,6 @@ export default function App() {
             >
               <View style={styles.topRatedPosterBox}>
                 <Image source={{ uri: film.posterUrl }} style={styles.topRatedPoster} />
-                <ShineBorder borderRadius={10} borderWidth={1.5} duration={6} />
                 <View style={styles.topRatedQualityBadge}>
                   <Text style={styles.topRatedQualityText}>{film.quality}</Text>
                 </View>
@@ -561,7 +558,6 @@ export default function App() {
             >
               <View style={styles.quickCatalogPosterBox}>
                 <Image source={{ uri: s.posterUrl }} style={styles.quickCatalogPoster} />
-                <ShineBorder borderRadius={10} borderWidth={1.5} duration={7} />
                 <View style={styles.quickCatalogBadge}>
                   <Text style={styles.quickCatalogBadgeText}>
                     {s.seasonsCount ? `${s.seasonsCount}S` : s.duration}

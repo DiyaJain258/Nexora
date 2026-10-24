@@ -8,7 +8,6 @@ import {
   ScrollView,
 } from 'react-native';
 import { ContinueWatchingItem } from '@nexora/shared';
-import { ShineBorder } from './ShineBorder';
 
 interface ContinueWatchingRailProps {
   items: ContinueWatchingItem[];
@@ -69,9 +68,6 @@ export const ContinueWatchingRail: React.FC<ContinueWatchingRailProps> = ({
 
                 {/* Ambient dark gradient */}
                 <View style={styles.cardGradient} />
-
-                {/* Animated Shine Border */}
-                <ShineBorder borderRadius={14} borderWidth={1.5} duration={7} />
 
                 {/* Timestamp overlay */}
                 <View style={styles.timestampBadge}>

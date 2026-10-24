@@ -9,7 +9,6 @@ import {
   Platform,
 } from 'react-native';
 import { ContentItem } from '@nexora/shared';
-import { ShineBorder } from './ShineBorder';
 
 interface MoviePosterCardProps {
   item: ContentItem;
@@ -129,9 +128,6 @@ export const MoviePosterCard: React.FC<MoviePosterCardProps> = ({
 
         {/* 3D Gradient Vignette */}
         <View style={styles.gradientOverlay} />
-
-        {/* Animated Shine Border Effect */}
-        <ShineBorder borderRadius={12} borderWidth={1.5} duration={6} />
 
         {/* Dynamic Red Glow Border Overlay on Press */}
         <Animated.View

@@ -11,7 +11,6 @@ import {
   Platform,
 } from 'react-native';
 import { ContentItem } from '@nexora/shared';
-import { ShineBorder } from './ShineBorder';
 
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = Math.min(width * 0.82, 310);
@@ -316,9 +315,6 @@ export const CardsEffectSeriesDeck: React.FC<CardsEffectSeriesDeckProps> = ({
 
           {/* Glowing Burgundy Focus Border */}
           <View style={styles.topCardGlowBorder} />
-
-          {/* Animated Shine Border Effect */}
-          <ShineBorder borderRadius={22} borderWidth={2} duration={7} />
 
           {/* Floating Gesture Indicators (Like / Next) */}
           <Animated.View

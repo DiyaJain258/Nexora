@@ -10,7 +10,6 @@ import {
   Platform,
 } from 'react-native';
 import { ContentItem } from '@nexora/shared';
-import { ShineBorder } from './ShineBorder';
 import { NetflixTop10Rail } from './NetflixTop10Rail';
 
 const { width } = Dimensions.get('window');
@@ -194,8 +193,6 @@ export const ViaplayCatalogView: React.FC<ViaplayCatalogViewProps> = ({
                   <Text style={styles.cornerRibbonText}>NYHET</Text>
                 </View>
               </View>
-
-              <ShineBorder borderRadius={12} borderWidth={1.5} duration={6} />
             </TouchableOpacity>
           </View>
         </View>
@@ -399,9 +396,6 @@ export const ViaplayCatalogView: React.FC<ViaplayCatalogViewProps> = ({
 
                   {/* Bottom Vignette */}
                   <View style={styles.gridPosterVignette} />
-
-                  {/* ShineBorder effect */}
-                  <ShineBorder borderRadius={10} borderWidth={1.5} duration={6 + (index % 4)} />
                 </View>
 
                 {/* Info below poster (Matching Viaplay typography) */}

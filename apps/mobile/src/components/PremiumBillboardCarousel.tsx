@@ -11,7 +11,6 @@ import {
   NativeScrollEvent,
 } from 'react-native';
 import { ContentItem } from '@nexora/shared';
-import { ShineBorder } from './ShineBorder';
 
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = width * 0.82;
@@ -78,9 +77,6 @@ export const PremiumBillboardCarousel: React.FC<PremiumBillboardCarouselProps> =
 
                 {/* Subtle Cinematic Vignette */}
                 <View style={styles.vignetteOverlay} />
-
-                {/* Animated Shine Border */}
-                <ShineBorder borderRadius={18} borderWidth={1.5} duration={7} />
 
                 {/* Center / Bottom Badge & Title */}
                 <View style={styles.cardContent}>
