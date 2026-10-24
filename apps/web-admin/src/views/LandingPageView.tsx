@@ -19,6 +19,8 @@ import { AuthModal } from '../landing/AuthModal';
 import { SubscriberProfileModal } from '../landing/SubscriberProfileModal';
 import { SearchModal } from '../landing/SearchModal';
 import { OttVideoPlayerModal } from '../landing/OttVideoPlayerModal';
+import { SubscriptionPaywallModal } from '../landing/SubscriptionPaywallModal';
+import { SubscriptionPlan } from '@nexora/shared';
 import { useWatchlist } from '../hooks/useWatchlist';
 import { UserSession } from '../views/AdminLoginView';
 import '../landing/landing.css';
@@ -50,6 +52,10 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isOttPlayerOpen, setIsOttPlayerOpen] = useState(false);
   const [selectedMovieForOtt, setSelectedMovieForOtt] = useState<any | null>(null);
+
+  // Subscription Paywall State for unauthenticated viewers
+  const [isPaywallOpen, setIsPaywallOpen] = useState(false);
+  const [pendingMovieForAuth, setPendingMovieForAuth] = useState<any | null>(null);
 
   // Persistent Watchlist Hook
   const { watchlist, toggleWatchlist, isInWatchlist, removeFromWatchlist, count: watchlistCount } = useWatchlist();
@@ -114,7 +120,8 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
       isAuthOpen ||
       isPlayerOpen ||
       isOttPlayerOpen ||
-      isActivationOpen;
+      isActivationOpen ||
+      isPaywallOpen;
 
     if (isAnyModalOpen) {
       lenis.stop();
@@ -128,6 +135,7 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
     isPlayerOpen,
     isOttPlayerOpen,
     isActivationOpen,
+    isPaywallOpen,
   ]);
 
   const handleTuneChannel = (channel: Channel) => {
@@ -136,6 +144,39 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
   };
 
   const handlePlayMovie = (movie: any) => {
+    // If user is not logged in: gate with Subscription Paywall modal
+    if (!userSession) {
+      setPendingMovieForAuth(movie);
+      setIsPaywallOpen(true);
+      return;
+    }
+
+    // If logged in: stream immediately in 4K Cinema Player
+    setSelectedMovieForOtt(movie);
+    setIsOttPlayerOpen(true);
+  };
+
+  const handleSelectPaywallPlan = (plan: SubscriptionPlan, newSession: UserSession) => {
+    setIsPaywallOpen(false);
+    if (onLoginSuccess) {
+      onLoginSuccess(newSession);
+    }
+    // Automatically launch the movie they intended to watch
+    if (pendingMovieForAuth) {
+      setSelectedMovieForOtt(pendingMovieForAuth);
+      setIsOttPlayerOpen(true);
+      setPendingMovieForAuth(null);
+    }
+  };
+
+  const handleOpenSignInFromPaywall = () => {
+    setIsPaywallOpen(false);
+    setAuthDefaultTab('subscriber');
+    setIsAuthOpen(true);
+  };
+
+  const handleWatchTeaser = (movie: any) => {
+    // Allows watching trailer / teaser preview without login
     setSelectedMovieForOtt(movie);
     setIsOttPlayerOpen(true);
   };
@@ -250,9 +291,27 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
             if (onLoginSuccess) {
               onLoginSuccess(session);
             }
+            if (pendingMovieForAuth) {
+              setSelectedMovieForOtt(pendingMovieForAuth);
+              setIsOttPlayerOpen(true);
+              setPendingMovieForAuth(null);
+            }
           }}
         />
       )}
+
+      {/* OTT Subscription Paywall Modal for Guests */}
+      <SubscriptionPaywallModal
+        isOpen={isPaywallOpen}
+        onClose={() => {
+          setIsPaywallOpen(false);
+          setPendingMovieForAuth(null);
+        }}
+        pendingMovie={pendingMovieForAuth}
+        onSelectPlan={handleSelectPaywallPlan}
+        onOpenSignIn={handleOpenSignInFromPaywall}
+        onWatchTeaser={handleWatchTeaser}
+      />
 
       {/* Subscriber Member Center / TV Devices, Account & Watchlist Modal */}
       <SubscriberProfileModal
