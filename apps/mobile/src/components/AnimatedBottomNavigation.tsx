@@ -26,7 +26,7 @@ const TABS: TabItemConfig[] = [
   { id: 'movies', label: 'Movies', icon: '🍿' },
   { id: 'livetv', label: 'Live TV', icon: '📡' },
   { id: 'mylist', label: 'My List', icon: '🔖' },
-  { id: 'account', label: 'TV Pair', icon: '📺' },
+  { id: 'account', label: 'TV Pair', icon: '🔗' },
 ];
 
 export const AnimatedBottomNavigation: React.FC<AnimatedBottomNavigationProps> = ({

@@ -68,7 +68,7 @@ export const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({
       <View style={styles.actionsRow}>
         {/* Cast / TV Broadcast Stream indicator */}
         <View style={styles.castBox}>
-          <Text style={styles.castIcon}>📺</Text>
+          <Text style={styles.castIcon}>📡</Text>
           <View style={styles.livePulseDot} />
         </View>
 
