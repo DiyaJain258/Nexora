@@ -37,6 +37,7 @@ import { LandingShowcaseView } from './src/components/LandingShowcaseView';
 import { NativeCinematicBackground } from './src/components/NativeCinematicBackground';
 import { NativeSignInCard } from './src/components/NativeSignInCard';
 import { ShineBorder } from './src/components/ShineBorder';
+import { NetflixTop10Rail } from './src/components/NetflixTop10Rail';
 
 const { width, height } = Dimensions.get('window');
 
@@ -374,32 +375,17 @@ export default function App() {
                 </TouchableOpacity>
               </View>
             </View>
+            <ShineBorder borderRadius={22} borderWidth={1.5} duration={8} />
           </View>
 
-          {/* Trending now Section (Screenshot 1) */}
-          <View style={styles.moviesSectionRow}>
-            <Text style={styles.moviesSectionTitle}>Trending now</Text>
-            <TouchableOpacity onPress={() => setSelectedMovieGenre('All')}>
-              <Text style={styles.moviesSectionSeeAll}>See all</Text>
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.trendingCardsRow}>
-            {trendingMovies.map((tr) => (
-              <TouchableOpacity
-                key={tr.id}
-                style={[styles.trendingCard, { backgroundColor: tr.bgColor }]}
-                activeOpacity={0.88}
-                onPress={() => setSelectedItem(movies[0])}
-              >
-                <Image source={{ uri: tr.image }} style={styles.trendingCardBg} />
-                <View style={styles.trendingCardGradient}>
-                  <Text style={styles.trendingCardTitle}>{tr.title}</Text>
-                  <Text style={styles.trendingCardMeta}>★ {tr.rating}</Text>
-                </View>
-              </TouchableOpacity>
-            ))}
-          </View>
+          {/* Netflix Signature Top 10 Movies Rail with Giant 1, 2, 3... Outlined Numbers */}
+          <NetflixTop10Rail
+            title="Top 10 Movies Today"
+            badge="#1 TRENDING"
+            items={movies}
+            onSelect={(item) => setSelectedItem(item)}
+            onSeeAll={() => setSelectedMovieGenre('All')}
+          />
 
           {/* Browse by genre Section (Screenshot 1) */}
           <Text style={[styles.moviesSectionTitle, { marginTop: 20, marginBottom: 10 }]}>
@@ -628,35 +614,14 @@ export default function App() {
           favoriteIds={favoriteIds}
         />
 
-        {/* Top 10 in India Today Rail (Netflix signature look) */}
-        <SectionHeader
+        {/* Netflix Signature Top 10 in India Today Rail */}
+        <NetflixTop10Rail
           title="Top 10 in India Today"
           badge="#1 TRENDING"
+          items={movies}
+          onSelect={(item) => setSelectedItem(item)}
           onSeeAll={() => setActiveTab('movies')}
         />
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.top10Scroll}
-        >
-          {movies.slice(0, 10).map((item, index) => (
-            <TouchableOpacity
-              key={item.id}
-              activeOpacity={0.88}
-              onPress={() => setSelectedItem(item)}
-              style={styles.top10Item}
-            >
-              <Text style={styles.top10RankText}>{index + 1}</Text>
-              <View style={styles.top10PosterBox}>
-                <Image source={{ uri: item.posterUrl }} style={styles.top10Poster} />
-                <ShineBorder borderRadius={10} borderWidth={1.5} duration={7} />
-                <View style={styles.top10Badge}>
-                  <Text style={styles.top10BadgeText}>{item.quality || '4K'}</Text>
-                </View>
-              </View>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
 
         {/* Live TV Channels Rail */}
         <SectionHeader
