@@ -48,6 +48,7 @@ import { NetflixSignUpScreen } from './src/components/NetflixSignUpScreen';
 import { NetflixWelcomeLandingScreen } from './src/components/NetflixWelcomeLandingScreen';
 import { CinematicLaunchSplashScreen } from './src/components/CinematicLaunchSplashScreen';
 import { NexoraMoviesHubView } from './src/components/NexoraMoviesHubView';
+import { NexoraHomeHeroSection } from './src/components/NexoraHomeHeroSection';
 import { YacineLiveTvView } from './src/components/YacineLiveTvView';
 import { PremiumSportsLiveView } from './src/components/PremiumSportsLiveView';
 
@@ -412,14 +413,35 @@ export default function App() {
 
     return (
       <View style={{ backgroundColor: '#07080B' }}>
-        {/* Landscape Hero Billboard with peeking slide & pill indicator */}
-        <PremiumBillboardCarousel
-          items={movies}
-          onSelect={(item) => setSelectedItem(item)}
-          onPlay={(item) => setPlayingItem(item)}
+        {/* 🌟 Option 2 Primary Home Template: Shows/Movies Filter + SHADOW REALM Hero + Continue Watching on Nexora */}
+        <NexoraHomeHeroSection
+          onPlayHero={(item) => setPlayingItem(item)}
+          onSelectContent={(item) => setSelectedItem(item)}
+          onFilterChange={(filter) => {
+            if (filter === 'shows') setActiveTab('series');
+            else if (filter === 'movies') setActiveTab('movies');
+            else setSelectedCategory('All');
+          }}
+          onViewAllContinueWatching={() => setActiveTab('mylist')}
         />
 
-        {/* Category Underline Tabs matching Screen 1 */}
+        {/* Top Trending Rail with Active Shine Borders (PRESERVED) */}
+        <TopTrendingRail
+          items={movies}
+          onSelect={(item) => setSelectedItem(item)}
+          onViewAll={() => setActiveTab('movies')}
+        />
+
+        {/* Netflix Signature Top 10 in India Today Rail with Giant Outlined Numbers & Active Shine Borders (PRESERVED) */}
+        <NetflixTop10Rail
+          title="Top 10 in India Today"
+          badge="#1 TRENDING"
+          items={movies}
+          onSelect={(item) => setSelectedItem(item)}
+          onSeeAll={() => setActiveTab('movies')}
+        />
+
+        {/* Category Underline Tabs */}
         <PremiumCategoryTabs
           activeCategory={selectedCategory as any}
           onSelectCategory={(cat) => {
@@ -429,32 +451,6 @@ export default function App() {
             else if (cat === 'Sports') setSelectedCategory('Sports');
             else if (cat === 'TV Show' || cat === 'Webseries') setSelectedCategory('Series');
           }}
-        />
-
-        {/* Continue Watching Rail with bottom scrubber line inside thumbnail & title below */}
-        <ContinueWatchingRail
-          items={MOCK_CONTINUE_WATCHING}
-          onSelect={(cw) => {
-            const matched = MOCK_CONTENT.find((c) => c.id === cw.contentId);
-            setSelectedItem(matched || (cw as any));
-          }}
-          onViewAll={() => setActiveTab('mylist')}
-        />
-
-        {/* Top Trending Rail with portrait cards matching Screen 1 */}
-        <TopTrendingRail
-          items={movies}
-          onSelect={(item) => setSelectedItem(item)}
-          onViewAll={() => setActiveTab('movies')}
-        />
-
-        {/* Netflix Signature Top 10 in India Today Rail */}
-        <NetflixTop10Rail
-          title="Top 10 in India Today"
-          badge="#1 TRENDING"
-          items={movies}
-          onSelect={(item) => setSelectedItem(item)}
-          onSeeAll={() => setActiveTab('movies')}
         />
 
         {/* Live TV Channels Rail */}
