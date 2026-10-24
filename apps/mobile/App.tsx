@@ -45,6 +45,7 @@ import { PremiumCategoryTabs, CategoryTab } from './src/components/PremiumCatego
 import { ContinueWatchingRail } from './src/components/ContinueWatchingRail';
 import { TopTrendingRail } from './src/components/TopTrendingRail';
 import { PremiumContentDetailsModal } from './src/components/PremiumContentDetailsModal';
+import { NetflixSignUpScreen } from './src/components/NetflixSignUpScreen';
 
 const { width, height } = Dimensions.get('window');
 
@@ -353,43 +354,14 @@ export default function App() {
 
     if (activeTab === 'account') {
       return (
-        <View style={{ paddingBottom: 32 }}>
-          {/* Netflix-style Sign In Card */}
-          <NativeSignInCard
-            onSignInSuccess={() => {
-              setActiveTab('home');
-            }}
-          />
-
-          {/* Android / Google TV Device Activation */}
-          <View style={[styles.settingsSection, { marginHorizontal: 16, marginTop: 16 }]}>
-            <Text style={styles.sectionTitle}>📺 Pair with Android TV / Google TV</Text>
-            <Text style={styles.settingsDesc}>
-              Enter the 6-digit activation code displayed on your TV screen to link your account.
-            </Text>
-
-            <View style={styles.pairingBox}>
-              <TextInput
-                style={styles.pairingInput}
-                placeholder="NX-8492"
-                placeholderTextColor="#666666"
-                value={activationCode}
-                onChangeText={setActivationCode}
-                maxLength={7}
-                autoCapitalize="characters"
-              />
-              <TouchableOpacity style={styles.pairingButton} onPress={handlePairTv}>
-                <Text style={styles.pairingButtonText}>Link TV</Text>
-              </TouchableOpacity>
-            </View>
-
-            {activationSuccess && (
-              <View style={styles.successBox}>
-                <Text style={styles.successText}>✓ TV Paired Successfully! Enjoy 4K HDR.</Text>
-              </View>
-            )}
-          </View>
-        </View>
+        <NetflixSignUpScreen
+          onSuccess={() => {
+            setActiveTab('home');
+          }}
+          onClose={() => {
+            setActiveTab('home');
+          }}
+        />
       );
     }
 
