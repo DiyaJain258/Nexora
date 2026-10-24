@@ -598,6 +598,18 @@ export default function App() {
     );
   };
 
+  if (activeTab === 'account') {
+    return (
+      <View style={{ flex: 1, backgroundColor: '#000000' }}>
+        <StatusBar style="light" />
+        <NetflixSignUpScreen
+          onSuccess={() => setActiveTab('home')}
+          onClose={() => setActiveTab('home')}
+        />
+      </View>
+    );
+  }
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.safeArea}>

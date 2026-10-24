@@ -14,24 +14,28 @@ import {
 
 const { width, height } = Dimensions.get('window');
 
-// Movie posters collage matching Netflix background wall
-const BACKGROUND_POSTERS = [
-  'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=300&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=300&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?w=300&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=300&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=300&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=300&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=300&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=300&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=300&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=300&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=300&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?w=300&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1533928298208-27ff66555d8d?w=300&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?w=300&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=300&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=300&auto=format&fit=crop&q=80',
+// High-resolution posters for the Netflix collage wall background
+const POSTER_TILES = [
+  // Row 1
+  'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=320&auto=format&fit=crop&q=80', // Vikings / Epic
+  'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=320&auto=format&fit=crop&q=80', // Cyberpunk / Tech
+  'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=320&auto=format&fit=crop&q=80', // Dune / Sci-Fi
+  'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=320&auto=format&fit=crop&q=80', // Dark mystery
+  // Row 2
+  'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=320&auto=format&fit=crop&q=80', // Drama / Oppenheimer
+  'https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?w=320&auto=format&fit=crop&q=80', // Interstellar
+  'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=320&auto=format&fit=crop&q=80', // Dark Knight / Action
+  'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=320&auto=format&fit=crop&q=80', // Cinema crowd
+  // Row 3
+  'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=320&auto=format&fit=crop&q=80', // Film theater
+  'https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=320&auto=format&fit=crop&q=80', // Cinema seats
+  'https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?w=320&auto=format&fit=crop&q=80', // Moody sunset
+  'https://images.unsplash.com/photo-1533928298208-27ff66555d8d?w=320&auto=format&fit=crop&q=80', // Night skyline
+  // Row 4
+  'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=320&auto=format&fit=crop&q=80', // Sports
+  'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=320&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=320&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?w=320&auto=format&fit=crop&q=80',
 ];
 
 interface NetflixSignUpScreenProps {
@@ -43,10 +47,9 @@ export const NetflixSignUpScreen: React.FC<NetflixSignUpScreenProps> = ({
   onSuccess,
   onClose,
 }) => {
-  const [isSignUpMode, setIsSignUpMode] = useState(true);
+  const [isSignInMode, setIsSignInMode] = useState(true);
   const [emailOrPhone, setEmailOrPhone] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(true);
   const [showRecaptchaDetail, setShowRecaptchaDetail] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -65,45 +68,39 @@ export const NetflixSignUpScreen: React.FC<NetflixSignUpScreenProps> = ({
       showToast('Please enter your password.');
       return;
     }
-    if (isSignUpMode && confirmPassword !== password) {
-      showToast('Passwords do not match.');
-      return;
-    }
 
-    showToast(isSignUpMode ? 'Account created successfully! Welcome.' : 'Signed in successfully!');
+    showToast(isSignInMode ? 'Signed in successfully! Welcome.' : 'Account created successfully!');
     setTimeout(() => {
       if (onSuccess) onSuccess();
     }, 1200);
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      style={styles.container}
-    >
-      {/* Background Movie Posters Wall with Dark Vignette */}
+    <View style={styles.container}>
+      {/* Background Poster Collage Wall tilted diagonally like Image 1 */}
       <View style={styles.posterWall} pointerEvents="none">
-        <View style={styles.posterGrid}>
-          {BACKGROUND_POSTERS.map((uri, index) => (
-            <View key={index} style={styles.posterWrapper}>
-              <Image source={{ uri }} style={styles.posterImg} resizeMode="cover" />
+        <View style={styles.tiltedGrid}>
+          {POSTER_TILES.map((uri, index) => (
+            <View key={index} style={styles.posterItem}>
+              <Image source={{ uri }} style={styles.posterImage} resizeMode="cover" />
             </View>
           ))}
         </View>
+
+        {/* Cinematic Vignette Overlay so posters remain rich and visible */}
         <View style={styles.vignetteOverlay} />
       </View>
 
-      {/* Top Header Row with Logo & Close button */}
-      <View style={styles.topHeader}>
-        <View style={styles.logoRow}>
-          <Text style={styles.logoRed}>NEX<Text style={{ color: '#FFFFFF' }}>ORA</Text></Text>
-        </View>
-        {onClose && (
-          <TouchableOpacity onPress={onClose} style={styles.closeBtn}>
-            <Text style={styles.closeBtnText}>✕</Text>
-          </TouchableOpacity>
-        )}
-      </View>
+      {/* Subtle Circular Back Arrow on Top-Left */}
+      {onClose && (
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={onClose}
+          style={styles.floatingBackBtn}
+        >
+          <Text style={styles.floatingBackIcon}>←</Text>
+        </TouchableOpacity>
+      )}
 
       {/* Toast Alert */}
       {toastMessage && (
@@ -112,134 +109,127 @@ export const NetflixSignUpScreen: React.FC<NetflixSignUpScreenProps> = ({
         </View>
       )}
 
-      {/* Centered Dark Glass Form Card */}
-      <ScrollView
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
+      {/* Centered Glass Form Card */}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        style={styles.keyboardContainer}
       >
-        <View style={styles.authCard}>
-          {/* Card Title */}
-          <Text style={styles.cardTitle}>{isSignUpMode ? 'Sign Up' : 'Sign In'}</Text>
+        <ScrollView
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+          bounces={false}
+        >
+          <View style={styles.card}>
+            {/* Title: Sign In */}
+            <Text style={styles.cardTitle}>
+              {isSignInMode ? 'Sign In' : 'Sign Up'}
+            </Text>
 
-          {/* Email or Phone Input */}
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.inputField}
-              placeholder="Email or phone number"
-              placeholderTextColor="#8C8C8C"
-              value={emailOrPhone}
-              onChangeText={setEmailOrPhone}
-              keyboardType="email-address"
-              autoCapitalize="none"
-            />
-          </View>
-
-          {/* Password Input */}
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.inputField}
-              placeholder="Password"
-              placeholderTextColor="#8C8C8C"
-              secureTextEntry
-              value={password}
-              onChangeText={setPassword}
-              autoCapitalize="none"
-            />
-          </View>
-
-          {/* Confirm Password (only in Sign Up mode) */}
-          {isSignUpMode && (
-            <View style={styles.inputContainer}>
+            {/* Email or Phone Input */}
+            <View style={styles.inputWrapper}>
               <TextInput
-                style={styles.inputField}
-                placeholder="Confirm password"
+                style={styles.textInput}
+                placeholder="Email or phone number"
                 placeholderTextColor="#8C8C8C"
-                secureTextEntry
-                value={confirmPassword}
-                onChangeText={setConfirmPassword}
+                value={emailOrPhone}
+                onChangeText={setEmailOrPhone}
+                keyboardType="email-address"
                 autoCapitalize="none"
               />
             </View>
-          )}
 
-          {/* Primary Action Button (Solid Red Netflix Button) */}
-          <TouchableOpacity
-            style={styles.primaryButton}
-            activeOpacity={0.88}
-            onPress={handleSubmit}
-          >
-            <Text style={styles.primaryButtonText}>
-              {isSignUpMode ? 'Sign Up' : 'Sign In'}
-            </Text>
-          </TouchableOpacity>
-
-          {/* Remember Me Checkbox & Need Help Row */}
-          <View style={styles.optionsRow}>
-            <TouchableOpacity
-              style={styles.checkboxRow}
-              activeOpacity={0.8}
-              onPress={() => setRememberMe(!rememberMe)}
-            >
-              <View style={[styles.checkboxBox, rememberMe && styles.checkboxBoxChecked]}>
-                {rememberMe && <Text style={styles.checkmarkIcon}>✓</Text>}
-              </View>
-              <Text style={styles.rememberText}>Remember me</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              activeOpacity={0.7}
-              onPress={() => showToast('Password reset link sent to your email.')}
-            >
-              <Text style={styles.needHelpText}>Need help?</Text>
-            </TouchableOpacity>
-          </View>
-
-          {/* Social Login with Facebook */}
-          <TouchableOpacity
-            style={styles.facebookRow}
-            activeOpacity={0.75}
-            onPress={() => showToast('Connecting to Facebook...')}
-          >
-            <View style={styles.facebookIconBox}>
-              <Text style={styles.facebookIconText}>f</Text>
+            {/* Password Input */}
+            <View style={styles.inputWrapper}>
+              <TextInput
+                style={styles.textInput}
+                placeholder="Password"
+                placeholderTextColor="#8C8C8C"
+                secureTextEntry
+                value={password}
+                onChangeText={setPassword}
+                autoCapitalize="none"
+              />
             </View>
-            <Text style={styles.facebookText}>Login with Facebook</Text>
-          </TouchableOpacity>
 
-          {/* Switch Mode: Sign up now / Sign in now */}
-          <View style={styles.switchModeBox}>
-            <Text style={styles.switchModeText}>
-              {isSignUpMode ? 'Already have an account? ' : 'New to Netflix? '}
-              <Text
-                style={styles.switchModeLink}
-                onPress={() => setIsSignUpMode(!isSignUpMode)}
+            {/* Solid Red Sign In CTA Button */}
+            <TouchableOpacity
+              activeOpacity={0.88}
+              onPress={handleSubmit}
+              style={styles.signInButton}
+            >
+              <Text style={styles.signInButtonText}>
+                {isSignInMode ? 'Sign In' : 'Sign Up'}
+              </Text>
+            </TouchableOpacity>
+
+            {/* Remember me & Need help? row */}
+            <View style={styles.optionsRow}>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => setRememberMe(!rememberMe)}
+                style={styles.checkboxTouch}
               >
-                {isSignUpMode ? 'Sign in now.' : 'Sign up now.'}
-              </Text>
-            </Text>
-          </View>
+                <View style={[styles.checkboxBox, rememberMe && styles.checkboxBoxChecked]}>
+                  {rememberMe && <Text style={styles.checkMark}>✓</Text>}
+                </View>
+                <Text style={styles.rememberMeText}>Remember me</Text>
+              </TouchableOpacity>
 
-          {/* Google reCAPTCHA Disclaimer */}
-          <View style={styles.recaptchaBox}>
-            <Text style={styles.recaptchaText}>
-              This page is protected by Google reCAPTCHA to ensure you're not a bot.{' '}
-              <Text
-                style={styles.recaptchaLink}
-                onPress={() => setShowRecaptchaDetail(!showRecaptchaDetail)}
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={() => showToast('Password reset link sent to your email.')}
               >
-                Learn more.
-              </Text>
-            </Text>
+                <Text style={styles.needHelpText}>Need help?</Text>
+              </TouchableOpacity>
+            </View>
 
-            {showRecaptchaDetail && (
-              <Text style={styles.recaptchaDetailText}>
-                The information collected by Google reCAPTCHA is subject to the Google Privacy Policy and Terms of Service, and is used for providing, maintaining, and improving the reCAPTCHA service and for general security purposes.
+            {/* Facebook Login Row */}
+            <TouchableOpacity
+              activeOpacity={0.75}
+              onPress={() => showToast('Connecting with Facebook...')}
+              style={styles.facebookRow}
+            >
+              <View style={styles.facebookIconBox}>
+                <Text style={styles.facebookLetter}>f</Text>
+              </View>
+              <Text style={styles.facebookText}>Login with Facebook</Text>
+            </TouchableOpacity>
+
+            {/* Switch Mode: New to Netflix? Sign up now. */}
+            <View style={styles.switchRow}>
+              <Text style={styles.newToText}>
+                {isSignInMode ? 'New to Netflix? ' : 'Already have an account? '}
+                <Text
+                  style={styles.signUpLink}
+                  onPress={() => setIsSignInMode(!isSignInMode)}
+                >
+                  {isSignInMode ? 'Sign up now.' : 'Sign in now.'}
+                </Text>
               </Text>
-            )}
+            </View>
+
+            {/* Google reCAPTCHA Disclaimer */}
+            <View style={styles.recaptchaWrap}>
+              <Text style={styles.recaptchaText}>
+                This page is protected by Google reCAPTCHA to ensure you're not a bot.{' '}
+                <Text
+                  style={styles.learnMoreLink}
+                  onPress={() => setShowRecaptchaDetail(!showRecaptchaDetail)}
+                >
+                  Learn more.
+                </Text>
+              </Text>
+
+              {showRecaptchaDetail && (
+                <Text style={styles.recaptchaExplanation}>
+                  The information collected by Google reCAPTCHA is subject to the Google Privacy Policy and Terms of Service, and is used for providing, maintaining, and improving the reCAPTCHA service and for general security purposes.
+                </Text>
+              )}
+            </View>
           </View>
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </View>
   );
 };
 
@@ -253,73 +243,61 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFill,
     overflow: 'hidden',
   },
-  posterGrid: {
+  tiltedGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    gap: 6,
-    opacity: 0.38,
-    transform: [{ scale: 1.08 }, { rotate: '-1.5deg' }],
-    marginTop: -20,
+    gap: 8,
+    opacity: 0.55,
+    transform: [{ scale: 1.15 }, { rotate: '-6deg' }],
+    marginTop: -40,
+    marginLeft: -20,
+    marginRight: -20,
   },
-  posterWrapper: {
-    width: (width + 40) / 4 - 6,
-    height: 155,
+  posterItem: {
+    width: (width + 60) / 4 - 8,
+    height: 165,
     borderRadius: 6,
     overflow: 'hidden',
-    backgroundColor: '#111116',
+    backgroundColor: '#16161D',
   },
-  posterImg: {
+  posterImage: {
     width: '100%',
     height: '100%',
   },
   vignetteOverlay: {
     ...StyleSheet.absoluteFill,
-    backgroundColor: 'rgba(0, 0, 0, 0.65)',
+    backgroundColor: 'rgba(0, 0, 0, 0.62)',
   },
-  topHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 22,
-    paddingTop: Platform.OS === 'ios' ? 52 : 36,
-    paddingBottom: 10,
-    zIndex: 10,
-  },
-  logoRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  logoRed: {
-    color: '#E50914',
-    fontSize: 26,
-    fontWeight: '900',
-    letterSpacing: 2,
-  },
-  closeBtn: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+  floatingBackBtn: {
+    position: 'absolute',
+    top: Platform.OS === 'ios' ? 52 : 36,
+    left: 18,
+    width: 38,
+    height: 38,
+    borderRadius: 19,
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.2)',
     alignItems: 'center',
     justifyContent: 'center',
+    zIndex: 99,
   },
-  closeBtnText: {
+  floatingBackIcon: {
     color: '#FFFFFF',
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: '700',
+    marginTop: -2,
   },
   toastBox: {
     position: 'absolute',
-    top: Platform.OS === 'ios' ? 95 : 80,
-    left: 20,
+    top: Platform.OS === 'ios' ? 52 : 36,
+    left: 68,
     right: 20,
-    backgroundColor: 'rgba(229, 9, 20, 0.95)',
+    backgroundColor: '#E50914',
     borderRadius: 8,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
+    paddingVertical: 10,
+    paddingHorizontal: 14,
     zIndex: 999,
     alignItems: 'center',
     shadowColor: '#000000',
@@ -330,86 +308,90 @@ const styles = StyleSheet.create({
   },
   toastText: {
     color: '#FFFFFF',
-    fontSize: 13.5,
+    fontSize: 13,
     fontWeight: '700',
+  },
+  keyboardContainer: {
+    flex: 1,
   },
   scrollContent: {
     flexGrow: 1,
     justifyContent: 'center',
+    alignItems: 'center',
     paddingHorizontal: 20,
-    paddingVertical: 24,
+    paddingVertical: 32,
   },
-  authCard: {
+  card: {
     width: '100%',
-    maxWidth: 420,
-    alignSelf: 'center',
+    maxWidth: 390,
     backgroundColor: 'rgba(0, 0, 0, 0.78)',
-    borderRadius: 8,
+    borderRadius: 4,
     paddingHorizontal: 26,
     paddingTop: 36,
-    paddingBottom: 40,
+    paddingBottom: 38,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.08)',
     shadowColor: '#000000',
-    shadowOffset: { width: 0, height: 16 },
-    shadowOpacity: 0.85,
-    shadowRadius: 28,
-    elevation: 12,
+    shadowOffset: { width: 0, height: 18 },
+    shadowOpacity: 0.9,
+    shadowRadius: 30,
+    elevation: 14,
   },
   cardTitle: {
     color: '#FFFFFF',
     fontSize: 32,
     fontWeight: '800',
     marginBottom: 26,
+    letterSpacing: 0.2,
   },
-  inputContainer: {
+  inputWrapper: {
     marginBottom: 16,
   },
-  inputField: {
-    width: '100%',
-    height: 52,
-    backgroundColor: '#333333',
-    borderRadius: 5,
-    paddingHorizontal: 16,
-    color: '#FFFFFF',
-    fontSize: 15,
-  },
-  primaryButton: {
+  textInput: {
     width: '100%',
     height: 50,
+    backgroundColor: '#333333',
+    borderRadius: 4,
+    paddingHorizontal: 16,
+    color: '#FFFFFF',
+    fontSize: 14.5,
+  },
+  signInButton: {
+    width: '100%',
+    height: 48,
     backgroundColor: '#E50914',
-    borderRadius: 5,
+    borderRadius: 4,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 10,
+    marginTop: 8,
     marginBottom: 14,
     shadowColor: '#E50914',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.4,
+    shadowOpacity: 0.35,
     shadowRadius: 8,
     elevation: 6,
   },
-  primaryButtonText: {
+  signInButtonText: {
     color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '800',
+    fontSize: 15.5,
+    fontWeight: '700',
     letterSpacing: 0.3,
   },
   optionsRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 28,
+    marginBottom: 26,
   },
-  checkboxRow: {
+  checkboxTouch: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: 7,
   },
   checkboxBox: {
-    width: 18,
-    height: 18,
-    borderRadius: 3,
+    width: 17,
+    height: 17,
+    borderRadius: 2,
     backgroundColor: '#737373',
     alignItems: 'center',
     justifyContent: 'center',
@@ -417,12 +399,12 @@ const styles = StyleSheet.create({
   checkboxBoxChecked: {
     backgroundColor: '#737373',
   },
-  checkmarkIcon: {
+  checkMark: {
     color: '#000000',
     fontSize: 12,
     fontWeight: '900',
   },
-  rememberText: {
+  rememberMeText: {
     color: '#B3B3B3',
     fontSize: 13,
   },
@@ -434,53 +416,53 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
-    marginBottom: 24,
+    marginBottom: 22,
   },
   facebookIconBox: {
-    width: 20,
-    height: 20,
-    borderRadius: 3,
+    width: 18,
+    height: 18,
+    borderRadius: 2,
     backgroundColor: '#1877F2',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  facebookIconText: {
+  facebookLetter: {
     color: '#FFFFFF',
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '900',
     marginTop: -1,
   },
   facebookText: {
     color: '#737373',
     fontSize: 13,
-    fontWeight: '600',
+    fontWeight: '500',
   },
-  switchModeBox: {
+  switchRow: {
     marginBottom: 16,
   },
-  switchModeText: {
+  newToText: {
     color: '#737373',
     fontSize: 15,
   },
-  switchModeLink: {
+  signUpLink: {
     color: '#FFFFFF',
     fontWeight: '700',
   },
-  recaptchaBox: {
-    marginTop: 4,
+  recaptchaWrap: {
+    marginTop: 2,
   },
   recaptchaText: {
     color: '#8C8C8C',
     fontSize: 12,
-    lineHeight: 18,
+    lineHeight: 17,
   },
-  recaptchaLink: {
+  learnMoreLink: {
     color: '#0071EB',
   },
-  recaptchaDetailText: {
+  recaptchaExplanation: {
     color: '#8C8C8C',
     fontSize: 11,
     lineHeight: 16,
-    marginTop: 8,
+    marginTop: 6,
   },
 });
