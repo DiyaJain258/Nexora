@@ -39,6 +39,12 @@ import { NativeSignInCard } from './src/components/NativeSignInCard';
 import { ShineBorder } from './src/components/ShineBorder';
 import { NetflixTop10Rail } from './src/components/NetflixTop10Rail';
 import { ViaplayCatalogView } from './src/components/ViaplayCatalogView';
+import { PremiumUserHeader } from './src/components/PremiumUserHeader';
+import { PremiumBillboardCarousel } from './src/components/PremiumBillboardCarousel';
+import { PremiumCategoryTabs, CategoryTab } from './src/components/PremiumCategoryTabs';
+import { ContinueWatchingRail } from './src/components/ContinueWatchingRail';
+import { TopTrendingRail } from './src/components/TopTrendingRail';
+import { PremiumContentDetailsModal } from './src/components/PremiumContentDetailsModal';
 
 const { width, height } = Dimensions.get('window');
 
@@ -168,7 +174,7 @@ export default function App() {
   }
 
   const renderMainContent = () => {
-    if (isSearchOpen) {
+    if (isSearchOpen || activeTab === 'search') {
       return (
         <View style={styles.searchSection}>
           <View style={styles.searchInputBox}>
@@ -476,13 +482,39 @@ export default function App() {
 
     return (
       <View style={{ backgroundColor: '#07080B' }}>
-        {/* Animated Hero Carousel with ambient red glow, auto-rotation & crossfade */}
-        <FeaturedContentCarousel
+        {/* Landscape Hero Billboard with peeking slide & pill indicator */}
+        <PremiumBillboardCarousel
           items={movies}
+          onSelect={(item) => setSelectedItem(item)}
           onPlay={(item) => setPlayingItem(item)}
-          onDetails={(item) => setSelectedItem(item)}
-          onToggleFavorite={toggleFavorite}
-          favoriteIds={favoriteIds}
+        />
+
+        {/* Category Underline Tabs matching Screen 1 */}
+        <PremiumCategoryTabs
+          activeCategory={selectedCategory as any}
+          onSelectCategory={(cat) => {
+            setSelectedCategory(cat);
+            if (cat === 'Movies') setActiveTab('movies');
+            else if (cat === 'Live TV') setActiveTab('livetv');
+            else if (cat === 'TV Show' || cat === 'Webseries') setSelectedCategory('Series');
+          }}
+        />
+
+        {/* Continue Watching Rail with bottom scrubber line inside thumbnail & title below */}
+        <ContinueWatchingRail
+          items={MOCK_CONTINUE_WATCHING}
+          onSelect={(cw) => {
+            const matched = MOCK_CONTENT.find((c) => c.id === cw.contentId);
+            setSelectedItem(matched || (cw as any));
+          }}
+          onViewAll={() => setActiveTab('mylist')}
+        />
+
+        {/* Top Trending Rail with portrait cards matching Screen 1 */}
+        <TopTrendingRail
+          items={movies}
+          onSelect={(item) => setSelectedItem(item)}
+          onViewAll={() => setActiveTab('movies')}
         />
 
         {/* Netflix Signature Top 10 in India Today Rail */}
@@ -567,29 +599,6 @@ export default function App() {
                 {film.year} • {film.genre}
               </Text>
             </TouchableOpacity>
-          ))}
-        </ScrollView>
-
-        {/* Continue Watching Rail */}
-        <SectionHeader
-          title="Continue Watching"
-          badge="3 IN PROGRESS"
-          onSeeAll={() => setActiveTab('mylist')}
-        />
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.railScroll}
-        >
-          {MOCK_CONTINUE_WATCHING.map((item) => (
-            <ContinueWatchingCard
-              key={item.id}
-              item={item}
-              onPress={(cw) => {
-                const matched = MOCK_CONTENT.find((c) => c.id === cw.contentId);
-                setPlayingItem(matched || cw);
-              }}
-            />
           ))}
         </ScrollView>
 
@@ -688,27 +697,35 @@ export default function App() {
         {/* Cinematic Backdrop Layer with 7x3 Tilted Posters & Fog */}
         <NativeCinematicBackground />
 
-        {/* Top Animated Header */}
-        <AnimatedHeader
-          isSearchActive={isSearchOpen}
-          onSearchPress={() => setIsSearchOpen(!isSearchOpen)}
-          onBrandPress={() => {
-            setActiveTab('home');
-            setSelectedCategory('All');
-            setIsSearchOpen(false);
-          }}
-          onAvatarPress={() => {
-            setActiveTab('account');
-            setIsSearchOpen(false);
-          }}
-          activeTab={activeTab}
-          onToggleMode={() => {
-            setActiveTab(activeTab === 'landing' ? 'home' : 'landing');
-          }}
-        />
+        {/* Top Header: Premium User Header on Home screen matching Screen 1, or AnimatedHeader */}
+        {activeTab === 'home' && !isSearchOpen ? (
+          <PremiumUserHeader
+            userName="Venkatesh M"
+            onNotificationPress={() => {}}
+            onProfilePress={() => setActiveTab('account')}
+          />
+        ) : (
+          <AnimatedHeader
+            isSearchActive={isSearchOpen}
+            onSearchPress={() => setIsSearchOpen(!isSearchOpen)}
+            onBrandPress={() => {
+              setActiveTab('home');
+              setSelectedCategory('All');
+              setIsSearchOpen(false);
+            }}
+            onAvatarPress={() => {
+              setActiveTab('account');
+              setIsSearchOpen(false);
+            }}
+            activeTab={activeTab}
+            onToggleMode={() => {
+              setActiveTab(activeTab === 'landing' ? 'home' : 'landing');
+            }}
+          />
+        )}
 
-        {/* Category Filter Pills (Shown only during OTT Streaming mode) */}
-        {!isSearchOpen && activeTab !== 'landing' && (
+        {/* Category Filter Pills (Shown only during non-home streaming modes) */}
+        {!isSearchOpen && activeTab !== 'landing' && activeTab !== 'home' && (
           <View style={styles.categoryBar}>
             <ScrollView
               horizontal
@@ -743,70 +760,20 @@ export default function App() {
           {renderMainContent()}
         </ScrollView>
 
-      {/* 3D Cinematic Content Details Modal */}
-      {selectedItem && (
-        <Modal visible={!!selectedItem} transparent animationType="slide">
-          <View style={styles.modalBackdrop}>
-            <View style={styles.modalContent}>
-              <TouchableOpacity
-                style={styles.modalCloseBtn}
-                onPress={() => setSelectedItem(null)}
-              >
-                <Text style={{ color: '#FFFFFF', fontSize: 16 }}>✕</Text>
-              </TouchableOpacity>
-
-              <Image source={{ uri: selectedItem.backdropUrl }} style={styles.modalCover} />
-              <View style={styles.modalCoverGradient} />
-
-              <View style={styles.modalBody}>
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-                  <View style={styles.badgeRed}>
-                    <Text style={styles.badgeRedText}>4K HDR</Text>
-                  </View>
-                  <Text style={{ color: '#FBBF24', fontWeight: 'bold' }}>
-                    ★ {selectedItem.rating}
-                  </Text>
-                  <Text style={{ color: '#B3B3B3', fontSize: 12 }}>
-                    {selectedItem.releaseYear} • {selectedItem.duration}
-                  </Text>
-                </View>
-
-                <Text style={styles.modalTitle}>{selectedItem.title}</Text>
-                <Text style={styles.modalSynopsis}>{selectedItem.synopsis}</Text>
-
-                <View style={styles.modalMetaRow}>
-                  <Text style={styles.modalMetaLabel}>Genres: </Text>
-                  <Text style={styles.modalMetaValue}>
-                    {selectedItem.genres.join(', ')}
-                  </Text>
-                </View>
-
-                <View style={styles.modalButtonsRow}>
-                  <TouchableOpacity
-                    style={styles.modalPrimaryBtn}
-                    onPress={() => {
-                      const item = selectedItem;
-                      setSelectedItem(null);
-                      setPlayingItem(item);
-                    }}
-                  >
-                    <Text style={styles.heroPrimaryButtonText}>▶ Play Now</Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    style={styles.modalFavBtn}
-                    onPress={() => toggleFavorite(selectedItem.id)}
-                  >
-                    <Text style={{ color: '#FFFFFF', fontWeight: '700' }}>
-                      {favoriteIds.includes(selectedItem.id) ? '✓ In Watchlist' : '+ Watchlist'}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
-          </View>
-        </Modal>
-      )}
+        {/* Premium Content Details Modal matching Screen 2 */}
+        <PremiumContentDetailsModal
+          item={selectedItem}
+          visible={!!selectedItem}
+          onClose={() => setSelectedItem(null)}
+          onPlay={(item) => {
+            setSelectedItem(null);
+            setPlayingItem(item);
+          }}
+          onSelectRelated={(rel) => setSelectedItem(rel)}
+          relatedItems={MOCK_CONTENT.filter((c) => c.id !== selectedItem?.id)}
+          isFavorite={selectedItem ? favoriteIds.includes(selectedItem.id) : false}
+          onToggleFavorite={toggleFavorite}
+        />
 
       {/* Fullscreen Video Player Modal */}
       {playingItem && (

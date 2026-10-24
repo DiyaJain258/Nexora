@@ -8,7 +8,7 @@ import {
   Platform,
 } from 'react-native';
 
-export type BottomTabType = 'landing' | 'home' | 'livetv' | 'movies' | 'mylist' | 'account';
+export type BottomTabType = 'landing' | 'home' | 'search' | 'livetv' | 'movies' | 'mylist' | 'account';
 
 interface AnimatedBottomNavigationProps {
   activeTab: BottomTabType;
@@ -22,11 +22,10 @@ interface TabItemConfig {
 }
 
 const TABS: TabItemConfig[] = [
-  { id: 'home', label: 'Home', icon: '🎬' },
-  { id: 'movies', label: 'Movies', icon: '🍿' },
-  { id: 'livetv', label: 'Live TV', icon: '📡' },
-  { id: 'mylist', label: 'My List', icon: '🔖' },
-  { id: 'account', label: 'TV Pair', icon: '🔗' },
+  { id: 'home', label: 'Home', icon: '🏠' },
+  { id: 'search', label: 'Search', icon: '🔍' },
+  { id: 'mylist', label: 'Saved', icon: '🤍' },
+  { id: 'account', label: 'Profile', icon: '👤' },
 ];
 
 export const AnimatedBottomNavigation: React.FC<AnimatedBottomNavigationProps> = ({
@@ -60,36 +59,22 @@ interface TabButtonProps {
 
 const TabButton: React.FC<TabButtonProps> = ({ tab, isActive, onPress }) => {
   const bounceAnim = useRef(new Animated.Value(1)).current;
-  const indicatorOpacity = useRef(new Animated.Value(isActive ? 1 : 0)).current;
 
   useEffect(() => {
     if (isActive) {
-      Animated.parallel([
-        Animated.sequence([
-          Animated.timing(bounceAnim, {
-            toValue: 1.25,
-            duration: 120,
-            useNativeDriver: true,
-          }),
-          Animated.spring(bounceAnim, {
-            toValue: 1.0,
-            friction: 4,
-            tension: 50,
-            useNativeDriver: true,
-          }),
-        ]),
-        Animated.timing(indicatorOpacity, {
-          toValue: 1,
-          duration: 180,
+      Animated.sequence([
+        Animated.timing(bounceAnim, {
+          toValue: 1.25,
+          duration: 120,
+          useNativeDriver: true,
+        }),
+        Animated.spring(bounceAnim, {
+          toValue: 1.0,
+          friction: 4,
+          tension: 50,
           useNativeDriver: true,
         }),
       ]).start();
-    } else {
-      Animated.timing(indicatorOpacity, {
-        toValue: 0,
-        duration: 150,
-        useNativeDriver: true,
-      }).start();
     }
   }, [isActive]);
 
@@ -99,11 +84,6 @@ const TabButton: React.FC<TabButtonProps> = ({ tab, isActive, onPress }) => {
       onPress={onPress}
       style={styles.tabItem}
     >
-      {/* Top Active Red Indicator Bar */}
-      <Animated.View style={{ opacity: indicatorOpacity }}>
-        <View style={styles.activeIndicator} />
-      </Animated.View>
-
       {/* Animated Icon */}
       <Animated.Text
         style={[
@@ -115,10 +95,8 @@ const TabButton: React.FC<TabButtonProps> = ({ tab, isActive, onPress }) => {
         {tab.icon}
       </Animated.Text>
 
-      {/* Tab Label */}
-      <Text style={[styles.tabLabel, isActive && styles.tabLabelActive]}>
-        {tab.label}
-      </Text>
+      {/* Tiny active red/burgundy dot */}
+      {isActive && <View style={styles.activeDot} />}
     </TouchableOpacity>
   );
 };
@@ -127,15 +105,15 @@ const styles = StyleSheet.create({
   dockContainer: {
     backgroundColor: '#07080B',
     borderTopWidth: 1,
-    borderTopColor: 'rgba(255, 255, 255, 0.09)',
-    paddingBottom: Platform.OS === 'ios' ? 18 : 6,
+    borderTopColor: 'rgba(255, 255, 255, 0.08)',
+    paddingBottom: Platform.OS === 'ios' ? 20 : 8,
   },
   surface: {
-    height: 58,
+    height: 56,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
-    paddingHorizontal: 6,
+    paddingHorizontal: 16,
     backgroundColor: 'rgba(7, 8, 11, 0.98)',
   },
   tabItem: {
@@ -144,37 +122,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
-    paddingTop: 4,
-  },
-  activeIndicator: {
-    position: 'absolute',
-    top: 0,
-    width: 24,
-    height: 2.5,
-    borderRadius: 2,
-    backgroundColor: '#800020',
-    shadowColor: '#800020',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 1,
-    shadowRadius: 10,
-    elevation: 8,
   },
   tabIcon: {
-    fontSize: 19,
-    opacity: 0.55,
-    marginBottom: 3,
+    fontSize: 22,
+    opacity: 0.45,
   },
   tabIconActive: {
     opacity: 1,
   },
-  tabLabel: {
-    fontSize: 10,
-    fontWeight: '600',
-    color: '#71717A',
-    letterSpacing: 0.2,
-  },
-  tabLabelActive: {
-    color: '#FFFFFF',
-    fontWeight: '800',
+  activeDot: {
+    position: 'absolute',
+    bottom: 6,
+    width: 4,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: '#E50914',
   },
 });
