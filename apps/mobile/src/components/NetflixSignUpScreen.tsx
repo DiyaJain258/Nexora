@@ -17,25 +17,25 @@ const { width, height } = Dimensions.get('window');
 // High-resolution posters for the Netflix collage wall background
 const POSTER_TILES = [
   // Row 1
-  'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=320&auto=format&fit=crop&q=80', // Vikings / Epic
-  'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=320&auto=format&fit=crop&q=80', // Cyberpunk / Tech
-  'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=320&auto=format&fit=crop&q=80', // Dune / Sci-Fi
-  'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=320&auto=format&fit=crop&q=80', // Dark mystery
+  'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=360&auto=format&fit=crop&q=85', // Vikings / Epic Nordic
+  'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=360&auto=format&fit=crop&q=85', // Cyberpunk / Blade Runner
+  'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=360&auto=format&fit=crop&q=85', // Dune / Sci-Fi desert
+  'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=360&auto=format&fit=crop&q=85', // Stranger Things / Dark
   // Row 2
-  'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=320&auto=format&fit=crop&q=80', // Drama / Oppenheimer
-  'https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?w=320&auto=format&fit=crop&q=80', // Interstellar
-  'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=320&auto=format&fit=crop&q=80', // Dark Knight / Action
-  'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=320&auto=format&fit=crop&q=80', // Cinema crowd
+  'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=360&auto=format&fit=crop&q=85', // Oppenheimer / Drama
+  'https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?w=360&auto=format&fit=crop&q=85', // Interstellar / Space
+  'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=360&auto=format&fit=crop&q=85', // Batman Dark Knight
+  'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=360&auto=format&fit=crop&q=85', // Movie Cinema Premiere
   // Row 3
-  'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=320&auto=format&fit=crop&q=80', // Film theater
-  'https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=320&auto=format&fit=crop&q=80', // Cinema seats
-  'https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?w=320&auto=format&fit=crop&q=80', // Moody sunset
-  'https://images.unsplash.com/photo-1533928298208-27ff66555d8d?w=320&auto=format&fit=crop&q=80', // Night skyline
+  'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=360&auto=format&fit=crop&q=85', // Film theater velvet
+  'https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=360&auto=format&fit=crop&q=85', // Cinema theatre lights
+  'https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?w=360&auto=format&fit=crop&q=85', // Moody thriller
+  'https://images.unsplash.com/photo-1533928298208-27ff66555d8d?w=360&auto=format&fit=crop&q=85', // City skyline night
   // Row 4
-  'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=320&auto=format&fit=crop&q=80', // Sports
-  'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=320&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=320&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?w=320&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=360&auto=format&fit=crop&q=85', // Football soccer stadium
+  'https://images.unsplash.com/photo-1546519638-68e109498ffc?w=360&auto=format&fit=crop&q=85', // Basketball live
+  'https://images.unsplash.com/photo-1622279457486-62dcc4a431d6?w=360&auto=format&fit=crop&q=85', // Tennis match
+  'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=360&auto=format&fit=crop&q=85', // Action thriller
 ];
 
 interface NetflixSignUpScreenProps {
@@ -248,8 +248,8 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'center',
     gap: 8,
-    opacity: 0.55,
-    transform: [{ scale: 1.15 }, { rotate: '-6deg' }],
+    opacity: 0.88,
+    transform: [{ scale: 1.2 }, { rotate: '-7deg' }],
     marginTop: -40,
     marginLeft: -20,
     marginRight: -20,
@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
   },
   vignetteOverlay: {
     ...StyleSheet.absoluteFill,
-    backgroundColor: 'rgba(0, 0, 0, 0.62)',
+    backgroundColor: 'rgba(0, 0, 0, 0.42)',
   },
   floatingBackBtn: {
     position: 'absolute',
@@ -324,13 +324,13 @@ const styles = StyleSheet.create({
   card: {
     width: '100%',
     maxWidth: 390,
-    backgroundColor: 'rgba(0, 0, 0, 0.78)',
+    backgroundColor: 'rgba(0, 0, 0, 0.65)',
     borderRadius: 4,
     paddingHorizontal: 26,
     paddingTop: 36,
     paddingBottom: 38,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.08)',
+    borderColor: 'rgba(255, 255, 255, 0.12)',
     shadowColor: '#000000',
     shadowOffset: { width: 0, height: 18 },
     shadowOpacity: 0.9,
@@ -350,8 +350,10 @@ const styles = StyleSheet.create({
   textInput: {
     width: '100%',
     height: 50,
-    backgroundColor: '#333333',
+    backgroundColor: 'rgba(52, 52, 52, 0.78)',
     borderRadius: 4,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.12)',
     paddingHorizontal: 16,
     color: '#FFFFFF',
     fontSize: 14.5,
