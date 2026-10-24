@@ -81,27 +81,27 @@ export const SeasonsEpisodesView: React.FC = () => {
         flexWrap: 'wrap',
         alignItems: 'center',
         justifyContent: 'space-between',
-        backgroundColor: '#151515',
-        border: '1px solid #303030',
+        backgroundColor: '#111827',
+        border: '1px solid #1E293B',
         borderRadius: '14px',
         padding: '16px 20px',
         gap: '16px',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
           <div>
-            <label style={{ fontSize: '11px', color: '#B3B3B3', fontWeight: 700 }}>SELECT SERIES</label>
+            <label style={{ fontSize: '11px', color: '#94A3B8', fontWeight: 600 }}>SELECT SERIES</label>
             <select
               value={selectedSeriesId}
               onChange={(e) => setSelectedSeriesId(e.target.value)}
               style={{
                 display: 'block',
                 marginTop: '4px',
-                backgroundColor: '#050505',
-                border: '1px solid #303030',
+                backgroundColor: '#070912',
+                border: '1px solid #1E293B',
                 borderRadius: '8px',
                 padding: '8px 14px',
-                color: '#FFFFFF',
-                fontWeight: 700,
+                color: '#F8FAFC',
+                fontWeight: 600,
               }}
             >
               {seriesList.map((s) => (
@@ -111,7 +111,7 @@ export const SeasonsEpisodesView: React.FC = () => {
           </div>
 
           <div>
-            <label style={{ fontSize: '11px', color: '#B3B3B3', fontWeight: 700 }}>SEASON</label>
+            <label style={{ fontSize: '11px', color: '#94A3B8', fontWeight: 600 }}>SEASON</label>
             <div style={{ display: 'flex', gap: '6px', marginTop: '4px' }}>
               {[1, 2, 3].map((s) => (
                 <button
@@ -121,10 +121,10 @@ export const SeasonsEpisodesView: React.FC = () => {
                     padding: '8px 16px',
                     borderRadius: '8px',
                     fontSize: '13px',
-                    fontWeight: 700,
-                    border: selectedSeason === s ? '1px solid #E50914' : '1px solid #303030',
-                    backgroundColor: selectedSeason === s ? 'rgba(229, 9, 20, 0.2)' : '#050505',
-                    color: selectedSeason === s ? '#FF2B36' : '#B3B3B3',
+                    fontWeight: 600,
+                    border: selectedSeason === s ? '1px solid #8B5CF6' : '1px solid #1E293B',
+                    backgroundColor: selectedSeason === s ? 'rgba(139, 92, 246, 0.2)' : '#070912',
+                    color: selectedSeason === s ? '#22D3EE' : '#94A3B8',
                     cursor: 'pointer',
                   }}
                 >
@@ -147,8 +147,8 @@ export const SeasonsEpisodesView: React.FC = () => {
           <div
             key={ep.id}
             style={{
-              backgroundColor: '#151515',
-              border: '1px solid #303030',
+              backgroundColor: '#111827',
+              border: '1px solid #1E293B',
               borderRadius: '14px',
               padding: '16px 20px',
               display: 'flex',
@@ -164,7 +164,7 @@ export const SeasonsEpisodesView: React.FC = () => {
                 height: '68px',
                 borderRadius: '8px',
                 overflow: 'hidden',
-                backgroundColor: '#0D0D0D',
+                backgroundColor: '#0B1020',
               }}>
                 <img
                   src={ep.thumbnailUrl}
@@ -175,12 +175,12 @@ export const SeasonsEpisodesView: React.FC = () => {
                   position: 'absolute',
                   bottom: '4px',
                   right: '4px',
-                  backgroundColor: 'rgba(5, 5, 5, 0.85)',
+                  backgroundColor: 'rgba(0, 0, 0, 0.8)',
                   fontSize: '10px',
                   color: '#FFFFFF',
                   padding: '2px 5px',
                   borderRadius: '4px',
-                  fontWeight: 700,
+                  fontWeight: 600,
                 }}>
                   {ep.duration}
                 </span>
@@ -188,17 +188,17 @@ export const SeasonsEpisodesView: React.FC = () => {
 
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <span style={{ fontSize: '13px', color: '#E50914', fontWeight: 800 }}>
+                  <span style={{ fontSize: '13px', color: '#8B5CF6', fontWeight: 700 }}>
                     E{ep.episodeNumber}
                   </span>
-                  <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: '#FFFFFF' }}>
+                  <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 600, color: '#F8FAFC' }}>
                     {ep.title}
                   </h4>
                 </div>
-                <p style={{ margin: '4px 0 0 0', fontSize: '12px', color: '#B3B3B3', maxWidth: '600px' }}>
+                <p style={{ margin: '4px 0 0 0', fontSize: '12px', color: '#94A3B8', maxWidth: '600px' }}>
                   {ep.synopsis}
                 </p>
-                <div style={{ fontSize: '11px', color: '#737373', marginTop: '6px' }}>
+                <div style={{ fontSize: '11px', color: '#64748B', marginTop: '6px' }}>
                   Air Date: {ep.airDate} • HLS Master Ready
                 </div>
               </div>
@@ -208,9 +208,9 @@ export const SeasonsEpisodesView: React.FC = () => {
               <button
                 onClick={() => setEpisodes(episodes.filter((e) => e.id !== ep.id))}
                 style={{
-                  background: 'rgba(229, 9, 20, 0.1)',
-                  border: '1px solid rgba(229, 9, 20, 0.3)',
-                  color: '#E50914',
+                  background: 'rgba(239, 68, 68, 0.1)',
+                  border: '1px solid rgba(239, 68, 68, 0.3)',
+                  color: '#EF4444',
                   padding: '8px 10px',
                   borderRadius: '6px',
                   cursor: 'pointer',
@@ -230,7 +230,7 @@ export const SeasonsEpisodesView: React.FC = () => {
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundColor: 'rgba(5, 5, 5, 0.88)',
+          backgroundColor: 'rgba(7, 9, 18, 0.85)',
           backdropFilter: 'blur(8px)',
           display: 'flex',
           alignItems: 'center',
@@ -241,8 +241,8 @@ export const SeasonsEpisodesView: React.FC = () => {
           <form
             onSubmit={handleAddEpisode}
             style={{
-              backgroundColor: '#151515',
-              border: '1px solid #303030',
+              backgroundColor: '#111827',
+              border: '1px solid #1E293B',
               borderRadius: '16px',
               padding: '24px',
               width: '100%',
@@ -252,9 +252,9 @@ export const SeasonsEpisodesView: React.FC = () => {
               gap: '14px',
             }}
           >
-            <h3 style={{ margin: 0, color: '#FFFFFF', fontWeight: 800 }}>Add Episode to Season {selectedSeason}</h3>
+            <h3 style={{ margin: 0, color: '#F8FAFC' }}>Add Episode to Season {selectedSeason}</h3>
             <div>
-              <label style={{ fontSize: '12px', color: '#B3B3B3', fontWeight: 700 }}>Episode Title</label>
+              <label style={{ fontSize: '12px', color: '#94A3B8' }}>Episode Title</label>
               <input
                 type="text"
                 required
@@ -264,16 +264,16 @@ export const SeasonsEpisodesView: React.FC = () => {
                 style={{
                   width: '100%',
                   marginTop: '6px',
-                  backgroundColor: '#050505',
-                  border: '1px solid #303030',
+                  backgroundColor: '#070912',
+                  border: '1px solid #1E293B',
                   borderRadius: '8px',
                   padding: '8px 12px',
-                  color: '#FFFFFF',
+                  color: '#F8FAFC',
                 }}
               />
             </div>
             <div>
-              <label style={{ fontSize: '12px', color: '#B3B3B3', fontWeight: 700 }}>Runtime Duration</label>
+              <label style={{ fontSize: '12px', color: '#94A3B8' }}>Runtime Duration</label>
               <input
                 type="text"
                 value={newEpDuration}
@@ -282,11 +282,11 @@ export const SeasonsEpisodesView: React.FC = () => {
                 style={{
                   width: '100%',
                   marginTop: '6px',
-                  backgroundColor: '#050505',
-                  border: '1px solid #303030',
+                  backgroundColor: '#070912',
+                  border: '1px solid #1E293B',
                   borderRadius: '8px',
                   padding: '8px 12px',
-                  color: '#FFFFFF',
+                  color: '#F8FAFC',
                 }}
               />
             </div>

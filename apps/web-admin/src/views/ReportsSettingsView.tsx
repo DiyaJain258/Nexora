@@ -17,21 +17,21 @@ export const ReportsSettingsView: React.FC = () => {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
       {/* Transcoder & Origin Pipeline Settings */}
       <div style={{
-        backgroundColor: '#151515',
-        border: '1px solid #303030',
+        backgroundColor: '#111827',
+        border: '1px solid #1E293B',
         borderRadius: '16px',
         padding: '24px',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
-          <Server size={20} color="#E50914" />
-          <h3 style={{ margin: 0, fontSize: '17px', fontWeight: 800, color: '#FFFFFF' }}>
+          <Server size={20} color="#22D3EE" />
+          <h3 style={{ margin: 0, fontSize: '17px', fontWeight: 700, color: '#F8FAFC' }}>
             Live Stream Transcoding & Origin Engine
           </h3>
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
           <div>
-            <label style={{ fontSize: '13px', color: '#B3B3B3', fontWeight: 700 }}>
+            <label style={{ fontSize: '13px', color: '#94A3B8', fontWeight: 600 }}>
               HLS Video Segment Length
             </label>
             <select
@@ -39,11 +39,11 @@ export const ReportsSettingsView: React.FC = () => {
               onChange={(e) => setSegmentLength(Number(e.target.value))}
               style={{
                 width: '100%',
-                backgroundColor: '#050505',
-                border: '1px solid #303030',
+                backgroundColor: '#070912',
+                border: '1px solid #1E293B',
                 borderRadius: '8px',
                 padding: '10px 14px',
-                color: '#FFFFFF',
+                color: '#F8FAFC',
                 marginTop: '6px',
               }}
             >
@@ -54,7 +54,7 @@ export const ReportsSettingsView: React.FC = () => {
           </div>
 
           <div>
-            <label style={{ fontSize: '13px', color: '#B3B3B3', fontWeight: 700 }}>
+            <label style={{ fontSize: '13px', color: '#94A3B8', fontWeight: 600 }}>
               Hardware Encoding Architecture
             </label>
             <select
@@ -62,11 +62,11 @@ export const ReportsSettingsView: React.FC = () => {
               onChange={(e) => setActiveCodec(e.target.value)}
               style={{
                 width: '100%',
-                backgroundColor: '#050505',
-                border: '1px solid #303030',
+                backgroundColor: '#070912',
+                border: '1px solid #1E293B',
                 borderRadius: '8px',
                 padding: '10px 14px',
-                color: '#FFFFFF',
+                color: '#F8FAFC',
                 marginTop: '6px',
               }}
             >
@@ -77,7 +77,7 @@ export const ReportsSettingsView: React.FC = () => {
           </div>
 
           <div>
-            <label style={{ fontSize: '13px', color: '#B3B3B3', fontWeight: 700 }}>
+            <label style={{ fontSize: '13px', color: '#94A3B8', fontWeight: 600 }}>
               Low-Latency HLS (LL-HLS)
             </label>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10px' }}>
@@ -86,16 +86,16 @@ export const ReportsSettingsView: React.FC = () => {
                 id="llhls"
                 checked={llHlsEnabled}
                 onChange={(e) => setLlHlsEnabled(e.target.checked)}
-                style={{ width: '18px', height: '18px', accentColor: '#E50914' }}
+                style={{ width: '18px', height: '18px', accentColor: '#8B5CF6' }}
               />
-              <label htmlFor="llhls" style={{ fontSize: '13px', color: '#FFFFFF' }}>
+              <label htmlFor="llhls" style={{ fontSize: '13px', color: '#F8FAFC' }}>
                 Enable chunked transfer under 1.5s live delay
               </label>
             </div>
           </div>
 
           <div>
-            <label style={{ fontSize: '13px', color: '#B3B3B3', fontWeight: 700 }}>
+            <label style={{ fontSize: '13px', color: '#94A3B8', fontWeight: 600 }}>
               AES-128 & Tokenized Stream Security
             </label>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10px' }}>
@@ -104,9 +104,9 @@ export const ReportsSettingsView: React.FC = () => {
                 id="tokenDrm"
                 checked={tokenDrm}
                 onChange={(e) => setTokenDrm(e.target.checked)}
-                style={{ width: '18px', height: '18px', accentColor: '#E50914' }}
+                style={{ width: '18px', height: '18px', accentColor: '#22D3EE' }}
               />
-              <label htmlFor="tokenDrm" style={{ fontSize: '13px', color: '#FFFFFF' }}>
+              <label htmlFor="tokenDrm" style={{ fontSize: '13px', color: '#F8FAFC' }}>
                 Enforce HMAC token rotation every 60 seconds
               </label>
             </div>
@@ -127,22 +127,22 @@ export const ReportsSettingsView: React.FC = () => {
 
       {/* Reports & Data Export */}
       <div style={{
-        backgroundColor: '#151515',
-        border: '1px solid #303030',
+        backgroundColor: '#111827',
+        border: '1px solid #1E293B',
         borderRadius: '16px',
         padding: '24px',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
-          <HardDrive size={20} color="#E50914" />
-          <h3 style={{ margin: 0, fontSize: '17px', fontWeight: 800, color: '#FFFFFF' }}>
+          <HardDrive size={20} color="#8B5CF6" />
+          <h3 style={{ margin: 0, fontSize: '17px', fontWeight: 700, color: '#F8FAFC' }}>
             System Reports & Audit Export
           </h3>
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '16px' }}>
-          <div style={{ backgroundColor: '#0D0D0D', border: '1px solid #303030', borderRadius: '12px', padding: '16px' }}>
-            <h4 style={{ margin: '0 0 6px 0', fontSize: '14px', color: '#FFFFFF' }}>Bandwidth Usage & CDN Cost</h4>
-            <p style={{ margin: '0 0 14px 0', fontSize: '12px', color: '#B3B3B3' }}>
+          <div style={{ backgroundColor: '#0B1020', border: '1px solid #1E293B', borderRadius: '12px', padding: '16px' }}>
+            <h4 style={{ margin: '0 0 6px 0', fontSize: '14px', color: '#F8FAFC' }}>Bandwidth Usage & CDN Cost</h4>
+            <p style={{ margin: '0 0 14px 0', fontSize: '12px', color: '#94A3B8' }}>
               Complete breakdown of egress per edge POP and transcode hours.
             </p>
             <button
@@ -154,9 +154,9 @@ export const ReportsSettingsView: React.FC = () => {
             </button>
           </div>
 
-          <div style={{ backgroundColor: '#0D0D0D', border: '1px solid #303030', borderRadius: '12px', padding: '16px' }}>
-            <h4 style={{ margin: '0 0 6px 0', fontSize: '14px', color: '#FFFFFF' }}>Channel Quality of Experience</h4>
-            <p style={{ margin: '0 0 14px 0', fontSize: '12px', color: '#B3B3B3' }}>
+          <div style={{ backgroundColor: '#0B1020', border: '1px solid #1E293B', borderRadius: '12px', padding: '16px' }}>
+            <h4 style={{ margin: '0 0 6px 0', fontSize: '14px', color: '#F8FAFC' }}>Channel Quality of Experience</h4>
+            <p style={{ margin: '0 0 14px 0', fontSize: '12px', color: '#94A3B8' }}>
               Buffer ratios, bitrates, audio frame sync, and device error metrics.
             </p>
             <button
@@ -168,9 +168,9 @@ export const ReportsSettingsView: React.FC = () => {
             </button>
           </div>
 
-          <div style={{ backgroundColor: '#0D0D0D', border: '1px solid #303030', borderRadius: '12px', padding: '16px' }}>
-            <h4 style={{ margin: '0 0 6px 0', fontSize: '14px', color: '#FFFFFF' }}>Subscriber & Revenue Audit</h4>
-            <p style={{ margin: '0 0 14px 0', fontSize: '12px', color: '#B3B3B3' }}>
+          <div style={{ backgroundColor: '#0B1020', border: '1px solid #1E293B', borderRadius: '12px', padding: '16px' }}>
+            <h4 style={{ margin: '0 0 6px 0', fontSize: '14px', color: '#F8FAFC' }}>Subscriber & Revenue Audit</h4>
+            <p style={{ margin: '0 0 14px 0', fontSize: '12px', color: '#94A3B8' }}>
               Plan conversions, renewal metrics, churn rate, and device concurrency.
             </p>
             <button
