@@ -51,10 +51,12 @@ const CONTINUE_WATCHING_DATA: ContinueWatchingItem[] = [
   },
 ];
 
+import { NetflixCategoriesModal } from './NetflixCategoriesModal';
+
 interface NexoraHomeHeroSectionProps {
   onPlayHero: (item: any) => void;
   onSelectContent: (item: any) => void;
-  onFilterChange?: (filter: 'shows' | 'movies' | 'categories') => void;
+  onFilterChange?: (filter: string) => void;
   onViewAllContinueWatching?: () => void;
 }
 
@@ -66,6 +68,7 @@ export const NexoraHomeHeroSection: React.FC<NexoraHomeHeroSectionProps> = ({
 }) => {
   const [selectedFilter, setSelectedFilter] = useState<'shows' | 'movies' | 'categories'>('movies');
   const [isInMyList, setIsInMyList] = useState(false);
+  const [showCategoriesModal, setShowCategoriesModal] = useState(false);
 
   const heroItem = {
     id: 'hero-shadow-realm',
@@ -82,7 +85,9 @@ export const NexoraHomeHeroSection: React.FC<NexoraHomeHeroSectionProps> = ({
 
   const handleFilter = (filter: 'shows' | 'movies' | 'categories') => {
     setSelectedFilter(filter);
-    if (onFilterChange) {
+    if (filter === 'categories') {
+      setShowCategoriesModal(true);
+    } else if (onFilterChange) {
       onFilterChange(filter);
     }
   };
@@ -148,6 +153,15 @@ export const NexoraHomeHeroSection: React.FC<NexoraHomeHeroSectionProps> = ({
           </Text>
         </TouchableOpacity>
       </View>
+
+      {/* Categories Dropdown Modal */}
+      <NetflixCategoriesModal
+        visible={showCategoriesModal}
+        onClose={() => setShowCategoriesModal(false)}
+        onSelectCategory={(catName) => {
+          if (onFilterChange) onFilterChange(catName);
+        }}
+      />
 
       {/* 2. GIANT FEATURED HERO BILLBOARD (SHADOW REALM) */}
       <View style={styles.heroCardContainer}>

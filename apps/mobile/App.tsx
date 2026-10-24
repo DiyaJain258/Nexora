@@ -200,6 +200,36 @@ export default function App() {
     );
   }
 
+  const handleCategoryOrFilterSelect = (filter: string) => {
+    if (filter === 'shows' || filter === 'TV Show' || filter === 'Series') {
+      setSelectedCategory('TV Show');
+      setActiveTab('series');
+    } else if (filter === 'movies' || filter === 'Movies') {
+      setSelectedCategory('Movies');
+      setActiveTab('movies');
+    } else if (filter === 'Sports') {
+      setSelectedCategory('Sports');
+      setActiveTab('home');
+    } else if (filter === 'Live TV') {
+      setSelectedCategory('Live TV');
+      setActiveTab('livetv');
+    } else if (filter === 'Drama') {
+      setSelectedCategory('Drama');
+      setActiveTab('home');
+    } else if (filter === 'Webseries') {
+      setSelectedCategory('Webseries');
+      setActiveTab('home');
+    } else if (filter === 'Kids') {
+      setSelectedCategory('Kids');
+      setActiveTab('home');
+    } else if (filter === 'All') {
+      setSelectedCategory('All');
+      setActiveTab('home');
+    } else {
+      setSelectedCategory(filter);
+    }
+  };
+
   const renderMainContent = () => {
     if (isSearchOpen || activeTab === 'search') {
       return (
@@ -289,6 +319,7 @@ export default function App() {
           onSearchPress={() => setIsSearchOpen(true)}
           onCastPress={() => {}}
           onDownloadPress={() => {}}
+          onSelectFilter={handleCategoryOrFilterSelect}
         />
       );
     }
@@ -440,6 +471,7 @@ export default function App() {
           onSearchPress={() => setIsSearchOpen(true)}
           onCastPress={() => {}}
           onDownloadPress={() => {}}
+          onSelectFilter={handleCategoryOrFilterSelect}
         />
       );
     }
@@ -492,11 +524,7 @@ export default function App() {
         <NexoraHomeHeroSection
           onPlayHero={(item) => setPlayingItem(item)}
           onSelectContent={(item) => setSelectedItem(item)}
-          onFilterChange={(filter) => {
-            if (filter === 'shows') setSelectedCategory('TV Show');
-            else if (filter === 'movies') setSelectedCategory('Movies');
-            else setSelectedCategory('All');
-          }}
+          onFilterChange={handleCategoryOrFilterSelect}
           onViewAllContinueWatching={() => setActiveTab('mylist')}
         />
 
@@ -717,13 +745,7 @@ export default function App() {
             {!isSearchOpen && (
               <PremiumCategoryTabs
                 activeCategory={selectedCategory as any}
-                onSelectCategory={(cat) => {
-                  setSelectedCategory(cat);
-                  if (cat === 'Movies') setActiveTab('movies');
-                  else if (cat === 'Live TV') setActiveTab('livetv');
-                  else if (cat === 'TV Show') setActiveTab('series');
-                  else setActiveTab('home');
-                }}
+                onSelectCategory={handleCategoryOrFilterSelect as any}
               />
             )}
           </View>
@@ -915,6 +937,9 @@ export default function App() {
           setIsSearchOpen(false);
           setActiveTab(tab);
           if (tab === 'home') setSelectedCategory('All');
+          else if (tab === 'movies') setSelectedCategory('Movies');
+          else if (tab === 'series') setSelectedCategory('TV Show');
+          else if (tab === 'livetv') setSelectedCategory('Live TV');
         }}
       />
       </SafeAreaView>

@@ -52,12 +52,15 @@ const CONTINUE_WATCHING_DATA: ContinueWatchingItem[] = [
   },
 ];
 
+import { NetflixCategoriesModal } from './NetflixCategoriesModal';
+
 interface NexoraMoviesHubViewProps {
   onPlayContent: (item: any) => void;
   onOpenDetails: (item: any) => void;
   onSearchPress: () => void;
   onCastPress?: () => void;
   onDownloadPress?: () => void;
+  onSelectFilter?: (filter: string) => void;
 }
 
 export const NexoraMoviesHubView: React.FC<NexoraMoviesHubViewProps> = ({
@@ -66,9 +69,11 @@ export const NexoraMoviesHubView: React.FC<NexoraMoviesHubViewProps> = ({
   onSearchPress,
   onCastPress,
   onDownloadPress,
+  onSelectFilter,
 }) => {
   const [selectedFilter, setSelectedFilter] = useState<'shows' | 'movies' | 'categories'>('movies');
   const [isInMyList, setIsInMyList] = useState(false);
+  const [showCategoriesModal, setShowCategoriesModal] = useState(false);
 
   const heroItem = {
     id: 'hero-shadow-realm',
@@ -142,7 +147,10 @@ export const NexoraMoviesHubView: React.FC<NexoraMoviesHubViewProps> = ({
       <View style={styles.pillsRow}>
         <TouchableOpacity
           activeOpacity={0.75}
-          onPress={() => setSelectedFilter('shows')}
+          onPress={() => {
+            setSelectedFilter('shows');
+            if (onSelectFilter) onSelectFilter('shows');
+          }}
           style={[
             styles.filterPill,
             selectedFilter === 'shows' && styles.filterPillActive,
@@ -160,7 +168,10 @@ export const NexoraMoviesHubView: React.FC<NexoraMoviesHubViewProps> = ({
 
         <TouchableOpacity
           activeOpacity={0.75}
-          onPress={() => setSelectedFilter('movies')}
+          onPress={() => {
+            setSelectedFilter('movies');
+            if (onSelectFilter) onSelectFilter('movies');
+          }}
           style={[
             styles.filterPill,
             selectedFilter === 'movies' && styles.filterPillActive,
@@ -178,7 +189,7 @@ export const NexoraMoviesHubView: React.FC<NexoraMoviesHubViewProps> = ({
 
         <TouchableOpacity
           activeOpacity={0.75}
-          onPress={() => setSelectedFilter('categories')}
+          onPress={() => setShowCategoriesModal(true)}
           style={[
             styles.filterPill,
             selectedFilter === 'categories' && styles.filterPillActive,
@@ -194,6 +205,15 @@ export const NexoraMoviesHubView: React.FC<NexoraMoviesHubViewProps> = ({
           </Text>
         </TouchableOpacity>
       </View>
+
+      {/* Categories Dropdown Modal */}
+      <NetflixCategoriesModal
+        visible={showCategoriesModal}
+        onClose={() => setShowCategoriesModal(false)}
+        onSelectCategory={(catName) => {
+          if (onSelectFilter) onSelectFilter(catName);
+        }}
+      />
 
       {/* 4. GIANT FEATURED HERO BILLBOARD (SHADOW REALM) */}
       <View style={styles.heroCardContainer}>
