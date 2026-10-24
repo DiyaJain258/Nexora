@@ -20,8 +20,8 @@ export const MyListScreen: React.FC<MyListScreenProps> = ({
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '16px', paddingBottom: '30px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <Bookmark size={20} color="#E50914" />
-        <h2 style={{ fontSize: '18px', fontWeight: 800, margin: 0, color: '#FFFFFF' }}>
+        <Bookmark size={20} color="#22D3EE" />
+        <h2 style={{ fontSize: '18px', fontWeight: 800, margin: 0, color: '#F8FAFC' }}>
           My Saved Watchlist
         </h2>
       </div>
@@ -32,31 +32,30 @@ export const MyListScreen: React.FC<MyListScreenProps> = ({
             key={item.id}
             onClick={() => onSelectItem(item)}
             style={{
-              backgroundColor: '#151515',
-              border: '1px solid #303030',
+              backgroundColor: '#111827',
+              border: '1px solid #1E293B',
               borderRadius: '12px',
               padding: '12px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
               cursor: 'pointer',
-              transition: 'all 0.15s ease',
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <img
                 src={item.posterUrl}
                 alt={item.title}
-                style={{ width: '48px', height: '68px', borderRadius: '8px', objectFit: 'cover', border: '1px solid #303030' }}
+                style={{ width: '48px', height: '68px', borderRadius: '8px', objectFit: 'cover' }}
               />
               <div>
-                <div style={{ fontSize: '14px', fontWeight: 700, color: '#FFFFFF' }}>
+                <div style={{ fontSize: '14px', fontWeight: 700, color: '#F8FAFC' }}>
                   {item.title}
                 </div>
-                <div style={{ fontSize: '11px', color: '#B3B3B3', marginTop: '2px' }}>
+                <div style={{ fontSize: '11px', color: '#94A3B8', marginTop: '2px' }}>
                   {item.duration || `${item.seasonsCount || 1} Seasons`} • {item.genres[0]}
                 </div>
-                <span className="badge badge-red" style={{ fontSize: '9px', padding: '1px 6px', marginTop: '6px' }}>
+                <span className="badge badge-cyan" style={{ fontSize: '9px', padding: '1px 5px', marginTop: '6px' }}>
                   {item.quality}
                 </span>
               </div>
@@ -69,15 +68,12 @@ export const MyListScreen: React.FC<MyListScreenProps> = ({
                   onRemoveFavorite(item);
                 }}
                 style={{
-                  background: 'rgba(229, 9, 20, 0.15)',
-                  border: '1px solid rgba(229, 9, 20, 0.3)',
+                  background: 'rgba(239, 68, 68, 0.15)',
+                  border: '1px solid rgba(239, 68, 68, 0.3)',
                   borderRadius: '8px',
                   padding: '8px',
-                  color: '#FF2B36',
+                  color: '#EF4444',
                   cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
                 }}
               >
                 <Trash2 size={16} />

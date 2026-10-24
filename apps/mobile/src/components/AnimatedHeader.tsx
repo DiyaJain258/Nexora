@@ -12,6 +12,8 @@ interface AnimatedHeaderProps {
   isSearchActive: boolean;
   onBrandPress: () => void;
   onAvatarPress: () => void;
+  activeTab?: string;
+  onToggleMode?: () => void;
 }
 
 export const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({
@@ -19,6 +21,8 @@ export const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({
   isSearchActive,
   onBrandPress,
   onAvatarPress,
+  activeTab = 'landing',
+  onToggleMode,
 }) => {
   const searchScale = useRef(new Animated.Value(1)).current;
 
@@ -41,17 +45,24 @@ export const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({
 
   return (
     <View style={styles.headerContainer}>
-      {/* NEXORA Brand Logo */}
-      <TouchableOpacity activeOpacity={0.8} onPress={onBrandPress}>
-        <View style={styles.brandRow}>
-          <View style={styles.logoBadge}>
-            <Text style={styles.logoBadgeText}>N</Text>
+      {/* NEXORA Brand Logo + Mode Pill */}
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+        <TouchableOpacity activeOpacity={0.8} onPress={onBrandPress}>
+          <View style={styles.brandRow}>
+            <View style={styles.logoBadge}>
+              <Text style={styles.logoBadgeText}>N</Text>
+            </View>
+            <Text style={styles.brandText}>
+              NEX<Text style={styles.brandAccent}>ORA</Text>
+            </Text>
           </View>
-          <Text style={styles.brandText}>
-            NEX<Text style={styles.brandAccent}>ORA</Text>
-          </Text>
+        </TouchableOpacity>
+
+        <View style={styles.vipBadge}>
+          <View style={styles.vipDot} />
+          <Text style={styles.vipBadgeText}>4K VIP</Text>
         </View>
-      </TouchableOpacity>
+      </View>
 
       {/* Header Right Actions */}
       <View style={styles.actionsRow}>
@@ -99,9 +110,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
-    backgroundColor: '#050505',
+    backgroundColor: '#050508',
     borderBottomWidth: 1,
-    borderBottomColor: '#1A1A1A',
+    borderBottomColor: 'rgba(255, 255, 255, 0.08)',
   },
   brandRow: {
     flexDirection: 'row',
@@ -109,30 +120,31 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   logoBadge: {
-    width: 26,
-    height: 26,
+    width: 28,
+    height: 28,
     borderRadius: 6,
-    backgroundColor: '#E50914',
+    backgroundColor: '#800020',
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#E50914',
-    shadowOpacity: 0.8,
-    shadowRadius: 6,
-    elevation: 4,
+    shadowColor: '#800020',
+    shadowOpacity: 0.95,
+    shadowRadius: 10,
+    elevation: 6,
   },
   logoBadgeText: {
     color: '#FFFFFF',
     fontWeight: '900',
-    fontSize: 15,
+    fontSize: 16,
+    letterSpacing: 0.5,
   },
   brandText: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '900',
-    letterSpacing: 2,
+    letterSpacing: 1.5,
     color: '#FFFFFF',
   },
   brandAccent: {
-    color: '#E50914',
+    color: '#B3002D',
   },
   actionsRow: {
     flexDirection: 'row',
@@ -143,9 +155,9 @@ const styles = StyleSheet.create({
     width: 34,
     height: 34,
     borderRadius: 17,
-    backgroundColor: '#151515',
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
     borderWidth: 1,
-    borderColor: '#2B2B2B',
+    borderColor: 'rgba(255, 255, 255, 0.12)',
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
@@ -160,21 +172,24 @@ const styles = StyleSheet.create({
     width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: '#E50914',
+    backgroundColor: '#800020',
+    shadowColor: '#800020',
+    shadowRadius: 4,
+    shadowOpacity: 0.9,
   },
   actionButton: {
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: '#151515',
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
-    borderColor: '#303030',
+    borderColor: 'rgba(255, 255, 255, 0.12)',
   },
   actionButtonActive: {
-    borderColor: '#E50914',
-    backgroundColor: 'rgba(229, 9, 20, 0.2)',
+    borderColor: '#800020',
+    backgroundColor: 'rgba(128, 0, 32, 0.35)',
   },
   actionIcon: {
     fontSize: 13,
@@ -185,11 +200,11 @@ const styles = StyleSheet.create({
     height: 36,
     borderRadius: 18,
     borderWidth: 1.5,
-    borderColor: '#E50914',
+    borderColor: '#800020',
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#E50914',
-    shadowOpacity: 0.5,
+    shadowColor: '#800020',
+    shadowOpacity: 0.7,
     shadowRadius: 6,
     elevation: 3,
   },
@@ -197,7 +212,7 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     borderRadius: 15,
-    backgroundColor: '#1A1A1A',
+    backgroundColor: '#0a0a12',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -205,5 +220,31 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: '800',
     fontSize: 13,
+  },
+  vipBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 12,
+    backgroundColor: 'rgba(128, 0, 32, 0.35)',
+    borderWidth: 1,
+    borderColor: '#800020',
+  },
+  vipDot: {
+    width: 5,
+    height: 5,
+    borderRadius: 2.5,
+    backgroundColor: '#FF4D6D',
+    shadowColor: '#FF4D6D',
+    shadowOpacity: 0.9,
+    shadowRadius: 4,
+  },
+  vipBadgeText: {
+    fontSize: 9,
+    fontWeight: '900',
+    letterSpacing: 0.6,
+    color: '#FFFFFF',
   },
 });

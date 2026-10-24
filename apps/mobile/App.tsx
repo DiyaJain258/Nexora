@@ -33,6 +33,9 @@ import {
   AnimatedBottomNavigation,
   BottomTabType,
 } from './src/components/AnimatedBottomNavigation';
+import { LandingShowcaseView } from './src/components/LandingShowcaseView';
+import { NativeCinematicBackground } from './src/components/NativeCinematicBackground';
+import { NativeSignInCard } from './src/components/NativeSignInCard';
 
 const { width, height } = Dimensions.get('window');
 
@@ -42,6 +45,7 @@ export default function App() {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedMovieGenre, setSelectedMovieGenre] = useState('All');
   const [selectedItem, setSelectedItem] = useState<ContentItem | null>(null);
   const [playingItem, setPlayingItem] = useState<any>(null);
   const [favoriteIds, setFavoriteIds] = useState<string[]>(['vod-01', 'vod-02']);
@@ -66,6 +70,63 @@ export default function App() {
   const series = MOCK_CONTENT.filter((c) => c.type === 'series');
   const sports = MOCK_CONTENT.filter((c) => c.type === 'sports');
   const kids = MOCK_CONTENT.filter((c) => c.type === 'kids');
+
+  const topRatedFilms = [
+    {
+      id: 'tr-01',
+      title: 'Interstellar',
+      year: '2014',
+      rating: '9.4',
+      quality: '4K IMAX',
+      genre: 'Sci-Fi',
+      posterUrl: 'https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?w=600&auto=format&fit=crop&q=85',
+    },
+    {
+      id: 'tr-02',
+      title: 'Dune: Part Two',
+      year: '2024',
+      rating: '9.3',
+      quality: '4K HDR10+',
+      genre: 'Epic Sci-Fi',
+      posterUrl: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=600&auto=format&fit=crop&q=85',
+    },
+    {
+      id: 'tr-03',
+      title: 'Oppenheimer',
+      year: '2023',
+      rating: '9.2',
+      quality: 'IMAX 70MM',
+      genre: 'Drama',
+      posterUrl: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=600&auto=format&fit=crop&q=85',
+    },
+    {
+      id: 'tr-04',
+      title: 'Blade Runner 2049',
+      year: '2017',
+      rating: '9.1',
+      quality: '4K DOLBY',
+      genre: 'Cyberpunk',
+      posterUrl: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&auto=format&fit=crop&q=85',
+    },
+    {
+      id: 'tr-05',
+      title: 'The Dark Knight',
+      year: '2008',
+      rating: '9.5',
+      quality: '4K REMASTER',
+      genre: 'Action',
+      posterUrl: 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=600&auto=format&fit=crop&q=85',
+    },
+    {
+      id: 'tr-06',
+      title: 'Inception',
+      year: '2010',
+      rating: '9.3',
+      quality: '4K HDR',
+      genre: 'Mind-Bender',
+      posterUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=600&auto=format&fit=crop&q=85',
+    },
+  ];
 
   const toggleFavorite = (id: string) => {
     if (favoriteIds.includes(id)) {
@@ -161,6 +222,19 @@ export default function App() {
       );
     }
 
+    if (activeTab === 'landing') {
+      return (
+        <LandingShowcaseView
+          onOpenLiveDemo={(channel) => setPlayingItem(channel || MOCK_CHANNELS[0])}
+          onOpenActivation={() => setActiveTab('account')}
+          onSwitchToStreaming={() => {
+            setActiveTab('home');
+            setSelectedCategory('All');
+          }}
+        />
+      );
+    }
+
     if (activeTab === 'livetv') {
       return (
         <View style={styles.paddingSection}>
@@ -225,14 +299,149 @@ export default function App() {
     }
 
     if (activeTab === 'movies') {
+      const movieGenres = ['Action', 'Drama', 'Comedy', 'Sci-Fi', 'Thriller', 'Animation', 'All'];
+      const filteredMoviesList =
+        selectedMovieGenre === 'All'
+          ? movies
+          : movies.filter((m) =>
+              m.genres.some((g) => g.toLowerCase().includes(selectedMovieGenre.toLowerCase()))
+            );
+
+      const trendingMovies = [
+        {
+          id: 'trend-1',
+          title: 'Neon Harbor',
+          category: 'Action • Cyberpunk',
+          rating: '9.3',
+          bgColor: '#4A0404',
+          image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500&auto=format&fit=crop&q=80',
+        },
+        {
+          id: 'trend-2',
+          title: 'Red Sands',
+          category: 'Sci-Fi • Odyssey',
+          rating: '9.6',
+          bgColor: '#6B0014',
+          image: 'https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?w=500&auto=format&fit=crop&q=80',
+        },
+        {
+          id: 'trend-3',
+          title: 'Deep Forest',
+          category: 'Mystery • Thriller',
+          rating: '9.1',
+          bgColor: '#2E000B',
+          image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&auto=format&fit=crop&q=80',
+        },
+      ];
+
       return (
         <View style={styles.paddingSection}>
-          <SectionHeader
-            title={`All Titles (${MOCK_CONTENT.length})`}
-            badge="CATALOG"
-          />
+          {/* Header Row: Movies + Search (Screenshot 1) */}
+          <View style={styles.moviesHeaderRow}>
+            <Text style={styles.moviesHeaderTitle}>Movies</Text>
+            <TouchableOpacity
+              style={styles.moviesHeaderSearchBtn}
+              onPress={() => setIsSearchOpen(true)}
+            >
+              <Text style={{ fontSize: 16 }}>🔍</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Featured Hero Card (Screenshot 1) */}
+          <View style={styles.moviesHeroCard}>
+            <Image
+              source={{ uri: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=900&auto=format&fit=crop&q=85' }}
+              style={styles.moviesHeroBg}
+            />
+            <View style={styles.moviesHeroOverlay}>
+              <Text style={styles.moviesHeroTag}>Featured • Thriller</Text>
+              <Text style={styles.moviesHeroTitle}>Last Signal</Text>
+              <View style={styles.moviesHeroBtnsRow}>
+                <TouchableOpacity
+                  style={styles.moviesPlayBtn}
+                  onPress={() => setPlayingItem(movies[0])}
+                >
+                  <Text style={styles.moviesPlayBtnText}>▶  Play</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.moviesListBtn}
+                  onPress={() => toggleFavorite(movies[0].id)}
+                >
+                  <Text style={styles.moviesListBtnText}>
+                    {favoriteIds.includes(movies[0].id) ? '✓ In list' : '+ My list'}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+
+          {/* Trending now Section (Screenshot 1) */}
+          <View style={styles.moviesSectionRow}>
+            <Text style={styles.moviesSectionTitle}>Trending now</Text>
+            <TouchableOpacity onPress={() => setSelectedMovieGenre('All')}>
+              <Text style={styles.moviesSectionSeeAll}>See all</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.trendingCardsRow}>
+            {trendingMovies.map((tr) => (
+              <TouchableOpacity
+                key={tr.id}
+                style={[styles.trendingCard, { backgroundColor: tr.bgColor }]}
+                activeOpacity={0.88}
+                onPress={() => setSelectedItem(movies[0])}
+              >
+                <Image source={{ uri: tr.image }} style={styles.trendingCardBg} />
+                <View style={styles.trendingCardGradient}>
+                  <Text style={styles.trendingCardTitle}>{tr.title}</Text>
+                  <Text style={styles.trendingCardMeta}>★ {tr.rating}</Text>
+                </View>
+              </TouchableOpacity>
+            ))}
+          </View>
+
+          {/* Browse by genre Section (Screenshot 1) */}
+          <Text style={[styles.moviesSectionTitle, { marginTop: 20, marginBottom: 10 }]}>
+            Browse by genre
+          </Text>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 18 }}>
+            <View style={{ flexDirection: 'row', gap: 8 }}>
+              {movieGenres.map((g) => {
+                const isActive = selectedMovieGenre === g;
+                return (
+                  <TouchableOpacity
+                    key={g}
+                    style={[
+                      styles.genrePill,
+                      isActive && styles.genrePillActive,
+                    ]}
+                    onPress={() => setSelectedMovieGenre(g)}
+                  >
+                    <Text
+                      style={[
+                        styles.genrePillText,
+                        isActive && styles.genrePillTextActive,
+                      ]}
+                    >
+                      {g}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          </ScrollView>
+
+          {/* Filtered Movies Grid */}
+          <View style={styles.moviesGridHeader}>
+            <Text style={{ color: '#FFFFFF', fontSize: 15, fontWeight: '800' }}>
+              {selectedMovieGenre === 'All' ? 'All Blockbusters' : `${selectedMovieGenre} Titles`}
+            </Text>
+            <Text style={{ color: '#71717a', fontSize: 12 }}>
+              {filteredMoviesList.length} movies
+            </Text>
+          </View>
           <View style={styles.moviesGrid}>
-            {MOCK_CONTENT.map((m) => (
+            {filteredMoviesList.map((m) => (
               <MoviePosterCard
                 key={m.id}
                 item={m}
@@ -280,23 +489,16 @@ export default function App() {
 
     if (activeTab === 'account') {
       return (
-        <View style={styles.paddingSection}>
-          {/* User Profile Card */}
-          <View style={styles.profileCard}>
-            <View style={styles.profileAvatarBox}>
-              <Text style={styles.profileAvatarText}>D</Text>
-            </View>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.profileName}>{MOCK_USERS[0].name}</Text>
-              <Text style={styles.profileEmail}>{MOCK_USERS[0].email}</Text>
-              <View style={styles.profilePlanBadge}>
-                <Text style={styles.profilePlanText}>PREMIUM 4K ULTRA</Text>
-              </View>
-            </View>
-          </View>
+        <View style={{ paddingBottom: 32 }}>
+          {/* Netflix-style Sign In Card */}
+          <NativeSignInCard
+            onSignInSuccess={() => {
+              setActiveTab('home');
+            }}
+          />
 
           {/* Android / Google TV Device Activation */}
-          <View style={styles.settingsSection}>
+          <View style={[styles.settingsSection, { marginHorizontal: 16, marginTop: 16 }]}>
             <Text style={styles.sectionTitle}>📺 Pair with Android TV / Google TV</Text>
             <Text style={styles.settingsDesc}>
               Enter the 6-digit activation code displayed on your TV screen to link your account.
@@ -322,23 +524,6 @@ export default function App() {
                 <Text style={styles.successText}>✓ TV Paired Successfully! Enjoy 4K HDR.</Text>
               </View>
             )}
-          </View>
-
-          {/* Settings Options */}
-          <View style={styles.settingsSection}>
-            <Text style={styles.sectionTitle}>App Preferences</Text>
-            <View style={styles.settingRow}>
-              <Text style={styles.settingLabel}>Streaming Quality</Text>
-              <Text style={styles.settingValue}>Auto (Up to 4K HDR)</Text>
-            </View>
-            <View style={styles.settingRow}>
-              <Text style={styles.settingLabel}>Audio Passthrough</Text>
-              <Text style={styles.settingValue}>Dolby Atmos (Enabled)</Text>
-            </View>
-            <View style={styles.settingRow}>
-              <Text style={styles.settingLabel}>App Version</Text>
-              <Text style={styles.settingValue}>v1.0.0 (Expo SDK 57)</Text>
-            </View>
           </View>
         </View>
       );
@@ -432,17 +617,120 @@ export default function App() {
     }
 
     return (
-      <View>
-        {/* Auto-Animated 3D Featured Carousel */}
+      <View style={{ backgroundColor: '#07080B' }}>
+        {/* Animated Hero Carousel with ambient red glow, auto-rotation & crossfade */}
         <FeaturedContentCarousel
-          items={MOCK_CONTENT}
+          items={movies}
           onPlay={(item) => setPlayingItem(item)}
           onDetails={(item) => setSelectedItem(item)}
           onToggleFavorite={toggleFavorite}
           favoriteIds={favoriteIds}
         />
 
-        {/* Rail 1: Continue Watching with 3D Depth */}
+        {/* Top 10 in India Today Rail (Netflix signature look) */}
+        <SectionHeader
+          title="Top 10 in India Today"
+          badge="#1 TRENDING"
+          onSeeAll={() => setActiveTab('movies')}
+        />
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.top10Scroll}
+        >
+          {movies.slice(0, 10).map((item, index) => (
+            <TouchableOpacity
+              key={item.id}
+              activeOpacity={0.88}
+              onPress={() => setSelectedItem(item)}
+              style={styles.top10Item}
+            >
+              <Text style={styles.top10RankText}>{index + 1}</Text>
+              <View style={styles.top10PosterBox}>
+                <Image source={{ uri: item.posterUrl }} style={styles.top10Poster} />
+                <View style={styles.top10Badge}>
+                  <Text style={styles.top10BadgeText}>{item.quality || '4K'}</Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+
+        {/* Live TV Channels Rail */}
+        <SectionHeader
+          title="Live TV Channels"
+          badge="● LIVE NOW"
+          onSeeAll={() => setActiveTab('livetv')}
+        />
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.railScroll}
+        >
+          {MOCK_CHANNELS.map((ch) => (
+            <TouchableOpacity
+              key={ch.id}
+              activeOpacity={0.88}
+              onPress={() => setPlayingItem(ch)}
+              style={styles.liveChannelCard}
+            >
+              <View style={styles.liveChannelHeader}>
+                <Image source={{ uri: ch.logo }} style={styles.liveChannelLogo} resizeMode="contain" />
+                <View style={styles.liveResBadge}>
+                  <Text style={styles.liveResBadgeText}>● LIVE</Text>
+                </View>
+              </View>
+              <Text style={styles.liveChannelName} numberOfLines={1}>{ch.name}</Text>
+              <Text style={styles.liveChannelProgram} numberOfLines={1}>
+                {ch.currentProgram?.title || 'Continuous Airing'}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+
+        {/* Horizontally Scrollable Container for 'Top Rated Films' (2:3 Aspect Ratio) */}
+        <View style={styles.topRatedSectionHeader}>
+          <View>
+            <Text style={styles.topRatedPreTitle}>CINEMATIC MASTERWORKS</Text>
+            <Text style={styles.topRatedSectionTitle}>Top Rated Films</Text>
+          </View>
+          <TouchableOpacity onPress={() => setActiveTab('movies')}>
+            <Text style={styles.topRatedSeeAll}>See all ›</Text>
+          </TouchableOpacity>
+        </View>
+
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.topRatedScroll}
+        >
+          {topRatedFilms.map((film) => (
+            <TouchableOpacity
+              key={film.id}
+              style={styles.topRatedCard}
+              activeOpacity={0.88}
+              onPress={() => setSelectedItem(MOCK_CONTENT[0])}
+            >
+              <View style={styles.topRatedPosterBox}>
+                <Image source={{ uri: film.posterUrl }} style={styles.topRatedPoster} />
+                <View style={styles.topRatedQualityBadge}>
+                  <Text style={styles.topRatedQualityText}>{film.quality}</Text>
+                </View>
+                <View style={styles.topRatedRatingBadge}>
+                  <Text style={styles.topRatedRatingText}>★ {film.rating}</Text>
+                </View>
+              </View>
+              <Text style={styles.topRatedTitle} numberOfLines={1}>
+                {film.title}
+              </Text>
+              <Text style={styles.topRatedMeta}>
+                {film.year} • {film.genre}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+
+        {/* Continue Watching Rail */}
         <SectionHeader
           title="Continue Watching"
           badge="3 IN PROGRESS"
@@ -462,40 +750,6 @@ export default function App() {
                 setPlayingItem(matched || cw);
               }}
             />
-          ))}
-        </ScrollView>
-
-        {/* Rail 2: Live TV Channels Spotlight (Matches Web HomeScreen Rail!) */}
-        <SectionHeader
-          title="Live TV Channels"
-          badge="EPG ACTIVE"
-          onSeeAll={() => setActiveTab('livetv')}
-        />
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.railScroll}
-        >
-          {MOCK_CHANNELS.map((ch) => (
-            <TouchableOpacity
-              key={ch.id}
-              activeOpacity={0.85}
-              style={styles.liveChannelCard}
-              onPress={() => setPlayingItem(ch)}
-            >
-              <View style={styles.liveChannelHeader}>
-                <Image source={{ uri: ch.logo }} style={styles.liveChannelLogo} />
-                <View style={styles.liveResBadge}>
-                  <Text style={styles.liveResBadgeText}>{ch.resolution}</Text>
-                </View>
-              </View>
-              <Text style={styles.liveChannelName} numberOfLines={1}>
-                {ch.name}
-              </Text>
-              <Text style={styles.liveChannelProgram} numberOfLines={1}>
-                {ch.currentProgram?.title || 'Continuous Stream'}
-              </Text>
-            </TouchableOpacity>
           ))}
         </ScrollView>
 
@@ -590,6 +844,9 @@ export default function App() {
       <SafeAreaView style={styles.safeArea}>
         <StatusBar style="light" />
 
+        {/* Cinematic Backdrop Layer with 7x3 Tilted Posters & Fog */}
+        <NativeCinematicBackground />
+
         {/* Top Animated Header */}
         <AnimatedHeader
           isSearchActive={isSearchOpen}
@@ -603,10 +860,14 @@ export default function App() {
             setActiveTab('account');
             setIsSearchOpen(false);
           }}
+          activeTab={activeTab}
+          onToggleMode={() => {
+            setActiveTab(activeTab === 'landing' ? 'home' : 'landing');
+          }}
         />
 
-        {/* Category Filter Pills (Hidden during search) */}
-        {!isSearchOpen && (
+        {/* Category Filter Pills (Shown only during OTT Streaming mode) */}
+        {!isSearchOpen && activeTab !== 'landing' && (
           <View style={styles.categoryBar}>
             <ScrollView
               horizontal
@@ -833,12 +1094,12 @@ export default function App() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#050505',
+    backgroundColor: 'transparent',
   },
   // Splash Screen
   splashContainer: {
     flex: 1,
-    backgroundColor: '#050505',
+    backgroundColor: '#03050d',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 24,
@@ -847,12 +1108,12 @@ const styles = StyleSheet.create({
     width: 84,
     height: 84,
     borderRadius: 24,
-    backgroundColor: '#E50914',
+    backgroundColor: '#800020',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 20,
-    shadowColor: '#E50914',
-    shadowOpacity: 0.8,
+    shadowColor: '#800020',
+    shadowOpacity: 0.9,
     shadowRadius: 20,
     elevation: 8,
   },
@@ -870,15 +1131,15 @@ const styles = StyleSheet.create({
   splashSubtitle: {
     fontSize: 11,
     letterSpacing: 4,
-    color: '#B3B3B3',
+    color: '#FF6685',
     marginTop: 6,
-    fontWeight: '600',
+    fontWeight: '700',
   },
   splashProgressBarTrack: {
     width: 160,
     height: 4,
-    backgroundColor: '#151515',
-    borderColor: '#303030',
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    borderColor: 'rgba(255, 255, 255, 0.15)',
     borderWidth: 1,
     borderRadius: 2,
     overflow: 'hidden',
@@ -887,11 +1148,11 @@ const styles = StyleSheet.create({
   splashProgressBarFill: {
     width: '75%',
     height: '100%',
-    backgroundColor: '#E50914',
+    backgroundColor: '#800020',
   },
   splashStatus: {
     fontSize: 10,
-    color: '#737373',
+    color: '#A1A1AA',
     fontFamily: Platform.OS === 'ios' ? 'Menlo' : 'monospace',
     marginTop: 12,
   },
@@ -899,9 +1160,9 @@ const styles = StyleSheet.create({
   // Category Bar
   categoryBar: {
     paddingVertical: 10,
-    backgroundColor: '#050505',
+    backgroundColor: 'rgba(7, 8, 11, 0.9)',
     borderBottomWidth: 1,
-    borderBottomColor: '#1A1A1A',
+    borderBottomColor: 'rgba(255, 255, 255, 0.08)',
   },
   categoryScroll: {
     paddingHorizontal: 16,
@@ -911,26 +1172,26 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 6,
     borderRadius: 16,
-    backgroundColor: '#151515',
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
     borderWidth: 1,
-    borderColor: '#303030',
+    borderColor: 'rgba(255, 255, 255, 0.08)',
   },
   categoryPillActive: {
-    backgroundColor: '#E50914',
-    borderColor: '#E50914',
-    shadowColor: '#E50914',
-    shadowOpacity: 0.6,
-    shadowRadius: 8,
-    elevation: 4,
+    backgroundColor: 'rgba(128, 0, 32, 0.45)',
+    borderColor: '#800020',
+    shadowColor: '#800020',
+    shadowOpacity: 0.8,
+    shadowRadius: 10,
+    elevation: 5,
   },
   categoryText: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#B3B3B3',
+    color: '#A1A1AA',
   },
   categoryTextActive: {
     color: '#FFFFFF',
-    fontWeight: '700',
+    fontWeight: '800',
   },
 
   // Series 3D Deck Header
@@ -960,7 +1221,7 @@ const styles = StyleSheet.create({
   // Scroll Body
   scrollBody: {
     flex: 1,
-    backgroundColor: '#050505',
+    backgroundColor: 'transparent',
   },
   railScroll: {
     paddingHorizontal: 16,
@@ -972,15 +1233,77 @@ const styles = StyleSheet.create({
     paddingBottom: 24,
   },
 
+  // Netflix-style Top 10 Today Rail
+  top10Scroll: {
+    paddingHorizontal: 16,
+    paddingBottom: 10,
+    flexDirection: 'row',
+  },
+  top10Item: {
+    width: 140,
+    height: 185,
+    marginRight: 14,
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    position: 'relative',
+  },
+  top10RankText: {
+    position: 'absolute',
+    bottom: -10,
+    left: -2,
+    fontSize: 90,
+    fontWeight: '900',
+    color: '#07080B',
+    textShadowColor: '#E50914',
+    textShadowOffset: { width: 1.5, height: 1.5 },
+    textShadowRadius: 2,
+    zIndex: 2,
+    letterSpacing: -4,
+  },
+  top10PosterBox: {
+    width: 112,
+    height: 168,
+    borderRadius: 10,
+    overflow: 'hidden',
+    marginLeft: 28,
+    backgroundColor: '#181A20',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.12)',
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.6,
+    shadowRadius: 8,
+    elevation: 6,
+  },
+  top10Poster: {
+    width: '100%',
+    height: '100%',
+  },
+  top10Badge: {
+    position: 'absolute',
+    top: 6,
+    left: 6,
+    backgroundColor: '#E50914',
+    borderRadius: 4,
+    paddingHorizontal: 5,
+    paddingVertical: 1,
+  },
+  top10BadgeText: {
+    color: '#FFFFFF',
+    fontSize: 9,
+    fontWeight: '900',
+    letterSpacing: 0.5,
+  },
+
   // Live Channel Spotlight
   liveChannelCard: {
     width: 140,
-    borderRadius: 10,
-    backgroundColor: '#151515',
+    borderRadius: 12,
+    backgroundColor: 'rgba(12, 17, 33, 0.75)',
     padding: 10,
     marginRight: 10,
     borderWidth: 1,
-    borderColor: '#303030',
+    borderColor: 'rgba(255, 255, 255, 0.08)',
     shadowColor: '#000000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.5,
@@ -996,19 +1319,19 @@ const styles = StyleSheet.create({
   liveChannelLogo: {
     width: 36,
     height: 36,
-    borderRadius: 6,
-    backgroundColor: '#0D0D0D',
+    borderRadius: 8,
+    backgroundColor: '#0a0f1d',
   },
   liveResBadge: {
-    backgroundColor: 'rgba(229, 9, 20, 0.2)',
+    backgroundColor: 'rgba(128, 0, 32, 0.35)',
     borderWidth: 1,
-    borderColor: 'rgba(229, 9, 20, 0.4)',
+    borderColor: '#800020',
     borderRadius: 4,
     paddingHorizontal: 5,
     paddingVertical: 1,
   },
   liveResBadgeText: {
-    color: '#FF2B36',
+    color: '#FF6685',
     fontSize: 9,
     fontWeight: '800',
   },
@@ -1018,7 +1341,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   liveChannelProgram: {
-    color: '#FF2B36',
+    color: '#D4D4D8',
     fontSize: 10,
     fontWeight: '600',
     marginTop: 2,
@@ -1047,7 +1370,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 6,
     left: 6,
-    backgroundColor: '#E50914',
+    backgroundColor: 'rgba(128, 0, 32, 0.5)',
+    borderWidth: 1,
+    borderColor: '#800020',
     paddingHorizontal: 5,
     paddingVertical: 1,
     borderRadius: 3,
@@ -1064,7 +1389,7 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   quickCatalogMatch: {
-    color: '#FF2B36',
+    color: '#FF4D6D',
     fontSize: 10,
     fontWeight: '600',
     marginTop: 2,
@@ -1134,10 +1459,10 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: '#E50914',
+    backgroundColor: '#00f2fe',
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#E50914',
+    shadowColor: '#00f2fe',
     shadowOpacity: 0.6,
     shadowRadius: 6,
     elevation: 4,
@@ -1146,17 +1471,17 @@ const styles = StyleSheet.create({
   // Live TV View
   liveHeroCard: {
     height: 180,
-    borderRadius: 12,
+    borderRadius: 14,
     overflow: 'hidden',
     position: 'relative',
-    backgroundColor: '#151515',
+    backgroundColor: '#0a0f1d',
     borderWidth: 1,
-    borderColor: '#262626',
+    borderColor: 'rgba(0, 242, 254, 0.3)',
   },
   liveHeroBg: {
     width: '100%',
     height: '100%',
-    opacity: 0.4,
+    opacity: 0.45,
   },
   liveHeroOverlay: {
     position: 'absolute',
@@ -1164,7 +1489,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     padding: 16,
-    backgroundColor: 'rgba(5, 5, 5, 0.8)',
+    backgroundColor: 'rgba(3, 5, 13, 0.85)',
   },
   liveHeroTitle: {
     color: '#FFFFFF',
@@ -1173,39 +1498,41 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   liveHeroProgram: {
-    color: '#B3B3B3',
+    color: '#94a3b8',
     fontSize: 12,
     marginTop: 2,
     marginBottom: 10,
   },
   liveHeroButton: {
-    backgroundColor: '#E50914',
+    backgroundColor: '#00f2fe',
     paddingVertical: 8,
     paddingHorizontal: 16,
-    borderRadius: 6,
+    borderRadius: 8,
     alignSelf: 'flex-start',
   },
   badgeRed: {
-    backgroundColor: '#E50914',
-    paddingHorizontal: 6,
+    backgroundColor: 'rgba(0, 242, 254, 0.2)',
+    borderWidth: 1,
+    borderColor: '#00f2fe',
+    paddingHorizontal: 7,
     paddingVertical: 2,
     borderRadius: 4,
     alignSelf: 'flex-start',
   },
   badgeRedText: {
-    color: '#FFFFFF',
+    color: '#00f2fe',
     fontSize: 9,
     fontWeight: '800',
   },
   channelRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#151515',
-    borderRadius: 10,
+    backgroundColor: 'rgba(12, 17, 33, 0.75)',
+    borderRadius: 12,
     padding: 12,
     marginBottom: 10,
     borderWidth: 1,
-    borderColor: '#262626',
+    borderColor: 'rgba(255, 255, 255, 0.08)',
     gap: 12,
   },
   channelLogo: {
@@ -1378,15 +1705,19 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   pairingButton: {
-    backgroundColor: '#E50914',
+    backgroundColor: '#00f2fe',
     paddingHorizontal: 20,
     height: 44,
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
+    shadowColor: '#00f2fe',
+    shadowOpacity: 0.6,
+    shadowRadius: 10,
+    elevation: 4,
   },
   pairingButtonText: {
-    color: '#FFFFFF',
+    color: '#03050d',
     fontWeight: '800',
     fontSize: 13,
   },
@@ -1599,11 +1930,11 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   tracksTray: {
-    backgroundColor: 'rgba(21, 21, 21, 0.92)',
-    borderRadius: 10,
+    backgroundColor: 'rgba(12, 17, 33, 0.95)',
+    borderRadius: 12,
     padding: 14,
     borderWidth: 1,
-    borderColor: '#383838',
+    borderColor: 'rgba(255, 255, 255, 0.1)',
     zIndex: 10,
   },
   tracksTrayTitle: {
@@ -1618,7 +1949,7 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
   },
   tracksLabel: {
-    color: '#8A8A8A',
+    color: '#94a3b8',
     fontSize: 12,
   },
   tracksVal: {
@@ -1631,7 +1962,7 @@ const styles = StyleSheet.create({
   },
   playerScrubTrack: {
     height: 5,
-    backgroundColor: '#303030',
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
     borderRadius: 2.5,
     overflow: 'hidden',
   },
@@ -1642,6 +1973,716 @@ const styles = StyleSheet.create({
   playerTimeText: {
     color: '#8A8A8A',
     fontSize: 12,
+    fontWeight: '600',
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  // MOVIES TAB STYLES (MATCHING USER SCREENSHOT 1)
+  // ─────────────────────────────────────────────────────────────
+  moviesHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 14,
+    paddingTop: 4,
+  },
+  moviesHeaderTitle: {
+    color: '#FFFFFF',
+    fontSize: 28,
+    fontWeight: '900',
+    letterSpacing: -0.5,
+  },
+  moviesHeaderSearchBtn: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.15)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  moviesHeroCard: {
+    height: 250,
+    borderRadius: 22,
+    overflow: 'hidden',
+    position: 'relative',
+    backgroundColor: '#120a14',
+    borderWidth: 1,
+    borderColor: 'rgba(139, 0, 0, 0.45)',
+    shadowColor: '#8B0000',
+    shadowOpacity: 0.45,
+    shadowRadius: 20,
+    elevation: 8,
+    marginBottom: 20,
+  },
+  moviesHeroBg: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+  },
+  moviesHeroOverlay: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    padding: 18,
+    backgroundColor: 'rgba(5, 5, 8, 0.55)',
+  },
+  moviesHeroTag: {
+    color: '#ff9999',
+    fontSize: 12,
+    fontWeight: '800',
+    marginBottom: 4,
+  },
+  moviesHeroTitle: {
+    color: '#FFFFFF',
+    fontSize: 26,
+    fontWeight: '900',
+    letterSpacing: -0.4,
+    marginBottom: 14,
+  },
+  moviesHeroBtnsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  moviesPlayBtn: {
+    backgroundColor: '#8B0000',
+    paddingVertical: 10,
+    paddingHorizontal: 24,
+    borderRadius: 999,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#8B0000',
+    shadowOpacity: 0.6,
+    shadowRadius: 15,
+    elevation: 6,
+  },
+  moviesPlayBtnText: {
+    color: '#FFFFFF',
+    fontWeight: '900',
+    fontSize: 13,
+  },
+  moviesListBtn: {
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.25)',
+    paddingVertical: 10,
+    paddingHorizontal: 18,
+    borderRadius: 999,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  moviesListBtnText: {
+    color: '#FFFFFF',
+    fontWeight: '700',
+    fontSize: 13,
+  },
+  moviesSectionRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 12,
+  },
+  moviesSectionTitle: {
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontWeight: '900',
+  },
+  moviesSectionSeeAll: {
+    color: '#8B0000',
+    fontSize: 12,
+    fontWeight: '800',
+  },
+  trendingCardsRow: {
+    flexDirection: 'row',
+    gap: 10,
+    marginBottom: 8,
+  },
+  trendingCard: {
+    flex: 1,
+    height: 165,
+    borderRadius: 16,
+    overflow: 'hidden',
+    position: 'relative',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.1)',
+    shadowColor: '#000000',
+    shadowOpacity: 0.6,
+    shadowRadius: 12,
+    elevation: 6,
+  },
+  trendingCardBg: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    opacity: 0.5,
+  },
+  trendingCardGradient: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    padding: 10,
+    backgroundColor: 'rgba(5, 5, 8, 0.4)',
+  },
+  trendingCardTitle: {
+    color: '#FFFFFF',
+    fontSize: 12,
+    fontWeight: '900',
+    lineHeight: 15,
+  },
+  trendingCardMeta: {
+    color: '#a1a1aa',
+    fontSize: 9,
+    marginTop: 2,
+    fontWeight: '700',
+  },
+  genrePill: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 999,
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.12)',
+  },
+  genrePillActive: {
+    backgroundColor: '#8B0000',
+    borderColor: '#8B0000',
+    shadowColor: '#8B0000',
+    shadowOpacity: 0.5,
+    shadowRadius: 10,
+    elevation: 4,
+  },
+  genrePillText: {
+    color: '#a1a1aa',
+    fontSize: 12,
+    fontWeight: '700',
+  },
+  genrePillTextActive: {
+    color: '#FFFFFF',
+    fontWeight: '800',
+  },
+  moviesGridHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  // FRONT PAGE / HOME STYLES (MATCHING USER SCREENSHOT 2)
+  // ─────────────────────────────────────────────────────────────
+  homeWelcomeBox: {
+    paddingHorizontal: 16,
+    paddingTop: 10,
+    marginBottom: 16,
+  },
+  homeWelcomeSub: {
+    color: '#a1a1aa',
+    fontSize: 12,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  homeWelcomeTitle: {
+    color: '#FFFFFF',
+    fontSize: 24,
+    fontWeight: '900',
+    lineHeight: 28,
+    letterSpacing: -0.4,
+  },
+  homeLiveCard: {
+    marginHorizontal: 16,
+    height: 230,
+    borderRadius: 20,
+    overflow: 'hidden',
+    position: 'relative',
+    backgroundColor: '#0c0d14',
+    borderWidth: 1,
+    borderColor: 'rgba(139, 0, 0, 0.4)',
+    shadowColor: '#8B0000',
+    shadowOpacity: 0.4,
+    shadowRadius: 20,
+    elevation: 8,
+    marginBottom: 14,
+  },
+  homeLiveBg: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+  },
+  homeLiveOverlay: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    padding: 16,
+    backgroundColor: 'rgba(5, 5, 8, 0.5)',
+  },
+  homeLiveBadgesRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 6,
+  },
+  badgeLivePulse: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+    backgroundColor: '#8B0000',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 999,
+  },
+  badgeLiveDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: '#FFFFFF',
+  },
+  badgeLiveText: {
+    color: '#FFFFFF',
+    fontSize: 9,
+    fontWeight: '900',
+  },
+  badgeDarkPill: {
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 6,
+  },
+  badgeDarkText: {
+    color: '#FFFFFF',
+    fontSize: 9,
+    fontWeight: '800',
+  },
+  homeLiveSub: {
+    color: '#a1a1aa',
+    fontSize: 12,
+    fontWeight: '700',
+    marginBottom: 2,
+  },
+  homeLiveTitle: {
+    color: '#FFFFFF',
+    fontSize: 22,
+    fontWeight: '900',
+    marginBottom: 12,
+  },
+  homeLiveBtnsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  homeWatchNowBtn: {
+    backgroundColor: '#8B0000',
+    paddingVertical: 9,
+    paddingHorizontal: 20,
+    borderRadius: 999,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#8B0000',
+    shadowOpacity: 0.6,
+    shadowRadius: 15,
+    elevation: 6,
+  },
+  homeWatchNowBtnText: {
+    color: '#FFFFFF',
+    fontWeight: '800',
+    fontSize: 13,
+  },
+  homeAddBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.25)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  homeAddBtnText: {
+    color: '#FFFFFF',
+    fontSize: 20,
+    lineHeight: 22,
+    fontWeight: '600',
+  },
+  homeTvBanner: {
+    marginHorizontal: 16,
+    borderRadius: 16,
+    backgroundColor: 'rgba(255, 255, 255, 0.03)',
+    borderWidth: 1,
+    borderColor: 'rgba(139, 0, 0, 0.4)',
+    padding: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    marginBottom: 18,
+    shadowColor: '#8B0000',
+    shadowOpacity: 0.2,
+    shadowRadius: 12,
+    elevation: 4,
+  },
+  homeTvBannerIcon: {
+    width: 34,
+    height: 34,
+    borderRadius: 10,
+    backgroundColor: '#8B0000',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  homeTvBannerTitle: {
+    color: '#FFFFFF',
+    fontSize: 13,
+    fontWeight: '800',
+  },
+  homeTvBannerSub: {
+    color: '#a1a1aa',
+    fontSize: 11,
+  },
+  homeSectionHeaderRow: {
+    marginHorizontal: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+  homeSectionTitle: {
+    color: '#FFFFFF',
+    fontSize: 17,
+    fontWeight: '900',
+  },
+  homeSectionSeeAll: {
+    color: '#8B0000',
+    fontSize: 12,
+    fontWeight: '800',
+  },
+  homeLiveCardsRow: {
+    marginHorizontal: 16,
+    flexDirection: 'row',
+    gap: 10,
+    marginBottom: 16,
+  },
+  homeLiveChannelCard: {
+    flex: 1,
+    height: 110,
+    borderRadius: 14,
+    padding: 10,
+    justifyContent: 'space-between',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.1)',
+  },
+  homeChannelLiveDotRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  homeChannelLiveDot: {
+    width: 5,
+    height: 5,
+    borderRadius: 2.5,
+    backgroundColor: '#8B0000',
+  },
+  homeChannelLiveTag: {
+    color: '#ff8080',
+    fontSize: 9,
+    fontWeight: '900',
+  },
+  homeChannelName: {
+    color: '#FFFFFF',
+    fontSize: 12,
+    fontWeight: '900',
+  },
+  homeChannelProgram: {
+    color: '#cbd5e1',
+    fontSize: 9,
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  // HIGH-FIDELITY OTT STREAM FEED STYLES (#0A0A0A & #FF0D2E)
+  // ─────────────────────────────────────────────────────────────
+  categoryChip: {
+    paddingHorizontal: 16,
+    paddingVertical: 7,
+    borderRadius: 999,
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.1)',
+  },
+  categoryChipActive: {
+    backgroundColor: 'rgba(255, 13, 46, 0.18)',
+    borderColor: '#FF0D2E',
+    shadowColor: '#FF0D2E',
+    shadowOpacity: 0.5,
+    shadowRadius: 10,
+    elevation: 4,
+  },
+  categoryChipText: {
+    color: '#9CA3AF',
+    fontSize: 12,
+    fontWeight: '700',
+  },
+  categoryChipTextActive: {
+    color: '#FFFFFF',
+    fontWeight: '900',
+  },
+
+  // Expansive Hero Blockbuster Movie Section: 'Interstellar'
+  heroOuterWrapper: {
+    paddingHorizontal: 16,
+    marginBottom: 20,
+    position: 'relative',
+  },
+  heroAmbientGlowBox: {
+    position: 'absolute',
+    top: 12,
+    left: 20,
+    right: 20,
+    bottom: -6,
+    borderRadius: 24,
+    overflow: 'hidden',
+    opacity: 0.3,
+  },
+  heroAmbientGlowImage: {
+    width: '100%',
+    height: '100%',
+  },
+  heroWideCard: {
+    minHeight: 280,
+    borderRadius: 20,
+    overflow: 'hidden',
+    position: 'relative',
+    backgroundColor: '#121214',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 13, 46, 0.35)',
+    shadowColor: '#FF0D2E',
+    shadowOpacity: 0.3,
+    shadowRadius: 20,
+    elevation: 8,
+  },
+  heroWideBg: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+  },
+  heroWideOverlay: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    padding: 18,
+    backgroundColor: 'rgba(10, 10, 10, 0.55)',
+  },
+  heroTagRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 8,
+  },
+  badgeNeonCrimson: {
+    backgroundColor: '#FF0D2E',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 4,
+    shadowColor: '#FF0D2E',
+    shadowOpacity: 0.7,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  badgeNeonCrimsonText: {
+    color: '#FFFFFF',
+    fontSize: 9,
+    fontWeight: '900',
+    letterSpacing: 0.5,
+  },
+  badgeGlassDark: {
+    backgroundColor: 'rgba(255, 255, 255, 0.12)',
+    paddingHorizontal: 7,
+    paddingVertical: 3,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.15)',
+  },
+  badgeGlassDarkText: {
+    color: '#F3F4F6',
+    fontSize: 9,
+    fontWeight: '800',
+  },
+  badgeGlassNeon: {
+    backgroundColor: 'rgba(255, 13, 46, 0.15)',
+    paddingHorizontal: 7,
+    paddingVertical: 3,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 13, 46, 0.3)',
+  },
+  badgeGlassNeonText: {
+    color: '#FF0D2E',
+    fontSize: 9,
+    fontWeight: '800',
+  },
+  heroBlockbusterTitle: {
+    color: '#FFFFFF',
+    fontSize: 28,
+    fontWeight: '900',
+    letterSpacing: -0.5,
+    marginBottom: 4,
+  },
+  heroMetaRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginBottom: 8,
+  },
+  heroRatingText: {
+    color: '#FF0D2E',
+    fontSize: 12,
+    fontWeight: '900',
+  },
+  heroMetaDot: {
+    color: '#6B7280',
+    fontSize: 11,
+  },
+  heroMetaItem: {
+    color: '#D1D5DB',
+    fontSize: 11,
+    fontWeight: '600',
+  },
+  heroSynopsis: {
+    color: '#9CA3AF',
+    fontSize: 12,
+    lineHeight: 16,
+    marginBottom: 14,
+  },
+  heroActionsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  heroNeonPlayBtn: {
+    backgroundColor: '#FF0D2E',
+    paddingVertical: 10,
+    paddingHorizontal: 22,
+    borderRadius: 999,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#FF0D2E',
+    shadowOpacity: 0.7,
+    shadowRadius: 15,
+    elevation: 6,
+  },
+  heroNeonPlayBtnText: {
+    color: '#FFFFFF',
+    fontWeight: '900',
+    fontSize: 13,
+  },
+  heroWatchlistBtn: {
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 999,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  heroWatchlistBtnText: {
+    color: '#FFFFFF',
+    fontWeight: '700',
+    fontSize: 12,
+  },
+  heroInfoBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  // Horizontally Scrollable 'Top Rated Films' (2:3 Aspect Ratio)
+  topRatedSectionHeader: {
+    paddingHorizontal: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 12,
+  },
+  topRatedPreTitle: {
+    color: '#FF0D2E',
+    fontSize: 9,
+    fontWeight: '900',
+    letterSpacing: 1,
+    marginBottom: 2,
+  },
+  topRatedSectionTitle: {
+    color: '#FFFFFF',
+    fontSize: 19,
+    fontWeight: '900',
+  },
+  topRatedSeeAll: {
+    color: '#FF0D2E',
+    fontSize: 12,
+    fontWeight: '800',
+  },
+  topRatedScroll: {
+    paddingHorizontal: 16,
+    gap: 12,
+    paddingBottom: 16,
+  },
+  topRatedCard: {
+    width: 136,
+  },
+  topRatedPosterBox: {
+    width: 136,
+    height: 204, // 2:3 aspect ratio
+    borderRadius: 12,
+    overflow: 'hidden',
+    position: 'relative',
+    backgroundColor: '#161618',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.08)',
+    marginBottom: 6,
+  },
+  topRatedPoster: {
+    width: '100%',
+    height: '100%',
+  },
+  topRatedQualityBadge: {
+    position: 'absolute',
+    top: 6,
+    left: 6,
+    backgroundColor: 'rgba(10, 10, 10, 0.85)',
+    paddingHorizontal: 5,
+    paddingVertical: 2,
+    borderRadius: 3,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 13, 46, 0.35)',
+  },
+  topRatedQualityText: {
+    color: '#FF0D2E',
+    fontSize: 8,
+    fontWeight: '900',
+  },
+  topRatedRatingBadge: {
+    position: 'absolute',
+    bottom: 6,
+    right: 6,
+    backgroundColor: 'rgba(10, 10, 10, 0.85)',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.12)',
+  },
+  topRatedRatingText: {
+    color: '#FFFFFF',
+    fontSize: 9,
+    fontWeight: '800',
+  },
+  topRatedTitle: {
+    color: '#FFFFFF',
+    fontSize: 12,
+    fontWeight: '800',
+    marginBottom: 2,
+  },
+  topRatedMeta: {
+    color: '#6B7280',
+    fontSize: 10,
     fontWeight: '600',
   },
 });

@@ -98,13 +98,13 @@ export const SubscriptionPlansView: React.FC = () => {
                   position: 'absolute',
                   top: '-12px',
                   right: '20px',
-                  background: 'linear-gradient(135deg, #8B5CF6 0%, #22D3EE 100%)',
+                  background: 'linear-gradient(135deg, #8b0032 0%, #b81d4a 100%)',
                   color: '#FFFFFF',
                   padding: '3px 12px',
                   borderRadius: '20px',
                   fontSize: '11px',
                   fontWeight: 700,
-                  boxShadow: '0 4px 12px rgba(139, 92, 246, 0.4)',
+                  boxShadow: '0 4px 12px rgba(139, 0, 50, 0.4)',
                 }}>
                   {plan.badge}
                 </div>
@@ -115,7 +115,7 @@ export const SubscriptionPlansView: React.FC = () => {
               </div>
 
               <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px', marginBottom: '16px' }}>
-                <span style={{ fontSize: '32px', fontWeight: 800, color: '#22D3EE' }}>
+                <span style={{ fontSize: '32px', fontWeight: 800, color: '#fda4af' }}>
                   {plan.currency}{price}
                 </span>
                 <span style={{ fontSize: '13px', color: '#94A3B8' }}>
@@ -138,11 +138,11 @@ export const SubscriptionPlansView: React.FC = () => {
                 </div>
                 <div>
                   <div style={{ color: '#94A3B8' }}>Resolution</div>
-                  <div style={{ fontWeight: 700, color: '#8B5CF6' }}>{plan.resolution}</div>
+                  <div style={{ fontWeight: 700, color: '#fda4af' }}>{plan.resolution}</div>
                 </div>
                 <div>
                   <div style={{ color: '#94A3B8' }}>Subscribers</div>
-                  <div style={{ fontWeight: 700, color: '#22D3EE' }}>{plan.subscriberCount?.toLocaleString()}</div>
+                  <div style={{ fontWeight: 700, color: '#fda4af' }}>{plan.subscriberCount?.toLocaleString()}</div>
                 </div>
               </div>
 
@@ -154,13 +154,13 @@ export const SubscriptionPlansView: React.FC = () => {
                       width: '18px',
                       height: '18px',
                       borderRadius: '50%',
-                      backgroundColor: 'rgba(34, 211, 238, 0.15)',
+                      backgroundColor: 'rgba(139, 0, 50, 0.25)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       flexShrink: 0,
                     }}>
-                      <Check size={12} color="#22D3EE" />
+                      <Check size={12} color="#fda4af" />
                     </div>
                     <span>{feat}</span>
                   </div>

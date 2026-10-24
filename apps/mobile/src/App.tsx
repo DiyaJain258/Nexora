@@ -1,22 +1,24 @@
 import React, { useState } from 'react';
 import { MobileHeader } from './components/MobileHeader';
 import { MobileBottomNav, MobileTab } from './components/MobileBottomNav';
-import { SplashScreen } from './components/SplashScreen';
+import { LandingScreen } from './screens/LandingScreen';
 import { HomeScreen } from './screens/HomeScreen';
 import { LiveTvScreen } from './screens/LiveTvScreen';
 import { CatalogScreen } from './screens/CatalogScreen';
 import { SearchScreen } from './screens/SearchScreen';
 import { MyListScreen } from './screens/MyListScreen';
 import { ProfileSettingsScreen } from './screens/ProfileSettingsScreen';
+import { SignInScreen } from './screens/SignInScreen';
+import { CinematicBackground } from './components/CinematicBackground';
 import { ContentDetailsModal } from './components/ContentDetailsModal';
 import { VideoPlayerModal } from './components/VideoPlayerModal';
 import { ContentItem, Channel } from '@nexora/shared';
 
 export const App: React.FC = () => {
-  const [showSplash, setShowSplash] = useState(true);
-  const [activeTab, setActiveTab] = useState<MobileTab>('home');
+  const [activeTab, setActiveTab] = useState<MobileTab>('landing');
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [selectedItem, setSelectedItem] = useState<ContentItem | null>(null);
   const [playingItem, setPlayingItem] = useState<ContentItem | Channel | null>(null);
   const [favoriteIds, setFavoriteIds] = useState<string[]>(['vod-01', 'vod-02']);
@@ -48,17 +50,6 @@ export const App: React.FC = () => {
       );
     }
 
-    if (activeCategory === 'Series') {
-      return (
-        <CatalogScreen
-          title="Binge-Worthy TV Series"
-          typeFilter="series"
-          onSelectItem={(item) => setSelectedItem(item)}
-          onPlayItem={(item) => setPlayingItem(item)}
-        />
-      );
-    }
-
     if (activeCategory === 'Sports') {
       return (
         <CatalogScreen
@@ -82,6 +73,17 @@ export const App: React.FC = () => {
     }
 
     switch (activeTab) {
+      case 'landing':
+        return (
+          <LandingScreen
+            onOpenLiveDemo={(channel) => setPlayingItem(channel || null)}
+            onOpenActivation={() => setActiveTab('profile')}
+            onSwitchToStreaming={() => {
+              setActiveTab('home');
+              setActiveCategory('All');
+            }}
+          />
+        );
       case 'home':
         return (
           <HomeScreen
@@ -118,7 +120,36 @@ export const App: React.FC = () => {
           />
         );
       case 'profile':
-        return <ProfileSettingsScreen />;
+        return isAuthenticated ? (
+          <div style={{ position: 'relative', zIndex: 2 }}>
+            <div style={{ padding: '12px 16px', display: 'flex', justifyContent: 'flex-end' }}>
+              <button
+                onClick={() => setIsAuthenticated(false)}
+                style={{
+                  background: 'none',
+                  border: '1px solid rgba(255, 13, 46, 0.4)',
+                  color: '#FF0D2E',
+                  borderRadius: '999px',
+                  padding: '5px 14px',
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                }}
+              >
+                Log Out to Sign In
+              </button>
+            </div>
+            <ProfileSettingsScreen />
+          </div>
+        ) : (
+          <SignInScreen
+            onSuccessLogin={() => {
+              setIsAuthenticated(true);
+              setActiveTab('home');
+            }}
+            onOpenActivation={() => setActiveTab('landing')}
+          />
+        );
       default:
         return null;
     }
@@ -126,23 +157,30 @@ export const App: React.FC = () => {
 
   return (
     <div id="mobile-simulator-frame">
-      {/* Animated Splash Screen */}
-      {showSplash && <SplashScreen onFinish={() => setShowSplash(false)} />}
+      {/* ── CINEMATIC POSTER BACKGROUND WALL (UNDERNEATH ALL CARDS) ── */}
+      <CinematicBackground />
 
       {/* Top Mobile Status Header */}
-      <MobileHeader
-        onSearchClick={() => setIsSearchOpen(!isSearchOpen)}
-        onProfileClick={() => {
-          setIsSearchOpen(false);
-          setActiveTab('profile');
-        }}
-        activeCategory={activeCategory}
-        onSelectCategory={handleCategorySelect}
-        categories={categories}
-      />
+      <div style={{ position: 'relative', zIndex: 10 }}>
+        <MobileHeader
+          onSearchClick={() => setIsSearchOpen(!isSearchOpen)}
+          onProfileClick={() => {
+            setIsSearchOpen(false);
+            setActiveTab('profile');
+          }}
+          activeCategory={activeCategory}
+          onSelectCategory={handleCategorySelect}
+          categories={categories}
+          activeTab={activeTab}
+          onToggleMode={(mode) => {
+            setActiveTab(mode);
+            if (mode === 'home') setActiveCategory('All');
+          }}
+        />
+      </div>
 
-      {/* Screen Body */}
-      <div style={{ flex: 1, overflowY: 'auto', position: 'relative' }}>
+      {/* Screen Body with Cards floating over the background */}
+      <div style={{ flex: 1, overflowY: 'auto', position: 'relative', zIndex: 2 }}>
         {renderScreen()}
 
         {/* Content Details Overlay Modal */}
@@ -165,16 +203,18 @@ export const App: React.FC = () => {
       </div>
 
       {/* Bottom Nav */}
-      <MobileBottomNav
-        activeTab={activeTab}
-        onTabChange={(tab) => {
-          setIsSearchOpen(false);
-          setActiveTab(tab);
-          if (tab === 'home') setActiveCategory('All');
-          else if (tab === 'livetv') setActiveCategory('Live TV');
-          else if (tab === 'movies') setActiveCategory('Movies');
-        }}
-      />
+      <div style={{ position: 'relative', zIndex: 10 }}>
+        <MobileBottomNav
+          activeTab={activeTab}
+          onTabChange={(tab) => {
+            setIsSearchOpen(false);
+            setActiveTab(tab);
+            if (tab === 'home') setActiveCategory('All');
+            else if (tab === 'livetv') setActiveCategory('Live TV');
+            else if (tab === 'movies') setActiveCategory('Movies');
+          }}
+        />
+      </div>
     </div>
   );
 };

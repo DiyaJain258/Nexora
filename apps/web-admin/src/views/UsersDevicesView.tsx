@@ -38,10 +38,10 @@ export const UsersDevicesView: React.FC = () => {
 
   const getDeviceIcon = (type: DeviceSession['deviceType']) => {
     if (type === 'android-tv' || type === 'apple-tv' || type === 'fire-tv') {
-      return <Tv size={16} color="#22D3EE" />;
+      return <Tv size={16} color="#fda4af" />;
     }
     if (type === 'android-mobile' || type === 'ios-mobile') {
-      return <Smartphone size={16} color="#8B5CF6" />;
+      return <Smartphone size={16} color="#b81d4a" />;
     }
     return <Laptop size={16} color="#FBBF24" />;
   };
@@ -68,9 +68,9 @@ export const UsersDevicesView: React.FC = () => {
               borderRadius: '8px',
               fontSize: '13px',
               fontWeight: 600,
-              border: activeTab === 'users' ? '1px solid #8B5CF6' : '1px solid #1E293B',
-              backgroundColor: activeTab === 'users' ? 'rgba(139, 92, 246, 0.2)' : '#070912',
-              color: activeTab === 'users' ? '#22D3EE' : '#94A3B8',
+              border: activeTab === 'users' ? '1px solid rgba(184, 29, 74, 0.6)' : '1px solid rgba(255, 255, 255, 0.08)',
+              backgroundColor: activeTab === 'users' ? 'rgba(139, 0, 50, 0.35)' : '#070509',
+              color: activeTab === 'users' ? '#fda4af' : '#94A3B8',
               cursor: 'pointer',
             }}
           >
@@ -83,9 +83,9 @@ export const UsersDevicesView: React.FC = () => {
               borderRadius: '8px',
               fontSize: '13px',
               fontWeight: 600,
-              border: activeTab === 'devices' ? '1px solid #8B5CF6' : '1px solid #1E293B',
-              backgroundColor: activeTab === 'devices' ? 'rgba(139, 92, 246, 0.2)' : '#070912',
-              color: activeTab === 'devices' ? '#22D3EE' : '#94A3B8',
+              border: activeTab === 'devices' ? '1px solid rgba(184, 29, 74, 0.6)' : '1px solid rgba(255, 255, 255, 0.08)',
+              backgroundColor: activeTab === 'devices' ? 'rgba(139, 0, 50, 0.35)' : '#070509',
+              color: activeTab === 'devices' ? '#fda4af' : '#94A3B8',
               cursor: 'pointer',
             }}
           >
@@ -159,7 +159,7 @@ export const UsersDevicesView: React.FC = () => {
                   </td>
                   <td style={{ padding: '14px 18px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ fontWeight: 700, color: '#22D3EE' }}>{u.activeScreens}</span>
+                      <span style={{ fontWeight: 700, color: '#fda4af' }}>{u.activeScreens}</span>
                       <span style={{ color: '#64748B' }}>/ {u.maxScreens} max</span>
                     </div>
                   </td>
@@ -246,7 +246,7 @@ export const UsersDevicesView: React.FC = () => {
                     {d.activeStreamTitle ? (
                       <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                         <span className="live-dot" />
-                        <span style={{ color: '#22D3EE', fontWeight: 500 }}>{d.activeStreamTitle}</span>
+                        <span style={{ color: '#fda4af', fontWeight: 500 }}>{d.activeStreamTitle}</span>
                       </div>
                     ) : (
                       <span style={{ color: '#64748B' }}>Idle / In Menu</span>

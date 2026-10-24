@@ -23,10 +23,10 @@ export const ActivationGuide: React.FC = () => {
   };
 
   return (
-    <section id="activation" style={{ padding: '80px 0', position: 'relative' }}>
+    <section id="activation" style={{ padding: '64px 0', position: 'relative' }}>
       <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 24px' }}>
         
-        <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+        <div style={{ textAlign: 'center', marginBottom: '32px' }}>
           <div style={{ fontSize: '13px', fontWeight: 800, color: '#fda4af', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '8px' }}>
             ZERO FRICTION ONBOARDING
           </div>
@@ -38,7 +38,7 @@ export const ActivationGuide: React.FC = () => {
           </p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '28px', marginBottom: '48px' }}>
+        <div className="activation-steps-grid" style={{ marginBottom: '32px' }}>
           
           <div className="glass-card" style={{ padding: '32px' }}>
             <div style={{ width: '48px', height: '48px', borderRadius: '14px', backgroundColor: 'rgba(255, 255, 255, 0.08)', border: '1px solid rgba(255, 255, 255, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
@@ -98,7 +98,7 @@ export const ActivationGuide: React.FC = () => {
             Try entering a demo code like <code style={{ color: '#fda4af', fontWeight: 700 }}>NEX-7742</code> to experience instant simulated pairing.
           </p>
 
-          <form onSubmit={handleTestActivation} style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+          <form onSubmit={handleTestActivation} className="activation-form" style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
             <input
               type="text"
               placeholder="e.g. NEX-7742"

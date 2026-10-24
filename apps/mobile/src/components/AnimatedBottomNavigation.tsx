@@ -8,7 +8,7 @@ import {
   Platform,
 } from 'react-native';
 
-export type BottomTabType = 'home' | 'livetv' | 'movies' | 'mylist' | 'account';
+export type BottomTabType = 'landing' | 'home' | 'livetv' | 'movies' | 'mylist' | 'account';
 
 interface AnimatedBottomNavigationProps {
   activeTab: BottomTabType;
@@ -22,11 +22,11 @@ interface TabItemConfig {
 }
 
 const TABS: TabItemConfig[] = [
-  { id: 'home', label: 'Home', icon: '🏠' },
+  { id: 'home', label: 'Home', icon: '🎬' },
+  { id: 'movies', label: 'Movies', icon: '🍿' },
   { id: 'livetv', label: 'Live TV', icon: '📡' },
-  { id: 'movies', label: 'Movies', icon: '🎬' },
   { id: 'mylist', label: 'My List', icon: '🔖' },
-  { id: 'account', label: 'Account', icon: '⚙' },
+  { id: 'account', label: 'TV Pair', icon: '📺' },
 ];
 
 export const AnimatedBottomNavigation: React.FC<AnimatedBottomNavigationProps> = ({
@@ -125,17 +125,18 @@ const TabButton: React.FC<TabButtonProps> = ({ tab, isActive, onPress }) => {
 
 const styles = StyleSheet.create({
   dockContainer: {
-    backgroundColor: '#050505',
+    backgroundColor: '#07080B',
     borderTopWidth: 1,
-    borderTopColor: '#1F1F1F',
+    borderTopColor: 'rgba(255, 255, 255, 0.09)',
+    paddingBottom: Platform.OS === 'ios' ? 18 : 6,
   },
   surface: {
     height: 58,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
-    paddingHorizontal: 8,
-    backgroundColor: 'rgba(10, 10, 10, 0.96)',
+    paddingHorizontal: 6,
+    backgroundColor: 'rgba(7, 8, 11, 0.98)',
   },
   tabItem: {
     flex: 1,
@@ -148,20 +149,20 @@ const styles = StyleSheet.create({
   activeIndicator: {
     position: 'absolute',
     top: 0,
-    width: 28,
-    height: 3,
+    width: 24,
+    height: 2.5,
     borderRadius: 2,
-    backgroundColor: '#E50914',
-    shadowColor: '#E50914',
+    backgroundColor: '#800020',
+    shadowColor: '#800020',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.9,
-    shadowRadius: 6,
-    elevation: 4,
+    shadowOpacity: 1,
+    shadowRadius: 10,
+    elevation: 8,
   },
   tabIcon: {
-    fontSize: 18,
-    opacity: 0.6,
-    marginBottom: 2,
+    fontSize: 19,
+    opacity: 0.55,
+    marginBottom: 3,
   },
   tabIconActive: {
     opacity: 1,
@@ -169,7 +170,8 @@ const styles = StyleSheet.create({
   tabLabel: {
     fontSize: 10,
     fontWeight: '600',
-    color: '#737373',
+    color: '#71717A',
+    letterSpacing: 0.2,
   },
   tabLabelActive: {
     color: '#FFFFFF',

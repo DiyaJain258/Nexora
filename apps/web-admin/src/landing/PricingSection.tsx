@@ -17,10 +17,10 @@ export const PricingSection: React.FC = () => {
   };
 
   return (
-    <section id="pricing" style={{ padding: '80px 0', position: 'relative' }}>
+    <section id="pricing" style={{ padding: '64px 0', position: 'relative' }}>
       <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 24px' }}>
         
-        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+        <div style={{ textAlign: 'center', marginBottom: '32px' }}>
           <div style={{ fontSize: '13px', fontWeight: 800, color: '#fda4af', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '8px' }}>
             TRANSPARENT SUBSCRIPTION TIERS
           </div>
@@ -31,7 +31,7 @@ export const PricingSection: React.FC = () => {
             Cancel anytime. All plans include 4K HDR live broadcast, cloud DVR, and zero contract commitment.
           </p>
 
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', marginTop: '32px', backgroundColor: 'rgba(10, 10, 14, 0.7)', padding: '6px 14px', borderRadius: '999px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', marginTop: '26px', backgroundColor: 'rgba(10, 10, 14, 0.7)', padding: '6px 14px', borderRadius: '999px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
             <span style={{ fontSize: '14px', fontWeight: 600, color: billingCycle === 'monthly' ? '#f8fafc' : '#71717a' }}>
               Monthly
             </span>
@@ -67,7 +67,7 @@ export const PricingSection: React.FC = () => {
           </div>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '32px', alignItems: 'stretch' }}>
+        <div className="pricing-cards-grid" style={{ alignItems: 'stretch' }}>
           {MOCK_SUBSCRIPTION_PLANS.map((plan) => {
             const isPopular = plan.isPopular;
             const price = billingCycle === 'yearly' ? (plan.priceYearly / 12).toFixed(2) : plan.priceMonthly;

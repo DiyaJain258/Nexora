@@ -23,7 +23,7 @@ export const ReportsSettingsView: React.FC = () => {
         padding: '24px',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
-          <Server size={20} color="#22D3EE" />
+          <Server size={20} color="#fda4af" />
           <h3 style={{ margin: 0, fontSize: '17px', fontWeight: 700, color: '#F8FAFC' }}>
             Live Stream Transcoding & Origin Engine
           </h3>
@@ -104,7 +104,7 @@ export const ReportsSettingsView: React.FC = () => {
                 id="tokenDrm"
                 checked={tokenDrm}
                 onChange={(e) => setTokenDrm(e.target.checked)}
-                style={{ width: '18px', height: '18px', accentColor: '#22D3EE' }}
+                style={{ width: '18px', height: '18px', accentColor: '#800020' }}
               />
               <label htmlFor="tokenDrm" style={{ fontSize: '13px', color: '#F8FAFC' }}>
                 Enforce HMAC token rotation every 60 seconds
