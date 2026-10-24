@@ -7,7 +7,6 @@ import { PlatformLampShowcase } from '../landing/PlatformLampShowcase';
 import { LiveChannelsMarquee } from '../landing/LiveChannelsMarquee';
 import { GlassConsoleSection } from '../landing/GlassConsoleSection';
 import { Skiper16StickyCards } from '../landing/Skiper16StickyCards';
-import { Skiper17StickyCards } from '../landing/Skiper17StickyCards';
 import { MovieShowcaseSection } from '../landing/MovieShowcaseSection';
 import { DeviceShowcase3D } from '../landing/DeviceShowcase3D';
 import { ActivationGuide } from '../landing/ActivationGuide';
@@ -118,8 +117,6 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({ onNavigateToAd
       <Skiper16StickyCards onPlayMovie={handlePlayMovie} />
 
       <MovieShowcaseSection onPlayMovie={handlePlayMovie} />
-
-      <Skiper17StickyCards onPlayMovie={handlePlayMovie} />
 
       <DeviceShowcase3D />
 

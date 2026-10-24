@@ -574,3 +574,28 @@ html, body {
   }
 }
 
+/* 9. Skiper 30 Parallax Gallery Responsive */
+@media (max-width: 1024px) {
+  .skiper30-parallax-gallery-container {
+    height: 850px !important;
+    gap: 16px !important;
+    padding: 16px !important;
+  }
+  .parallax-serial-column:nth-child(4) {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .skiper30-parallax-gallery-container {
+    height: 680px !important;
+    gap: 12px !important;
+    padding: 12px !important;
+  }
+  .parallax-serial-column:nth-child(3),
+  .parallax-serial-column:nth-child(4) {
+    display: none !important;
+  }
+}
+
+
