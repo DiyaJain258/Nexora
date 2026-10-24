@@ -195,10 +195,10 @@ export const NetflixSignUpScreen: React.FC<NetflixSignUpScreenProps> = ({
               <Text style={styles.facebookText}>Login with Facebook</Text>
             </TouchableOpacity>
 
-            {/* Switch Mode: New to Netflix? Sign up now. */}
+            {/* Switch Mode: New to NEXORA? Sign up now. */}
             <View style={styles.switchRow}>
               <Text style={styles.newToText}>
-                {isSignInMode ? 'New to Netflix? ' : 'Already have an account? '}
+                {isSignInMode ? 'New to NEXORA? ' : 'Already have an account? '}
                 <Text
                   style={styles.signUpLink}
                   onPress={() => setIsSignInMode(!isSignInMode)}
