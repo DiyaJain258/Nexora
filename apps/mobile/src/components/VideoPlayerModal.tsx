@@ -31,7 +31,7 @@ export const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({ item, onClos
   if (!item) return null;
 
   const isLive = 'channelNumber' in item || ('isLive' in item && item.isLive);
-  const title = item.name || (item as ContentItem).title;
+  const title = 'name' in item ? item.name : item.title;
   const poster = (item as any).backdropUrl || (item as any).logo;
 
   // Simulate video playback progress

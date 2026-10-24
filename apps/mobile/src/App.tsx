@@ -1,20 +1,24 @@
 import React, { useState } from 'react';
 import { MobileHeader } from './components/MobileHeader';
 import { MobileBottomNav, MobileTab } from './components/MobileBottomNav';
+import { LandingScreen } from './screens/LandingScreen';
 import { HomeScreen } from './screens/HomeScreen';
 import { LiveTvScreen } from './screens/LiveTvScreen';
 import { CatalogScreen } from './screens/CatalogScreen';
 import { SearchScreen } from './screens/SearchScreen';
 import { MyListScreen } from './screens/MyListScreen';
 import { ProfileSettingsScreen } from './screens/ProfileSettingsScreen';
+import { SignInScreen } from './screens/SignInScreen';
+import { CinematicBackground } from './components/CinematicBackground';
 import { ContentDetailsModal } from './components/ContentDetailsModal';
 import { VideoPlayerModal } from './components/VideoPlayerModal';
 import { ContentItem, Channel } from '@nexora/shared';
 
 export const App: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<MobileTab>('home');
+  const [activeTab, setActiveTab] = useState<MobileTab>('landing');
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [selectedItem, setSelectedItem] = useState<ContentItem | null>(null);
   const [playingItem, setPlayingItem] = useState<ContentItem | Channel | null>(null);
   const [favoriteIds, setFavoriteIds] = useState<string[]>(['vod-01', 'vod-02']);
@@ -69,6 +73,17 @@ export const App: React.FC = () => {
     }
 
     switch (activeTab) {
+      case 'landing':
+        return (
+          <LandingScreen
+            onOpenLiveDemo={(channel) => setPlayingItem(channel || null)}
+            onOpenActivation={() => setActiveTab('profile')}
+            onSwitchToStreaming={() => {
+              setActiveTab('home');
+              setActiveCategory('All');
+            }}
+          />
+        );
       case 'home':
         return (
           <HomeScreen
@@ -105,7 +120,36 @@ export const App: React.FC = () => {
           />
         );
       case 'profile':
-        return <ProfileSettingsScreen />;
+        return isAuthenticated ? (
+          <div style={{ position: 'relative', zIndex: 2 }}>
+            <div style={{ padding: '12px 16px', display: 'flex', justifyContent: 'flex-end' }}>
+              <button
+                onClick={() => setIsAuthenticated(false)}
+                style={{
+                  background: 'none',
+                  border: '1px solid rgba(255, 13, 46, 0.4)',
+                  color: '#FF0D2E',
+                  borderRadius: '999px',
+                  padding: '5px 14px',
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                }}
+              >
+                Log Out to Sign In
+              </button>
+            </div>
+            <ProfileSettingsScreen />
+          </div>
+        ) : (
+          <SignInScreen
+            onSuccessLogin={() => {
+              setIsAuthenticated(true);
+              setActiveTab('home');
+            }}
+            onOpenActivation={() => setActiveTab('landing')}
+          />
+        );
       default:
         return null;
     }
@@ -113,20 +157,30 @@ export const App: React.FC = () => {
 
   return (
     <div id="mobile-simulator-frame">
-      {/* Top Mobile Status Header */}
-      <MobileHeader
-        onSearchClick={() => setIsSearchOpen(!isSearchOpen)}
-        onProfileClick={() => {
-          setIsSearchOpen(false);
-          setActiveTab('profile');
-        }}
-        activeCategory={activeCategory}
-        onSelectCategory={handleCategorySelect}
-        categories={categories}
-      />
+      {/* ── CINEMATIC POSTER BACKGROUND WALL (UNDERNEATH ALL CARDS) ── */}
+      <CinematicBackground />
 
-      {/* Screen Body */}
-      <div style={{ flex: 1, overflowY: 'auto', position: 'relative' }}>
+      {/* Top Mobile Status Header */}
+      <div style={{ position: 'relative', zIndex: 10 }}>
+        <MobileHeader
+          onSearchClick={() => setIsSearchOpen(!isSearchOpen)}
+          onProfileClick={() => {
+            setIsSearchOpen(false);
+            setActiveTab('profile');
+          }}
+          activeCategory={activeCategory}
+          onSelectCategory={handleCategorySelect}
+          categories={categories}
+          activeTab={activeTab}
+          onToggleMode={(mode) => {
+            setActiveTab(mode);
+            if (mode === 'home') setActiveCategory('All');
+          }}
+        />
+      </div>
+
+      {/* Screen Body with Cards floating over the background */}
+      <div style={{ flex: 1, overflowY: 'auto', position: 'relative', zIndex: 2 }}>
         {renderScreen()}
 
         {/* Content Details Overlay Modal */}
@@ -149,16 +203,18 @@ export const App: React.FC = () => {
       </div>
 
       {/* Bottom Nav */}
-      <MobileBottomNav
-        activeTab={activeTab}
-        onTabChange={(tab) => {
-          setIsSearchOpen(false);
-          setActiveTab(tab);
-          if (tab === 'home') setActiveCategory('All');
-          else if (tab === 'livetv') setActiveCategory('Live TV');
-          else if (tab === 'movies') setActiveCategory('Movies');
-        }}
-      />
+      <div style={{ position: 'relative', zIndex: 10 }}>
+        <MobileBottomNav
+          activeTab={activeTab}
+          onTabChange={(tab) => {
+            setIsSearchOpen(false);
+            setActiveTab(tab);
+            if (tab === 'home') setActiveCategory('All');
+            else if (tab === 'livetv') setActiveCategory('Live TV');
+            else if (tab === 'movies') setActiveCategory('Movies');
+          }}
+        />
+      </div>
     </div>
   );
 };

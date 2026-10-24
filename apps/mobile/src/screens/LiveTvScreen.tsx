@@ -43,11 +43,11 @@ export const LiveTvScreen: React.FC<LiveTvScreenProps> = ({
                 flexShrink: 0,
                 padding: '6px 12px',
                 borderRadius: '8px',
-                border: isActive ? '1px solid #8B5CF6' : '1px solid #1E293B',
-                backgroundColor: isActive ? 'rgba(139, 92, 246, 0.25)' : '#111827',
-                color: isActive ? '#22D3EE' : '#94A3B8',
+                border: isActive ? '1px solid #800020' : '1px solid rgba(255, 255, 255, 0.1)',
+                backgroundColor: isActive ? 'rgba(128, 0, 32, 0.45)' : 'rgba(255, 255, 255, 0.05)',
+                color: isActive ? '#FFFFFF' : '#A1A1AA',
                 fontSize: '12px',
-                fontWeight: 600,
+                fontWeight: isActive ? 800 : 600,
                 cursor: 'pointer',
               }}
             >
@@ -88,7 +88,7 @@ export const LiveTvScreen: React.FC<LiveTvScreenProps> = ({
           </div>
 
           <div>
-            <div style={{ fontSize: '11px', color: '#22D3EE', fontWeight: 700 }}>
+            <div style={{ fontSize: '11px', color: '#FF6685', fontWeight: 700 }}>
               CH. {selectedChannel.channelNumber} • {selectedChannel.name}
             </div>
             <h3 style={{ margin: '4px 0', fontSize: '16px', fontWeight: 800, color: '#F8FAFC' }}>
@@ -102,10 +102,10 @@ export const LiveTvScreen: React.FC<LiveTvScreenProps> = ({
               onClick={() => onPlayChannel(selectedChannel)}
               style={{
                 marginTop: '10px',
-                background: 'linear-gradient(135deg, #8B5CF6 0%, #22D3EE 100%)',
-                border: 'none',
+                background: '#800020',
+                border: '1px solid #990024',
                 borderRadius: '8px',
-                padding: '8px 14px',
+                padding: '8px 16px',
                 color: '#FFFFFF',
                 fontWeight: 700,
                 fontSize: '12px',
@@ -113,6 +113,7 @@ export const LiveTvScreen: React.FC<LiveTvScreenProps> = ({
                 alignItems: 'center',
                 gap: '6px',
                 cursor: 'pointer',
+                boxShadow: '0 0 14px rgba(128, 0, 32, 0.6)',
               }}
             >
               <Play size={14} fill="#FFFFFF" />
@@ -136,8 +137,8 @@ export const LiveTvScreen: React.FC<LiveTvScreenProps> = ({
                 key={ch.id}
                 onClick={() => setSelectedChannel(ch)}
                 style={{
-                  backgroundColor: isSelected ? 'rgba(139, 92, 246, 0.15)' : '#111827',
-                  border: isSelected ? '1px solid #8B5CF6' : '1px solid #1E293B',
+                  backgroundColor: isSelected ? 'rgba(128, 0, 32, 0.25)' : '#0F0F12',
+                  border: isSelected ? '1px solid #800020' : '1px solid rgba(255, 255, 255, 0.08)',
                   borderRadius: '12px',
                   padding: '12px',
                   display: 'flex',
@@ -154,14 +155,14 @@ export const LiveTvScreen: React.FC<LiveTvScreenProps> = ({
                   />
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <span style={{ fontSize: '11px', fontWeight: 800, color: '#8B5CF6' }}>
+                      <span style={{ fontSize: '11px', fontWeight: 800, color: '#B3002D' }}>
                         #{ch.channelNumber}
                       </span>
                       <span style={{ fontSize: '13px', fontWeight: 700, color: '#F8FAFC' }}>
                         {ch.name}
                       </span>
                     </div>
-                    <div style={{ fontSize: '11px', color: '#22D3EE', marginTop: '2px' }}>
+                    <div style={{ fontSize: '11px', color: '#FF6685', marginTop: '2px' }}>
                       {ch.currentProgram?.title || 'Continuous Airing'}
                     </div>
                     <div style={{ fontSize: '10px', color: '#64748B' }}>
@@ -176,18 +177,18 @@ export const LiveTvScreen: React.FC<LiveTvScreenProps> = ({
                     onPlayChannel(ch);
                   }}
                   style={{
-                    background: 'rgba(34, 211, 238, 0.15)',
-                    border: '1px solid rgba(34, 211, 238, 0.3)',
+                    background: 'rgba(128, 0, 32, 0.3)',
+                    border: '1px solid #800020',
                     borderRadius: '8px',
                     padding: '8px',
-                    color: '#22D3EE',
+                    color: '#FFFFFF',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}
                 >
-                  <Play size={16} fill="#22D3EE" />
+                  <Play size={16} fill="#FFFFFF" />
                 </button>
               </div>
             );
