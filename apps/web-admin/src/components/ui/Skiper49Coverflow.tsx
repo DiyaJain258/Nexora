@@ -75,20 +75,31 @@ export const Skiper49Coverflow: React.FC<Skiper49Props> = ({
   }
 
   .coverflow-nav-btn {
-    width: 48px;
-    height: 48px;
+    position: absolute;
+    top: 235px;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
-    background: rgba(10, 10, 16, 0.88);
-    border: 1.5px solid rgba(225, 29, 72, 0.5);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: rgba(10, 8, 14, 0.92);
+    border: 1.5px solid rgba(225, 29, 72, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85), 0 0 22px rgba(225, 29, 72, 0.35);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), 0 0 25px rgba(225, 29, 72, 0.45);
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    z-index: 30;
+    z-index: 50;
+  }
+
+  .swiper-button-prev-custom {
+    left: 12px;
+  }
+
+  .swiper-button-next-custom {
+    right: 12px;
   }
 
   .coverflow-nav-btn:hover {
@@ -96,7 +107,31 @@ export const Skiper49Coverflow: React.FC<Skiper49Props> = ({
     color: #ffffff;
     border-color: #ffffff;
     transform: translateY(-50%) scale(1.12);
-    box-shadow: 0 0 30px rgba(225, 29, 72, 0.8), 0 0 15px #ffffff;
+    box-shadow: 0 0 35px rgba(225, 29, 72, 0.9), 0 0 15px #ffffff;
+  }
+
+  .coverflow-nav-btn:active {
+    transform: translateY(-50%) scale(0.95);
+  }
+
+  .coverflow-nav-btn.swiper-button-disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  @media (max-width: 768px) {
+    .coverflow-nav-btn {
+      width: 40px;
+      height: 40px;
+      top: 230px;
+    }
+    .swiper-button-prev-custom {
+      left: 6px;
+    }
+    .swiper-button-next-custom {
+      right: 6px;
+    }
   }
 `;
 
@@ -173,6 +208,18 @@ export const Skiper49Coverflow: React.FC<Skiper49Props> = ({
                 }
               : false
           }
+          onBeforeInit={(swiper) => {
+            if (typeof swiper.params.navigation !== 'boolean' && swiper.params.navigation) {
+              swiper.params.navigation.prevEl = '.swiper-button-prev-custom';
+              swiper.params.navigation.nextEl = '.swiper-button-next-custom';
+            }
+          }}
+          onInit={(swiper) => {
+            if (swiper.params.navigation && typeof swiper.params.navigation !== 'boolean') {
+              swiper.navigation.init();
+              swiper.navigation.update();
+            }
+          }}
           className="Carousal_003"
           modules={[EffectCoverflow, Autoplay, Pagination, Navigation]}
         >
@@ -332,37 +379,27 @@ export const Skiper49Coverflow: React.FC<Skiper49Props> = ({
               </div>
             </SwiperSlide>
           ))}
-        </Swiper>
 
-        {/* Custom Navigation Chevrons inside container */}
-        {showNavigation && (
-          <>
-            <button
-              className="swiper-button-prev-custom coverflow-nav-btn"
-              style={{
-                position: 'absolute',
-                top: '46%',
-                left: '8px',
-                transform: 'translateY(-50%)',
-              }}
-              aria-label="Previous Slide"
-            >
-              <ChevronLeftIcon size={22} color="#ffffff" />
-            </button>
-            <button
-              className="swiper-button-next-custom coverflow-nav-btn"
-              style={{
-                position: 'absolute',
-                top: '46%',
-                right: '8px',
-                transform: 'translateY(-50%)',
-              }}
-              aria-label="Next Slide"
-            >
-              <ChevronRightIcon size={22} color="#ffffff" />
-            </button>
-          </>
-        )}
+          {/* Custom Navigation Chevrons inside Swiper container directly centered on cards */}
+          {showNavigation && (
+            <>
+              <button
+                type="button"
+                className="swiper-button-prev-custom coverflow-nav-btn"
+                aria-label="Previous Slide"
+              >
+                <ChevronLeftIcon size={24} color="#ffffff" />
+              </button>
+              <button
+                type="button"
+                className="swiper-button-next-custom coverflow-nav-btn"
+                aria-label="Next Slide"
+              >
+                <ChevronRightIcon size={24} color="#ffffff" />
+              </button>
+            </>
+          )}
+        </Swiper>
       </motion.div>
     </motion.div>
   );

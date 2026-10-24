@@ -31,22 +31,49 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({ onNavigateToAd
 
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.0,
+      duration: 0.9,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 1.0,
       touchMultiplier: 1.5,
       infinite: false,
+      anchors: true,
+      autoResize: true,
     });
 
     (window as any).__lenis = lenis;
 
+    let rafId: number;
     function raf(time: number) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     }
 
-    requestAnimationFrame(raf);
+    rafId = requestAnimationFrame(raf);
+
+    // Global smooth anchor scroll with navbar offset
+    const handleAnchorClick = (e: MouseEvent) => {
+      const target = (e.target as HTMLElement)?.closest('a');
+      const href = target?.getAttribute('href');
+      if (href && href.startsWith('#') && href.length > 1) {
+        const targetElement = document.querySelector(href);
+        if (targetElement) {
+          e.preventDefault();
+          lenis.scrollTo(targetElement as HTMLElement, {
+            offset: -76,
+            duration: 1.1,
+          });
+        }
+      }
+    };
+
+    document.addEventListener('click', handleAnchorClick);
 
     return () => {
+      cancelAnimationFrame(rafId);
+      document.removeEventListener('click', handleAnchorClick);
       (window as any).__lenis = null;
       lenis.destroy();
     };

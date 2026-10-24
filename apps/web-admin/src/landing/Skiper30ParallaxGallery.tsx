@@ -35,6 +35,10 @@ const ParallaxColumn: React.FC<ColumnProps> = ({ serials, y, topOffset, onPlayMo
         gap: '24px',
         flex: 1,
         minWidth: '240px',
+        willChange: 'transform',
+        transform: 'translateZ(0)',
+        backfaceVisibility: 'hidden',
+        WebkitBackfaceVisibility: 'hidden',
       }}
     >
       {serials.map((serial) => (
@@ -249,11 +253,11 @@ export const Skiper30ParallaxGallery: React.FC<{
 
   const { height } = dimension;
 
-  // Asymmetric vertical parallax speeds inspired by Skiper30 / Siena Film
-  const y1 = useTransform(scrollYProgress, [0, 1], [0, height * 1.35]);
-  const y2 = useTransform(scrollYProgress, [0, 1], [0, height * 2.2]);
-  const y3 = useTransform(scrollYProgress, [0, 1], [0, height * 0.95]);
-  const y4 = useTransform(scrollYProgress, [0, 1], [0, height * 1.85]);
+  // Asymmetric vertical parallax speeds with zero input lag (driven directly by Lenis scroll)
+  const y1 = useTransform(scrollYProgress, [0, 1], [0, height * 1.15]);
+  const y2 = useTransform(scrollYProgress, [0, 1], [0, height * 1.85]);
+  const y3 = useTransform(scrollYProgress, [0, 1], [0, height * 0.8]);
+  const y4 = useTransform(scrollYProgress, [0, 1], [0, height * 1.55]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -505,34 +509,58 @@ export const Skiper30ParallaxGallery: React.FC<{
           display: 'flex',
           gap: '24px',
           padding: '24px',
-          maskImage: 'linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%)',
-          WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%)',
         }}
       >
-        {/* Ambient Glow Atmosphere Behind Columns */}
+        {/* Top Smooth Vignette Fade Overlay (Zero-overhead GPU compositor) */}
         <div
           style={{
             position: 'absolute',
-            top: '20%',
-            left: '10%',
-            width: '450px',
-            height: '450px',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: '90px',
+            background: 'linear-gradient(180deg, #050308 0%, rgba(5, 3, 8, 0.8) 50%, transparent 100%)',
+            zIndex: 10,
+            pointerEvents: 'none',
+          }}
+        />
+
+        {/* Bottom Smooth Vignette Fade Overlay */}
+        <div
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: '90px',
+            background: 'linear-gradient(0deg, #050308 0%, rgba(5, 3, 8, 0.8) 50%, transparent 100%)',
+            zIndex: 10,
+            pointerEvents: 'none',
+          }}
+        />
+
+        {/* Ambient Glow Atmosphere Behind Columns (Pure GPU Radial Falloff, Zero Blur Overhead) */}
+        <div
+          style={{
+            position: 'absolute',
+            top: '15%',
+            left: '8%',
+            width: '500px',
+            height: '500px',
             borderRadius: '50%',
-            backgroundColor: 'rgba(139, 0, 50, 0.16)',
-            filter: 'blur(100px)',
+            background: 'radial-gradient(circle, rgba(139, 0, 50, 0.22) 0%, transparent 70%)',
             pointerEvents: 'none',
           }}
         />
         <div
           style={{
             position: 'absolute',
-            bottom: '20%',
-            right: '10%',
-            width: '450px',
-            height: '450px',
+            bottom: '15%',
+            right: '8%',
+            width: '500px',
+            height: '500px',
             borderRadius: '50%',
-            backgroundColor: 'rgba(184, 29, 74, 0.14)',
-            filter: 'blur(100px)',
+            background: 'radial-gradient(circle, rgba(184, 29, 74, 0.2) 0%, transparent 70%)',
             pointerEvents: 'none',
           }}
         />
