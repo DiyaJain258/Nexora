@@ -637,10 +637,18 @@ export default function App() {
         {/* Cinematic Backdrop Layer with 7x3 Tilted Posters & Fog */}
         <NativeCinematicBackground />
 
-        {/* Top Header: Premium User Header on Home screen, or AnimatedHeader (hidden on livetv and account tabs) */}
-        {activeTab === 'home' && !isSearchOpen ? (
+        {/* Top Header: Premium User Header on Home screen, or AnimatedHeader (hidden on livetv, account, and movies tabs) */}
+        {activeTab === 'home' ? (
           <PremiumUserHeader
             userName="Venkatesh M"
+            isSearchActive={isSearchOpen}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            onSearchPress={() => setIsSearchOpen(true)}
+            onClearSearch={() => {
+              setSearchQuery('');
+              setIsSearchOpen(false);
+            }}
             onNotificationPress={() => {}}
             onProfilePress={() => setActiveTab('account')}
           />
