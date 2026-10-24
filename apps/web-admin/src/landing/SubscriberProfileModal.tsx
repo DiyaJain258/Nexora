@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   X,
@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import { MOCK_CONTENT, ContentItem } from '@nexora/shared';
 import { UserSession } from '../App';
+import { useSubscriberDevices } from '../hooks/useSubscriberDevices';
 
 interface SubscriberProfileModalProps {
   isOpen: boolean;
@@ -34,6 +35,8 @@ interface SubscriberProfileModalProps {
   watchlistIds?: string[];
   onRemoveFromWatchlist?: (id: string) => void;
   onPlayMovie?: (item: ContentItem) => void;
+  defaultTab?: 'overview' | 'devices' | 'settings' | 'watchlist';
+  onOpenActivation?: () => void;
 }
 
 export const SubscriberProfileModal: React.FC<SubscriberProfileModalProps> = ({
@@ -45,14 +48,27 @@ export const SubscriberProfileModal: React.FC<SubscriberProfileModalProps> = ({
   watchlistIds = [],
   onRemoveFromWatchlist,
   onPlayMovie,
+  defaultTab,
+  onOpenActivation,
 }) => {
-  const [activeTab, setActiveTab] = useState<'overview' | 'devices' | 'settings' | 'watchlist'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'devices' | 'settings' | 'watchlist'>(
+    defaultTab || 'overview'
+  );
   const [copiedCode, setCopiedCode] = useState(false);
   const tvPairingCode = 'NEX-8821';
 
+  // Synchronize activeTab when defaultTab changes or modal opens
+  useEffect(() => {
+    if (defaultTab && isOpen) {
+      setActiveTab(defaultTab);
+    }
+  }, [defaultTab, isOpen]);
+
+  // Connected Devices Live Store
+  const { devices, removeDevice } = useSubscriberDevices();
+
   // Watchlisted movie items
   const watchlistedItems = MOCK_CONTENT.filter((item) => watchlistIds.includes(item.id));
-
 
   if (!isOpen || !session) return null;
 
@@ -61,39 +77,6 @@ export const SubscriberProfileModal: React.FC<SubscriberProfileModalProps> = ({
     setCopiedCode(true);
     setTimeout(() => setCopiedCode(false), 2000);
   };
-
-  const devicesList = [
-    {
-      id: 'dev-1',
-      name: 'Samsung Neo QLED 8K',
-      location: 'Living Room TV',
-      type: 'tv',
-      icon: Tv,
-      status: 'Streaming 4K HDR',
-      ip: '192.168.1.104',
-      isPrimary: true,
-    },
-    {
-      id: 'dev-2',
-      name: 'Apple TV 4K (Gen 3)',
-      location: 'Master Bedroom',
-      type: 'tv',
-      icon: Tv,
-      status: 'Standby • Ready',
-      ip: '192.168.1.118',
-      isPrimary: false,
-    },
-    {
-      id: 'dev-3',
-      name: 'iPhone 15 Pro Max',
-      location: 'Mobile App',
-      type: 'mobile',
-      icon: Smartphone,
-      status: 'Active Now',
-      ip: '5G Cellular',
-      isPrimary: false,
-    },
-  ];
 
   return (
     <AnimatePresence>
@@ -490,18 +473,30 @@ export const SubscriberProfileModal: React.FC<SubscriberProfileModalProps> = ({
           {/* Tab 2: Linked Devices */}
           {activeTab === 'devices' && (
             <div style={{ padding: '24px 28px' }}>
-              <div style={{ marginBottom: '16px' }}>
-                <h4 style={{ margin: 0, fontSize: '16px', fontWeight: 800, color: '#ffffff' }}>
-                  Connected Screens ({devicesList.length} / 5 Active)
-                </h4>
-                <p style={{ margin: '4px 0 0', fontSize: '13px', color: '#94a3b8' }}>
-                  Manage where your NEXORA account is streaming in 4K HDR.
-                </p>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
+                <div>
+                  <h4 style={{ margin: 0, fontSize: '16px', fontWeight: 800, color: '#ffffff' }}>
+                    Connected Screens ({devices.length} / 5 Active)
+                  </h4>
+                  <p style={{ margin: '4px 0 0', fontSize: '13px', color: '#94a3b8' }}>
+                    Manage where your NEXORA account is streaming in 4K HDR.
+                  </p>
+                </div>
+                {onOpenActivation && (
+                  <button
+                    type="button"
+                    onClick={onOpenActivation}
+                    className="btn-radiant"
+                    style={{ padding: '6px 14px', fontSize: '12px', fontWeight: 800 }}
+                  >
+                    <span>+ Pair New TV</span>
+                  </button>
+                )}
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                {devicesList.map((dev) => {
-                  const Icon = dev.icon;
+                {devices.map((dev) => {
+                  const Icon = dev.type === 'mobile' ? Smartphone : dev.type === 'tv' ? Tv : Monitor;
                   return (
                     <div
                       key={dev.id}
@@ -549,6 +544,20 @@ export const SubscriberProfileModal: React.FC<SubscriberProfileModalProps> = ({
                                 PRIMARY
                               </span>
                             )}
+                            {dev.code && (
+                              <span
+                                style={{
+                                  backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                                  color: '#cbd5e1',
+                                  padding: '2px 6px',
+                                  borderRadius: '4px',
+                                  fontSize: '10px',
+                                  fontWeight: 700,
+                                }}
+                              >
+                                {dev.code}
+                              </span>
+                            )}
                           </div>
                           <p style={{ margin: '3px 0 0', fontSize: '12px', color: '#71717a' }}>
                             {dev.location} • {dev.ip}
@@ -556,10 +565,39 @@ export const SubscriberProfileModal: React.FC<SubscriberProfileModalProps> = ({
                         </div>
                       </div>
 
-                      <div style={{ textAlign: 'right' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                         <span style={{ fontSize: '12px', color: '#10b981', fontWeight: 800 }}>
                           {dev.status}
                         </span>
+                        {!dev.isPrimary && (
+                          <button
+                            type="button"
+                            onClick={() => removeDevice(dev.id)}
+                            title="Disconnect this device"
+                            style={{
+                              background: 'rgba(255, 255, 255, 0.05)',
+                              border: '1px solid rgba(255, 255, 255, 0.1)',
+                              color: '#94a3b8',
+                              padding: '6px',
+                              borderRadius: '8px',
+                              cursor: 'pointer',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              transition: 'all 0.15s ease',
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.color = '#ef4444';
+                              e.currentTarget.style.borderColor = 'rgba(239, 68, 68, 0.4)';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.color = '#94a3b8';
+                              e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                            }}
+                          >
+                            <Trash2 size={15} />
+                          </button>
+                        )}
                       </div>
                     </div>
                   );
@@ -581,13 +619,34 @@ export const SubscriberProfileModal: React.FC<SubscriberProfileModalProps> = ({
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <Zap size={18} color="#fda4af" />
-                  <span style={{ fontSize: '13px', color: '#e2e8f0', fontWeight: 700 }}>
-                    Want to connect another Living Room TV?
-                  </span>
+                  <div>
+                    <span style={{ fontSize: '13px', color: '#e2e8f0', fontWeight: 700, display: 'block' }}>
+                      Want to connect another Smart TV?
+                    </span>
+                    <span style={{ fontSize: '11px', color: '#94a3b8' }}>
+                      Open NEXORA on your TV and enter pairing code: <strong style={{ color: '#fda4af' }}>{tvPairingCode}</strong>
+                    </span>
+                  </div>
                 </div>
-                <span style={{ fontSize: '12px', color: '#fda4af', fontWeight: 800 }}>
-                  Use code: {tvPairingCode}
-                </span>
+                {onOpenActivation && (
+                  <button
+                    type="button"
+                    onClick={onOpenActivation}
+                    style={{
+                      padding: '8px 14px',
+                      borderRadius: '8px',
+                      backgroundColor: 'rgba(225, 29, 72, 0.2)',
+                      border: '1px solid rgba(225, 29, 72, 0.4)',
+                      color: '#ffffff',
+                      fontSize: '12px',
+                      fontWeight: 800,
+                      cursor: 'pointer',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    Pair Now
+                  </button>
+                )}
               </div>
             </div>
           )}

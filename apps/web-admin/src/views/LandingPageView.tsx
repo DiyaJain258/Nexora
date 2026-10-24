@@ -41,6 +41,9 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
   const [isActivationOpen, setIsActivationOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isSubscriberModalOpen, setIsSubscriberModalOpen] = useState(false);
+  const [subscriberModalInitialTab, setSubscriberModalInitialTab] = useState<
+    'overview' | 'devices' | 'settings' | 'watchlist'
+  >('overview');
   const [authDefaultTab, setAuthDefaultTab] = useState<'subscriber' | 'admin'>('subscriber');
 
   // Search & OTT Video Player Modal States
@@ -148,7 +151,10 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
         }}
         onNavigateToAdmin={onNavigateToAdmin}
         userSession={userSession}
-        onOpenSubscriberProfile={() => setIsSubscriberModalOpen(true)}
+        onOpenSubscriberProfile={() => {
+          setSubscriberModalInitialTab('overview');
+          setIsSubscriberModalOpen(true);
+        }}
         onLogout={onLogout}
         onOpenSearch={() => setIsSearchOpen(true)}
       />
@@ -224,7 +230,14 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
 
       {/* 6-Digit Smart TV Activation Modal */}
       {isActivationOpen && (
-        <ActivationModal onClose={() => setIsActivationOpen(false)} />
+        <ActivationModal
+          onClose={() => setIsActivationOpen(false)}
+          onOpenSubscriberDevices={() => {
+            setIsActivationOpen(false);
+            setSubscriberModalInitialTab('devices');
+            setIsSubscriberModalOpen(true);
+          }}
+        />
       )}
 
       {/* Auth Gateway Modal */}
@@ -244,8 +257,25 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
       {/* Subscriber Member Center / TV Devices, Account & Watchlist Modal */}
       <SubscriberProfileModal
         isOpen={isSubscriberModalOpen}
-        onClose={() => setIsSubscriberModalOpen(false)}
-        session={userSession || null}
+        onClose={() => {
+          setIsSubscriberModalOpen(false);
+          setSubscriberModalInitialTab('overview');
+        }}
+        session={
+          userSession || {
+            id: 'sub-vip-01',
+            name: 'VIP Member',
+            email: 'subscriber@nexora.tv',
+            role: 'subscriber',
+            plan: 'Platinum 4K UHD VIP',
+            avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80',
+          }
+        }
+        defaultTab={subscriberModalInitialTab}
+        onOpenActivation={() => {
+          setIsSubscriberModalOpen(false);
+          setIsActivationOpen(true);
+        }}
         onLogout={() => {
           setIsSubscriberModalOpen(false);
           if (onLogout) onLogout();
