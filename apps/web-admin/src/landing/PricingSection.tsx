@@ -3,7 +3,11 @@ import confetti from 'canvas-confetti';
 import { MOCK_SUBSCRIPTION_PLANS, SubscriptionPlan } from '@nexora/shared';
 import { Check, Zap } from 'lucide-react';
 
-export const PricingSection: React.FC = () => {
+interface PricingSectionProps {
+  onSelectPlan?: (plan: SubscriptionPlan) => void;
+}
+
+export const PricingSection: React.FC<PricingSectionProps> = ({ onSelectPlan }) => {
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
 
   const handleSelectPlan = (plan: SubscriptionPlan) => {
@@ -13,7 +17,11 @@ export const PricingSection: React.FC = () => {
       origin: { y: 0.7 },
       colors: ['#be123c', '#e11d48', '#ffffff', '#fda4af'],
     });
-    alert(`Thank you for choosing ${plan.name}! In Phase 3, this will connect to secure payment gateway.`);
+    if (onSelectPlan) {
+      onSelectPlan(plan);
+    } else {
+      alert(`Thank you for choosing ${plan.name}! In Phase 3, this will connect to secure payment gateway.`);
+    }
   };
 
   return (

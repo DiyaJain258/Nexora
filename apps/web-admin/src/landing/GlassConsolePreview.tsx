@@ -252,6 +252,16 @@ export const GlassConsolePreview: React.FC<GlassConsolePreviewProps> = ({ onPlay
           
           {/* Top Featured Hero Banner (ECHOES OF TOMORROW) */}
           <div
+            onClick={() =>
+              onPlayMovie &&
+              onPlayMovie({
+                id: 'echoes-of-tomorrow',
+                title: 'Echoes of Tomorrow',
+                posterUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&auto=format&fit=crop&q=80',
+                genres: ['Sci-Fi', 'Thriller'],
+                resolution: '4K HDR',
+              })
+            }
             style={{
               position: 'relative',
               borderRadius: '20px',
@@ -264,6 +274,7 @@ export const GlassConsolePreview: React.FC<GlassConsolePreviewProps> = ({ onPlay
               justifyContent: 'flex-end',
               padding: '24px 28px',
               boxShadow: '0 12px 35px rgba(0, 0, 0, 0.7)',
+              cursor: 'pointer',
             }}
           >
             {/* Metallic Liquid Wave Art */}
@@ -559,6 +570,15 @@ export const GlassConsolePreview: React.FC<GlassConsolePreviewProps> = ({ onPlay
               {continueWatching.map((item) => (
                 <div
                   key={item.id}
+                  onClick={() =>
+                    onPlayMovie &&
+                    onPlayMovie({
+                      id: item.id,
+                      title: item.title,
+                      posterUrl: item.image,
+                      resolution: '4K HDR',
+                    })
+                  }
                   style={{
                     position: 'relative',
                     height: '76px',

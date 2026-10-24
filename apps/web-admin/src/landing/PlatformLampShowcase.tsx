@@ -6,12 +6,14 @@ import { Zap, Tv, ShieldCheck, Play, ArrowRight } from 'lucide-react';
 
 interface PlatformLampShowcaseProps {
   onOpenLiveDemo: () => void;
-  onOpenActivation: () => void;
+  onOpenActivation?: () => void;
+  onPlayMovie?: (movie: any) => void;
 }
 
 export const PlatformLampShowcase: React.FC<PlatformLampShowcaseProps> = ({
   onOpenLiveDemo,
   onOpenActivation,
+  onPlayMovie,
 }) => {
   return (
     <section style={{ position: 'relative', overflow: 'hidden', backgroundColor: '#050507' }}>
@@ -81,12 +83,19 @@ export const PlatformLampShowcase: React.FC<PlatformLampShowcaseProps> = ({
 
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '24px' }}>
             <button
-              onClick={onOpenActivation}
+              type="button"
+              onClick={() => {
+                if (onPlayMovie) {
+                  onPlayMovie(null);
+                } else if (onOpenActivation) {
+                  onOpenActivation();
+                }
+              }}
               className="btn-radiant"
-              style={{ padding: '14px 28px', fontSize: '14px', fontWeight: 800 }}
+              style={{ padding: '14px 28px', fontSize: '14px', fontWeight: 800, cursor: 'pointer' }}
             >
               <Zap size={16} />
-              <span>Get Instant TV Pairing Pass</span>
+              <span>Unlock 4K Cinema Pass</span>
               <ArrowRight size={16} />
             </button>
 

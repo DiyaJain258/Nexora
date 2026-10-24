@@ -205,12 +205,14 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
         onOpenActivation={() => setIsActivationOpen(true)}
         onOpenLiveDemo={() => setIsPlayerOpen(true)}
         onNavigateToAdmin={onNavigateToAdmin}
+        onPlayMovie={handlePlayMovie}
       />
 
       {/* Aceternity Lamp & Sparkles Spotlight Transition */}
       <PlatformLampShowcase
         onOpenActivation={() => setIsActivationOpen(true)}
         onOpenLiveDemo={() => setIsPlayerOpen(true)}
+        onPlayMovie={handlePlayMovie}
       />
 
       <GlassConsoleSection onPlayMovie={handlePlayMovie} />
@@ -230,7 +232,16 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
 
       <ActivationGuide />
 
-      <PricingSection />
+      <PricingSection
+        onSelectPlan={(plan) => {
+          if (!userSession) {
+            setIsPaywallOpen(true);
+          } else {
+            setSubscriberModalInitialTab('overview');
+            setIsSubscriberModalOpen(true);
+          }
+        }}
+      />
 
       <FaqSection />
 

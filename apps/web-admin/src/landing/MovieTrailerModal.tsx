@@ -22,6 +22,7 @@ interface MovieTrailerModalProps {
   isOpen: boolean;
   onClose: () => void;
   onActivatePass?: () => void;
+  onPlayMovie?: (movie: any) => void;
 }
 
 export const MovieTrailerModal: React.FC<MovieTrailerModalProps> = ({
@@ -29,6 +30,7 @@ export const MovieTrailerModal: React.FC<MovieTrailerModalProps> = ({
   isOpen,
   onClose,
   onActivatePass,
+  onPlayMovie,
 }) => {
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(false);
@@ -312,14 +314,20 @@ export const MovieTrailerModal: React.FC<MovieTrailerModalProps> = ({
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
                   <button
+                    type="button"
                     onClick={() => {
                       onClose();
-                      if (onActivatePass) onActivatePass();
+                      if (onPlayMovie) {
+                        onPlayMovie(movie);
+                      } else if (onActivatePass) {
+                        onActivatePass();
+                      }
                     }}
                     className="btn-primary-glow"
-                    style={{ padding: '10px 20px', fontSize: '13px' }}
+                    style={{ padding: '10px 20px', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}
                   >
-                    <span>Unlock Full 4K Broadcast</span>
+                    <Play size={14} fill="#ffffff" color="#ffffff" />
+                    <span>Stream Full 4K Movie</span>
                   </button>
                 </div>
               </div>

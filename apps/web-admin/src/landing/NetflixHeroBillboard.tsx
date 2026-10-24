@@ -6,8 +6,9 @@ import { MovieTrailerModal, MovieTrailerItem } from './MovieTrailerModal';
 
 interface NetflixHeroBillboardProps {
   onOpenLiveDemo: () => void;
-  onOpenActivation: () => void;
+  onOpenActivation?: () => void;
   onNavigateToAdmin: () => void;
+  onPlayMovie?: (movie: any) => void;
 }
 
 const HERO_MOVIES: (MovieTrailerItem & { videoUrl: string })[] = [
@@ -87,6 +88,7 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
   onOpenLiveDemo,
   onOpenActivation,
   onNavigateToAdmin,
+  onPlayMovie,
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTrailerModalOpen, setIsTrailerModalOpen] = useState(false);
@@ -377,9 +379,16 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
           {/* Action CTAs */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap', marginBottom: '24px' }}>
             
-            {/* Primary Watch Trailer Button */}
+            {/* Primary Watch in 4K HDR Button */}
             <button
-              onClick={() => handleOpenTrailer(currentMovie)}
+              type="button"
+              onClick={() => {
+                if (onPlayMovie) {
+                  onPlayMovie(currentMovie);
+                } else {
+                  handleOpenTrailer(currentMovie);
+                }
+              }}
               className="btn-radiant"
               style={{
                 padding: '14px 28px',
@@ -392,20 +401,25 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
               }}
             >
               <Play size={18} color="#050507" fill="#050507" />
-              <span>Watch 4K Trailer</span>
+              <span>Watch in 4K HDR</span>
             </button>
 
-            {/* Stream 4K Live Pass */}
+            {/* Watch Trailer Button */}
             <button
-              onClick={onOpenActivation}
+              type="button"
+              onClick={() => handleOpenTrailer(currentMovie)}
               className="btn-primary-glow"
               style={{
                 padding: '14px 24px',
                 fontSize: '14px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                cursor: 'pointer',
               }}
             >
-              <Zap size={16} />
-              <span>Activate TV Free Pass</span>
+              <Film size={16} />
+              <span>Watch Trailer</span>
             </button>
 
             {/* Live TV Channels Quick Demo */}
@@ -660,6 +674,7 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
         isOpen={isTrailerModalOpen}
         onClose={() => setIsTrailerModalOpen(false)}
         onActivatePass={onOpenActivation}
+        onPlayMovie={onPlayMovie}
       />
     </div>
   );
