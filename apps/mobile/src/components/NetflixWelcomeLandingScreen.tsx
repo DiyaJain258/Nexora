@@ -35,7 +35,7 @@ const COLUMN_1_POSTERS = [
   },
   {
     id: 'c1-3',
-    uri: 'https://images.unsplash.com/photo-1514306191717-452ec28c7814?w=400&auto=format&fit=crop&q=85',
+    uri: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=400&auto=format&fit=crop&q=85',
     title: 'KESATRIA RAJAWALI',
     type: 'rajawali',
     hasNBadge: true,
@@ -85,9 +85,9 @@ const COLUMN_3_POSTERS = [
   },
   {
     id: 'c3-3',
-    uri: 'https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=400&auto=format&fit=crop&q=85',
-    title: '',
-    type: 'subtle',
+    uri: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=400&auto=format&fit=crop&q=85',
+    title: 'KESATRIA RAJAWALI',
+    type: 'rajawali',
     hasNBadge: true,
   },
 ];
@@ -216,9 +216,8 @@ export const NetflixWelcomeLandingScreen: React.FC<NetflixWelcomeLandingScreenPr
           </View>
         </View>
 
-        {/* Vignette Overlay: Light at top, very dark at bottom */}
+        {/* Soft, light vignette overlay (subtle so posters stay vibrant & clearly visible) */}
         <View style={styles.darkGradientOverlay} />
-        <View style={styles.bottomShadowOverlay} />
       </View>
 
       {/* 2. FOREGROUND INTERACTIVE CONTENT (Fixed to screen bounds) */}
@@ -418,7 +417,7 @@ const styles = StyleSheet.create({
   posterImg: {
     width: '100%',
     height: '100%',
-    opacity: 0.85,
+    opacity: 1,
   },
   redNBadge: {
     position: 'absolute',
@@ -549,15 +548,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.45)',
-  },
-  bottomShadowOverlay: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
-    height: height * 0.55,
-    backgroundColor: 'rgba(0, 0, 0, 0.75)',
+    backgroundColor: 'rgba(0, 0, 0, 0.22)',
   },
   safeContainer: {
     position: 'absolute',
@@ -637,7 +628,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   bottomSection: {
-    paddingBottom: Platform.OS === 'ios' ? 10 : 16,
+    paddingBottom: Platform.OS === 'ios' ? 22 : 30,
   },
   slideCard: {
     alignItems: 'center',
