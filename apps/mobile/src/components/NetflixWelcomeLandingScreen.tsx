@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   Image,
   Dimensions,
-  ScrollView,
   FlatList,
   Modal,
   Platform,
@@ -17,25 +16,28 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 const { width, height } = Dimensions.get('window');
 
-// 3-Column Posters matching the reference image layout
+// 3-Column Posters exactly matching Image 2
 const COLUMN_1_POSTERS = [
   {
     id: 'c1-1',
     uri: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=400&auto=format&fit=crop&q=85',
     title: 'Hari ini\nakan kita ceritakan\nnanti',
+    type: 'cursive',
     hasNBadge: true,
   },
   {
     id: 'c1-2',
-    uri: 'https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=400&auto=format&fit=crop&q=85',
-    title: 'KULIAH UMUM\nII',
+    uri: 'https://images.unsplash.com/photo-1544717305-2782549b5136?w=400&auto=format&fit=crop&q=85',
+    title: 'KULIAH UMUM',
+    roman: 'II',
+    type: 'roman',
     hasNBadge: true,
-    isRoman: true,
   },
   {
     id: 'c1-3',
-    uri: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=400&auto=format&fit=crop&q=85',
-    title: 'DUNE: PART TWO',
+    uri: 'https://images.unsplash.com/photo-1514306191717-452ec28c7814?w=400&auto=format&fit=crop&q=85',
+    title: 'KESATRIA RAJAWALI',
+    type: 'rajawali',
     hasNBadge: true,
   },
 ];
@@ -45,22 +47,22 @@ const COLUMN_2_POSTERS = [
     id: 'c2-1',
     uri: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400&auto=format&fit=crop&q=85',
     title: 'Cinta Sekolah mata',
-    subtitleStyle: 'yellowCursive',
+    type: 'yellowCursive',
     hasNBadge: false,
   },
   {
     id: 'c2-2',
     uri: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=400&auto=format&fit=crop&q=85',
     title: 'KING\nOF\nISLAND',
-    subtitleStyle: 'yellowBlock',
+    type: 'yellowBlock',
     hasNBadge: true,
   },
   {
     id: 'c2-3',
-    uri: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=400&auto=format&fit=crop&q=85',
+    uri: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=400&auto=format&fit=crop&q=85',
     title: 'KESATRIA RAJAWALI',
-    subtitleStyle: 'subtleWhite',
-    hasNBadge: false,
+    type: 'rajawali',
+    hasNBadge: true,
   },
 ];
 
@@ -68,29 +70,33 @@ const COLUMN_3_POSTERS = [
   {
     id: 'c3-1',
     uri: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=400&auto=format&fit=crop&q=85',
-    title: 'KITA AKAN BERCERITA\nEsok hari',
+    title: 'KITA AKAN BERCERITA',
+    subtitle: 'Esok hari',
+    type: 'cerita',
     hasNBadge: true,
   },
   {
     id: 'c3-2',
-    uri: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=400&auto=format&fit=crop&q=85',
-    title: 'KULIAH UMUM\nIII',
+    uri: 'https://images.unsplash.com/photo-1526976668912-1a811878dd37?w=400&auto=format&fit=crop&q=85',
+    title: 'KULIAH UMUM',
+    roman: 'III',
+    type: 'roman',
     hasNBadge: true,
-    isRoman: true,
   },
   {
     id: 'c3-3',
-    uri: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&auto=format&fit=crop&q=85',
-    title: 'CYBERPUNK 2099',
+    uri: 'https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=400&auto=format&fit=crop&q=85',
+    title: '',
+    type: 'subtle',
     hasNBadge: true,
   },
 ];
 
-// 4 Slides for the Onboarding Carousel
+// Carousel Slides
 const ONBOARDING_SLIDES = [
   {
     id: 'slide-1',
-    title: 'Unlimited movies,\nTV show & more',
+    title: 'Unlimited\nmovies, TV\nshow & more',
     subtitle: 'Watch anywhere. Cancel anytime.',
   },
   {
@@ -133,67 +139,93 @@ export const NetflixWelcomeLandingScreen: React.FC<NetflixWelcomeLandingScreenPr
   };
 
   const colWidth = (width - 12) / 3;
+  const posterHeight = Math.max(height * 0.26, 190);
+
+  const renderPosterCard = (item: any) => {
+    return (
+      <View key={item.id} style={[styles.posterCard, { height: posterHeight }]}>
+        <Image source={{ uri: item.uri }} style={styles.posterImg} resizeMode="cover" />
+
+        {/* Red 'N' / Nexora Badge in top-left like Image 2 */}
+        {item.hasNBadge && (
+          <Text style={styles.redNBadge}>N</Text>
+        )}
+
+        {/* Dynamic Titles */}
+        {item.type === 'cursive' && (
+          <View style={styles.posterTextOverlay}>
+            <Text style={styles.posterCursive}>{item.title}</Text>
+          </View>
+        )}
+
+        {item.type === 'yellowCursive' && (
+          <View style={styles.posterTextOverlay}>
+            <Text style={styles.posterYellowCursive}>{item.title}</Text>
+          </View>
+        )}
+
+        {item.type === 'yellowBlock' && (
+          <View style={styles.posterCenterOverlay}>
+            <Text style={styles.posterYellowBlock}>KING</Text>
+            <Text style={styles.posterOfScript}>Of</Text>
+            <Text style={styles.posterYellowBlock}>ISLAND</Text>
+          </View>
+        )}
+
+        {item.type === 'cerita' && (
+          <View style={styles.posterTextOverlay}>
+            <Text style={styles.ceritaBlock}>{item.title}</Text>
+            <Text style={styles.ceritaScript}>{item.subtitle}</Text>
+          </View>
+        )}
+
+        {item.type === 'roman' && (
+          <View style={styles.posterCenterOverlay}>
+            <Text style={styles.romanBackground}>{item.roman}</Text>
+            <Text style={styles.romanTitle}>{item.title}</Text>
+          </View>
+        )}
+
+        {item.type === 'rajawali' && (
+          <View style={styles.posterTextOverlay}>
+            <Text style={styles.rajawaliText}>{item.title}</Text>
+          </View>
+        )}
+      </View>
+    );
+  };
 
   return (
     <View style={styles.container}>
-      {/* 1. Background: 3 Vertical Columns of Movie Posters */}
+      {/* 1. BACKGROUND POSTER WALL (Absolutely positioned behind everything) */}
       <View style={styles.posterGridWrapper} pointerEvents="none">
         <View style={styles.gridRow}>
           {/* Column 1 */}
           <View style={[styles.column, { width: colWidth }]}>
-            {COLUMN_1_POSTERS.map((item) => (
-              <View key={item.id} style={styles.posterCard}>
-                <Image source={{ uri: item.uri }} style={styles.posterImg} resizeMode="cover" />
-                {item.hasNBadge && <Text style={styles.redNBadge}>N</Text>}
-                <View style={styles.posterTextOverlay}>
-                  <Text style={styles.posterScriptText}>{item.title}</Text>
-                </View>
-              </View>
-            ))}
+            {COLUMN_1_POSTERS.map((item) => renderPosterCard(item))}
           </View>
 
-          {/* Column 2 */}
-          <View style={[styles.column, { width: colWidth, marginTop: -15 }]}>
-            {COLUMN_2_POSTERS.map((item) => (
-              <View key={item.id} style={styles.posterCard}>
-                <Image source={{ uri: item.uri }} style={styles.posterImg} resizeMode="cover" />
-                {item.hasNBadge && <Text style={styles.redNBadge}>N</Text>}
-                <View style={styles.posterTextOverlay}>
-                  {item.subtitleStyle === 'yellowBlock' ? (
-                    <Text style={styles.posterYellowBlock}>{item.title}</Text>
-                  ) : item.subtitleStyle === 'yellowCursive' ? (
-                    <Text style={styles.posterYellowCursive}>{item.title}</Text>
-                  ) : (
-                    <Text style={styles.posterSubtleText}>{item.title}</Text>
-                  )}
-                </View>
-              </View>
-            ))}
+          {/* Column 2 (staggered slightly) */}
+          <View style={[styles.column, { width: colWidth, marginTop: -18 }]}>
+            {COLUMN_2_POSTERS.map((item) => renderPosterCard(item))}
           </View>
 
           {/* Column 3 */}
           <View style={[styles.column, { width: colWidth }]}>
-            {COLUMN_3_POSTERS.map((item) => (
-              <View key={item.id} style={styles.posterCard}>
-                <Image source={{ uri: item.uri }} style={styles.posterImg} resizeMode="cover" />
-                {item.hasNBadge && <Text style={styles.redNBadge}>N</Text>}
-                <View style={styles.posterTextOverlay}>
-                  <Text style={styles.posterScriptText}>{item.title}</Text>
-                </View>
-              </View>
-            ))}
+            {COLUMN_3_POSTERS.map((item) => renderPosterCard(item))}
           </View>
         </View>
 
-        {/* Dark Cinematic Vignette Overlay so text remains ultra-legible */}
+        {/* Vignette Overlay: Light at top, very dark at bottom */}
         <View style={styles.darkGradientOverlay} />
+        <View style={styles.bottomShadowOverlay} />
       </View>
 
-      {/* 2. SafeArea Container for Interactive Foreground */}
+      {/* 2. FOREGROUND INTERACTIVE CONTENT (Fixed to screen bounds) */}
       <SafeAreaView style={styles.safeContainer} edges={['top', 'bottom']}>
-        {/* Top Header */}
+        {/* Top Header: NEXORA Logo on Left, PRIVACY + SIGN IN + Dots on Right */}
         <View style={styles.topHeader}>
-          {/* Logo */}
+          {/* NEXORA Logo (Red Netflix font style, NOT Netflix text) */}
           <View style={styles.logoRow}>
             <Text style={styles.logoRed}>NEX</Text>
             <View style={styles.playIconBox}>
@@ -230,11 +262,12 @@ export const NetflixWelcomeLandingScreen: React.FC<NetflixWelcomeLandingScreenPr
           </View>
         </View>
 
-        {/* Middle Spacer */}
-        <View style={{ flex: 1 }} />
+        {/* Middle Spacer to keep top and bottom apart */}
+        <View style={styles.middleSpacer} />
 
-        {/* 3. Swipeable Onboarding Carousel */}
-        <View style={styles.carouselContainer}>
+        {/* Bottom Section: Carousel + Dots + GET STARTED */}
+        <View style={styles.bottomSection}>
+          {/* Swipeable Carousel */}
           <FlatList
             ref={flatListRef}
             data={ONBOARDING_SLIDES}
@@ -252,7 +285,7 @@ export const NetflixWelcomeLandingScreen: React.FC<NetflixWelcomeLandingScreenPr
             )}
           />
 
-          {/* Pagination Dots ● ○ ○ ○ */}
+          {/* Carousel Dots ● ○ ○ ○ */}
           <View style={styles.paginationRow}>
             {ONBOARDING_SLIDES.map((_, idx) => (
               <View
@@ -264,17 +297,17 @@ export const NetflixWelcomeLandingScreen: React.FC<NetflixWelcomeLandingScreenPr
               />
             ))}
           </View>
-        </View>
 
-        {/* 4. Bottom Full-Width "GET STARTED" Red CTA Button */}
-        <View style={styles.bottomCtaWrapper}>
-          <TouchableOpacity
-            activeOpacity={0.88}
-            onPress={onGetStarted}
-            style={styles.getStartedButton}
-          >
-            <Text style={styles.getStartedText}>GET STARTED</Text>
-          </TouchableOpacity>
+          {/* Big Full-Width Red Button: GET STARTED */}
+          <View style={styles.ctaWrapper}>
+            <TouchableOpacity
+              activeOpacity={0.88}
+              onPress={onGetStarted}
+              style={styles.getStartedButton}
+            >
+              <Text style={styles.getStartedText}>GET STARTED</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </SafeAreaView>
 
@@ -354,24 +387,29 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#000000',
+    position: 'relative',
   },
   posterGridWrapper: {
-    ...StyleSheet.absoluteFill,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     overflow: 'hidden',
+    zIndex: 1,
   },
   gridRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 4,
-    marginTop: -30,
+    marginTop: -20,
   },
   column: {
     flexDirection: 'column',
-    gap: 8,
+    gap: 6,
   },
   posterCard: {
     width: '100%',
-    height: height * 0.28,
     borderRadius: 6,
     overflow: 'hidden',
     backgroundColor: '#121216',
@@ -380,28 +418,38 @@ const styles = StyleSheet.create({
   posterImg: {
     width: '100%',
     height: '100%',
-    opacity: 0.72,
+    opacity: 0.85,
   },
   redNBadge: {
     position: 'absolute',
-    top: 8,
+    top: 6,
     left: 8,
     fontSize: 22,
     fontWeight: '900',
     color: '#E50914',
-    textShadowColor: 'rgba(0,0,0,0.85)',
+    textShadowColor: 'rgba(0,0,0,0.95)',
     textShadowOffset: { width: 0, height: 2 },
     textShadowRadius: 6,
+    zIndex: 5,
   },
   posterTextOverlay: {
     position: 'absolute',
-    bottom: 12,
+    bottom: 10,
     left: 6,
     right: 6,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  posterScriptText: {
+  posterCenterOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  posterCursive: {
     color: '#FFFFFF',
     fontSize: 11,
     fontWeight: '700',
@@ -411,19 +459,8 @@ const styles = StyleSheet.create({
     textShadowRadius: 5,
     fontStyle: 'italic',
   },
-  posterYellowBlock: {
-    color: '#FFDE00',
-    fontSize: 16,
-    fontWeight: '900',
-    textAlign: 'center',
-    letterSpacing: 0.5,
-    textShadowColor: 'rgba(0,0,0,0.95)',
-    textShadowOffset: { width: 0, height: 2 },
-    textShadowRadius: 6,
-    lineHeight: 18,
-  },
   posterYellowCursive: {
-    color: '#FFD700',
+    color: '#FFDE00',
     fontSize: 13,
     fontWeight: '800',
     textAlign: 'center',
@@ -432,10 +469,74 @@ const styles = StyleSheet.create({
     textShadowRadius: 5,
     fontStyle: 'italic',
   },
-  posterSubtleText: {
-    color: '#B0B0B0',
+  posterYellowBlock: {
+    color: '#FFDE00',
+    fontSize: 18,
+    fontWeight: '900',
+    textAlign: 'center',
+    letterSpacing: 0.5,
+    textShadowColor: 'rgba(0,0,0,0.95)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 6,
+    lineHeight: 18,
+  },
+  posterOfScript: {
+    color: '#FFFFFF',
+    fontSize: 14,
+    fontWeight: '700',
+    fontStyle: 'italic',
+    marginVertical: -2,
+    textShadowColor: 'rgba(0,0,0,0.9)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 4,
+  },
+  ceritaBlock: {
+    color: '#FFFFFF',
+    fontSize: 9,
+    fontWeight: '900',
+    textAlign: 'center',
+    letterSpacing: 0.5,
+    textShadowColor: 'rgba(0,0,0,0.95)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 4,
+  },
+  ceritaScript: {
+    color: '#2DD4BF',
     fontSize: 11,
     fontWeight: '800',
+    fontStyle: 'italic',
+    textAlign: 'center',
+    textShadowColor: 'rgba(0,0,0,0.95)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 4,
+  },
+  romanBackground: {
+    position: 'absolute',
+    fontSize: 56,
+    fontWeight: '900',
+    color: 'transparent',
+    borderColor: '#E50914',
+    borderWidth: 0,
+    textShadowColor: '#E50914',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 2,
+    letterSpacing: 2,
+    opacity: 0.7,
+  },
+  romanTitle: {
+    color: '#FFFFFF',
+    fontSize: 12,
+    fontWeight: '900',
+    textAlign: 'center',
+    letterSpacing: 1,
+    textShadowColor: 'rgba(0,0,0,0.95)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 6,
+  },
+  rajawaliText: {
+    color: '#A855F7',
+    fontSize: 10,
+    fontWeight: '900',
     letterSpacing: 1,
     textAlign: 'center',
     textShadowColor: 'rgba(0,0,0,0.95)',
@@ -443,11 +544,28 @@ const styles = StyleSheet.create({
     textShadowRadius: 4,
   },
   darkGradientOverlay: {
-    ...StyleSheet.absoluteFill,
-    backgroundColor: 'rgba(0,0,0,0.6)',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.45)',
+  },
+  bottomShadowOverlay: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: height * 0.55,
+    backgroundColor: 'rgba(0, 0, 0, 0.75)',
   },
   safeContainer: {
-    flex: 1,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 10,
     justifyContent: 'space-between',
   },
   topHeader: {
@@ -455,8 +573,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
-    paddingTop: Platform.OS === 'android' ? 12 : 6,
-    zIndex: 10,
+    paddingTop: Platform.OS === 'android' ? 14 : 6,
   },
   logoRow: {
     flexDirection: 'row',
@@ -464,14 +581,14 @@ const styles = StyleSheet.create({
   },
   logoRed: {
     color: '#E50914',
-    fontSize: 27,
+    fontSize: 28,
     fontWeight: '900',
     letterSpacing: 2,
   },
   playIconBox: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
+    width: 22,
+    height: 22,
+    borderRadius: 11,
     backgroundColor: '#E50914',
     alignItems: 'center',
     justifyContent: 'center',
@@ -503,7 +620,7 @@ const styles = StyleSheet.create({
   },
   headerTextBtnLabel: {
     color: '#FFFFFF',
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '700',
     letterSpacing: 0.5,
   },
@@ -516,13 +633,16 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: '700',
   },
-  carouselContainer: {
-    paddingBottom: 22,
+  middleSpacer: {
+    flex: 1,
+  },
+  bottomSection: {
+    paddingBottom: Platform.OS === 'ios' ? 10 : 16,
   },
   slideCard: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 28,
+    paddingHorizontal: 24,
   },
   slideTitle: {
     color: '#FFFFFF',
@@ -531,18 +651,18 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 40,
     letterSpacing: 0.2,
-    textShadowColor: 'rgba(0,0,0,0.9)',
+    textShadowColor: 'rgba(0,0,0,0.95)',
     textShadowOffset: { width: 0, height: 3 },
     textShadowRadius: 8,
-    marginBottom: 14,
+    marginBottom: 10,
   },
   slideSubtitle: {
-    color: '#E0E0E0',
+    color: '#E5E5E5',
     fontSize: 16,
     fontWeight: '500',
     textAlign: 'center',
     lineHeight: 22,
-    textShadowColor: 'rgba(0,0,0,0.9)',
+    textShadowColor: 'rgba(0,0,0,0.95)',
     textShadowOffset: { width: 0, height: 2 },
     textShadowRadius: 6,
   },
@@ -550,34 +670,33 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 26,
+    marginTop: 20,
+    marginBottom: 16,
     gap: 8,
   },
   dot: {
-    height: 8,
-    borderRadius: 4,
+    width: 7,
+    height: 7,
+    borderRadius: 3.5,
   },
   dotActive: {
-    width: 8,
     backgroundColor: '#FFFFFF',
   },
   dotInactive: {
-    width: 8,
-    backgroundColor: 'rgba(255, 255, 255, 0.35)',
+    backgroundColor: 'rgba(255, 255, 255, 0.38)',
   },
-  bottomCtaWrapper: {
+  ctaWrapper: {
     paddingHorizontal: 16,
-    paddingBottom: Platform.OS === 'ios' ? 8 : 16,
   },
   getStartedButton: {
     backgroundColor: '#E50914',
     height: 52,
-    borderRadius: 4,
+    borderRadius: 3,
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#E50914',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.45,
+    shadowOpacity: 0.5,
     shadowRadius: 10,
     elevation: 8,
   },
