@@ -49,6 +49,11 @@ import { NetflixWelcomeLandingScreen } from './src/components/NetflixWelcomeLand
 import { CinematicLaunchSplashScreen } from './src/components/CinematicLaunchSplashScreen';
 import { NexoraMoviesHubView } from './src/components/NexoraMoviesHubView';
 import { NexoraHomeHeroSection } from './src/components/NexoraHomeHeroSection';
+import {
+  NexoraDramaHubView,
+  NexoraWebseriesHubView,
+  NexoraKidsHubView,
+} from './src/components/NexoraCategoryHubs';
 import { YacineLiveTvView } from './src/components/YacineLiveTvView';
 import { PremiumSportsLiveView } from './src/components/PremiumSportsLiveView';
 
@@ -375,6 +380,34 @@ export default function App() {
       );
     }
 
+    // Dedicated Category Pages
+    if (selectedCategory === 'Drama') {
+      return (
+        <NexoraDramaHubView
+          onPlay={(item) => setPlayingItem(item)}
+          onDetails={(item) => setSelectedItem(item)}
+        />
+      );
+    }
+
+    if (selectedCategory === 'Webseries') {
+      return (
+        <NexoraWebseriesHubView
+          onPlay={(item) => setPlayingItem(item)}
+          onDetails={(item) => setSelectedItem(item)}
+        />
+      );
+    }
+
+    if (selectedCategory === 'Kids') {
+      return (
+        <NexoraKidsHubView
+          onPlay={(item) => setPlayingItem(item)}
+          onDetails={(item) => setSelectedItem(item)}
+        />
+      );
+    }
+
     if (selectedCategory === 'Sports') {
       return (
         <PremiumSportsLiveView
@@ -389,18 +422,59 @@ export default function App() {
       );
     }
 
-    if (selectedCategory === 'Kids') {
+    if (activeTab === 'livetv' || selectedCategory === 'Live TV') {
       return (
-        <View style={styles.paddingSection}>
-          <SectionHeader
-            title={`Kids & Family Spotlight (${kids.length})`}
-            badge="ALL AGES"
+        <YacineLiveTvView
+          onPlayChannel={(channelOrItem) => setPlayingItem(channelOrItem)}
+          onSearchPress={() => setIsSearchOpen(true)}
+          onMenuPress={() => setActiveTab('landing')}
+        />
+      );
+    }
+
+    if (activeTab === 'movies' || selectedCategory === 'Movies') {
+      return (
+        <NexoraMoviesHubView
+          onPlayContent={(item) => setPlayingItem(item)}
+          onOpenDetails={(item) => setSelectedItem(item)}
+          onSearchPress={() => setIsSearchOpen(true)}
+          onCastPress={() => {}}
+          onDownloadPress={() => {}}
+        />
+      );
+    }
+
+    if (selectedCategory === 'TV Show' || activeTab === 'series') {
+      return (
+        <View style={{ paddingBottom: 24 }}>
+          <View style={styles.seriesDeckHeaderBox}>
+            <View style={styles.seriesDeckTagRow}>
+              <View style={styles.badgeRed}>
+                <Text style={styles.badgeRedText}>SWIPER 3D EFFECT CARDS</Text>
+              </View>
+              <Text style={styles.seriesDeckSubtitle}>Swipe cards left/right or tap arrows</Text>
+            </View>
+            <Text style={styles.seriesDeckTitle}>NEXORA Series 3D Deck</Text>
+          </View>
+
+          {/* 3D Stacked Cards Deck */}
+          <CardsEffectSeriesDeck
+            items={series}
+            onPlay={(item) => setPlayingItem(item)}
+            onDetails={(item) => setSelectedItem(item)}
+            onToggleFavorite={toggleFavorite}
+            favoriteIds={favoriteIds}
           />
-          <View style={styles.moviesGrid}>
-            {kids.map((k) => (
+
+          <SectionHeader
+            title="All Binge-Worthy Series"
+            badge={`${series.length} TITLES`}
+          />
+          <View style={[styles.moviesGrid, { paddingHorizontal: 16 }]}>
+            {series.map((s) => (
               <MoviePosterCard
-                key={k.id}
-                item={k}
+                key={s.id}
+                item={s}
                 width={(width - 44) / 2}
                 height={240}
                 onPress={(item) => setSelectedItem(item)}
@@ -411,6 +485,7 @@ export default function App() {
       );
     }
 
+    // Default: selectedCategory === 'All' -> Full Main Home Feed
     return (
       <View style={{ backgroundColor: '#07080B' }}>
         {/* 🌟 Option 2 Primary Home Template: Shows/Movies Filter + SHADOW REALM Hero + Continue Watching on Nexora */}
@@ -418,8 +493,8 @@ export default function App() {
           onPlayHero={(item) => setPlayingItem(item)}
           onSelectContent={(item) => setSelectedItem(item)}
           onFilterChange={(filter) => {
-            if (filter === 'shows') setActiveTab('series');
-            else if (filter === 'movies') setActiveTab('movies');
+            if (filter === 'shows') setSelectedCategory('TV Show');
+            else if (filter === 'movies') setSelectedCategory('Movies');
             else setSelectedCategory('All');
           }}
           onViewAllContinueWatching={() => setActiveTab('mylist')}
@@ -429,7 +504,7 @@ export default function App() {
         <TopTrendingRail
           items={movies}
           onSelect={(item) => setSelectedItem(item)}
-          onViewAll={() => setActiveTab('movies')}
+          onViewAll={() => setSelectedCategory('Movies')}
         />
 
         {/* Netflix Signature Top 10 in India Today Rail with Giant Outlined Numbers & Active Shine Borders (PRESERVED) */}
@@ -438,19 +513,7 @@ export default function App() {
           badge="#1 TRENDING"
           items={movies}
           onSelect={(item) => setSelectedItem(item)}
-          onSeeAll={() => setActiveTab('movies')}
-        />
-
-        {/* Category Underline Tabs */}
-        <PremiumCategoryTabs
-          activeCategory={selectedCategory as any}
-          onSelectCategory={(cat) => {
-            setSelectedCategory(cat);
-            if (cat === 'Movies') setActiveTab('movies');
-            else if (cat === 'Live TV') setActiveTab('livetv');
-            else if (cat === 'Sports') setSelectedCategory('Sports');
-            else if (cat === 'TV Show' || cat === 'Webseries') setSelectedCategory('Series');
-          }}
+          onSeeAll={() => setSelectedCategory('Movies')}
         />
 
         {/* Live TV Channels Rail */}
@@ -635,19 +698,35 @@ export default function App() {
 
         {/* Top Header: Premium User Header on Home screen, or AnimatedHeader (hidden on livetv, account, and movies tabs) */}
         {activeTab === 'home' ? (
-          <PremiumUserHeader
-            userName="Venkatesh M"
-            isSearchActive={isSearchOpen}
-            searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
-            onSearchPress={() => setIsSearchOpen(true)}
-            onClearSearch={() => {
-              setSearchQuery('');
-              setIsSearchOpen(false);
-            }}
-            onNotificationPress={() => {}}
-            onProfilePress={() => setActiveTab('account')}
-          />
+          <View>
+            <PremiumUserHeader
+              userName="Venkatesh M"
+              isSearchActive={isSearchOpen}
+              searchQuery={searchQuery}
+              onSearchChange={setSearchQuery}
+              onSearchPress={() => setIsSearchOpen(true)}
+              onClearSearch={() => {
+                setSearchQuery('');
+                setIsSearchOpen(false);
+              }}
+              onNotificationPress={() => {}}
+              onProfilePress={() => setActiveTab('account')}
+            />
+
+            {/* Prominent Category Tabs immediately below Search Bar */}
+            {!isSearchOpen && (
+              <PremiumCategoryTabs
+                activeCategory={selectedCategory as any}
+                onSelectCategory={(cat) => {
+                  setSelectedCategory(cat);
+                  if (cat === 'Movies') setActiveTab('movies');
+                  else if (cat === 'Live TV') setActiveTab('livetv');
+                  else if (cat === 'TV Show') setActiveTab('series');
+                  else setActiveTab('home');
+                }}
+              />
+            )}
+          </View>
         ) : activeTab === 'livetv' || activeTab === 'account' || activeTab === 'movies' || selectedCategory === 'Movies' ? null : (
           <AnimatedHeader
             isSearchActive={isSearchOpen}

@@ -7,7 +7,15 @@ import {
   ScrollView,
 } from 'react-native';
 
-export type CategoryTab = 'All' | 'Sports' | 'Movies' | 'Live TV' | 'Drama' | 'TV Show' | 'Webseries';
+export type CategoryTab =
+  | 'All'
+  | 'Sports'
+  | 'Movies'
+  | 'Live TV'
+  | 'Drama'
+  | 'TV Show'
+  | 'Webseries'
+  | 'Kids';
 
 interface PremiumCategoryTabsProps {
   categories?: CategoryTab[];
@@ -23,6 +31,7 @@ const DEFAULT_CATEGORIES: CategoryTab[] = [
   'Drama',
   'TV Show',
   'Webseries',
+  'Kids',
 ];
 
 export const PremiumCategoryTabs: React.FC<PremiumCategoryTabsProps> = ({
