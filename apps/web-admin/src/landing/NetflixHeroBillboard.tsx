@@ -153,11 +153,12 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
       style={{
         position: 'relative',
         width: '100%',
-        minHeight: '94vh',
+        minHeight: '100vh',
         backgroundColor: '#050507',
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
+        boxSizing: 'border-box',
       }}
     >
       {/* Background Cinematic Movie Live Video & Backdrop with Smooth Crossfade */}
@@ -365,11 +366,15 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
             style={{
-              fontSize: '15px',
-              lineHeight: 1.6,
+              fontSize: 'clamp(13px, 1.1vw, 15px)',
+              lineHeight: 1.5,
               color: '#d4d4d8',
               maxWidth: '680px',
-              marginBottom: '24px',
+              marginBottom: '16px',
+              display: '-webkit-box',
+              WebkitLineClamp: 3,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
               textShadow: '0 2px 10px rgba(0, 0, 0, 0.85)',
             }}
           >
@@ -377,7 +382,7 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
           </motion.p>
 
           {/* Action CTAs */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap', marginBottom: '24px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap', marginBottom: '16px' }}>
             
             {/* Primary Watch in 4K HDR Button */}
             <button
@@ -460,13 +465,16 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
           className="hero-billboard-bottom-strip"
           style={{
             marginTop: 'auto',
-            borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-            paddingTop: '20px',
+            borderTop: '1px solid rgba(255, 255, 255, 0.12)',
+            paddingTop: '16px',
+            paddingBottom: '24px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             gap: '16px',
             width: '100%',
+            position: 'relative',
+            zIndex: 20,
           }}
         >
           {/* Left: Slide Timer Indicator Bar */}
@@ -488,7 +496,19 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
           </div>
 
           {/* Center: Movie Thumbnails Strip */}
-          <div style={{ display: 'flex', gap: '12px', overflowX: 'auto', paddingBottom: '2px', flex: 1, minWidth: 0, justifyContent: 'flex-start' }}>
+          <div
+            className="hero-thumbnails-container"
+            style={{
+              display: 'flex',
+              gap: '12px',
+              overflowX: 'auto',
+              padding: '6px 4px 10px',
+              flex: 1,
+              minWidth: 0,
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+            }}
+          >
             {HERO_MOVIES.map((movie, idx) => {
               const isActive = idx === currentIndex;
               return (
@@ -497,16 +517,18 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
                   onClick={() => setCurrentIndex(idx)}
                   style={{
                     position: 'relative',
-                    width: '130px',
-                    height: '70px',
+                    width: 'clamp(112px, 8.8vw, 130px)',
+                    height: 'clamp(60px, 4.8vw, 68px)',
                     borderRadius: '10px',
                     overflow: 'hidden',
                     cursor: 'pointer',
-                    border: isActive ? '2px solid #ffffff' : '1px solid rgba(255, 255, 255, 0.15)',
-                    boxShadow: isActive ? '0 0 16px rgba(225, 29, 72, 0.5), 0 0 8px #ffffff' : 'none',
-                    transform: isActive ? 'scale(1.04)' : 'scale(1.0)',
+                    border: isActive ? '2px solid #ffffff' : '1px solid rgba(255, 255, 255, 0.18)',
+                    boxShadow: isActive ? '0 0 16px rgba(225, 29, 72, 0.5), 0 0 8px #ffffff' : '0 4px 12px rgba(0, 0, 0, 0.5)',
+                    transform: isActive ? 'scale(1.03)' : 'scale(1.0)',
+                    transformOrigin: 'center center',
                     transition: 'all 0.25s ease',
                     flexShrink: 0,
+                    boxSizing: 'border-box',
                   }}
                 >
                   <img
@@ -519,8 +541,8 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
                       position: 'absolute',
                       inset: 0,
                       background: isActive
-                        ? 'linear-gradient(to top, rgba(225, 29, 72, 0.7) 0%, transparent 100%)'
-                        : 'linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0,0,0,0.2) 100%)',
+                        ? 'linear-gradient(to top, rgba(225, 29, 72, 0.75) 0%, transparent 100%)'
+                        : 'linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0,0,0,0.2) 100%)',
                     }}
                   />
                   {isActive && (
@@ -548,7 +570,7 @@ export const NetflixHeroBillboard: React.FC<NetflixHeroBillboardProps> = ({
                       bottom: '5px',
                       left: '7px',
                       right: '7px',
-                      fontSize: '9px',
+                      fontSize: '9.5px',
                       fontWeight: 800,
                       color: '#ffffff',
                       whiteSpace: 'nowrap',
