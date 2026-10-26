@@ -737,3 +737,28 @@
 {"_e":"metro:config","_t":1792838030230,"serverRoot":"../..\\..\\..\\..","projectRoot":"../..\\..","exporting":false,"flags":{"autolinkingModuleResolution":true,"serverActions":false,"serverComponents":false,"reactCompiler":false,"optimizeGraph":false,"treeshaking":false,"logbox":false}}
 {"_e":"expo:dev-tools-plugin:load","_t":1792838034713,"plugins":[]}
 {"_e":"metro:instantiate","_t":1792838068894,"atlas":false,"workers":6,"host":"::","port":8082}
+{"_e":"root:init","_t":1792839695736,"format":"v0-jsonl","version":"57.0.32"}
+{"_e":"env:mode","_t":1792839695771,"nodeEnv":"development","babelEnv":"development","mode":"development"}
+{"_e":"env:load","_t":1792839695827,"mode":"development","files":[],"env":{}}
+{"_e":"devserver:start","_t":1792839704385,"mode":"development","web":true,"baseUrl":"","asyncRoutes":false,"routerRoot":"../..\\..\\app","serverComponents":false,"serverActions":false,"serverRendering":false,"apiRoutes":false,"exporting":false}
+{"_e":"metro:config","_t":1792839722230,"serverRoot":"../..\\..\\..\\..","projectRoot":"../..\\..","exporting":false,"flags":{"autolinkingModuleResolution":true,"serverActions":false,"serverComponents":false,"reactCompiler":false,"optimizeGraph":false,"treeshaking":false,"logbox":false}}
+{"_e":"expo:dev-tools-plugin:load","_t":1792839725491,"plugins":[]}
+{"_e":"metro:instantiate","_t":1792839740926,"atlas":false,"workers":6,"host":"::","port":8081}
+{"_e":"root:init","_t":1792840018092,"format":"v0-jsonl","version":"57.0.32"}
+{"_e":"env:mode","_t":1792840018093,"nodeEnv":"development","babelEnv":"development","mode":"development"}
+{"_e":"env:load","_t":1792840018096,"mode":"development","files":[],"env":{}}
+{"_e":"devserver:start","_t":1792840018444,"mode":"development","web":true,"baseUrl":"","asyncRoutes":false,"routerRoot":"../..\\..\\app","serverComponents":false,"serverActions":false,"serverRendering":false,"apiRoutes":false,"exporting":false}
+{"_e":"metro:config","_t":1792840019995,"serverRoot":"../..\\..\\..\\..","projectRoot":"../..\\..","exporting":false,"flags":{"autolinkingModuleResolution":true,"serverActions":false,"serverComponents":false,"reactCompiler":false,"optimizeGraph":false,"treeshaking":false,"logbox":false}}
+{"_e":"expo:dev-tools-plugin:load","_t":1792840020308,"plugins":[]}
+{"_e":"metro:instantiate","_t":1792840031886,"atlas":false,"workers":6,"host":"::","port":8081}
+{"_e":"metro:bundling:started","_t":1792840254494,"id":"7","platform":"android","environment":null,"entry":"apps\\mobile\\index.js"}
+{"_e":"metro:bundling:failed","_t":1792840294313,"id":"7","message":"Unable to resolve \"invariant\" from \"apps\\mobile\\node_modules\\react-native\\index.js\"\n  28 |\n  29 | const warnOnce = require('./Libraries/Utilities/warnOnce').default;\n> 30 | const invariant = require('invariant');\n     |                            ^\n  31 |\n  32 | module.exports = {\n  33 |   // #region Components","importStack":"Import stack:\n\n apps\\mobile\\node_modules\\react-native\\index.js\n | import \"invariant\"\n\n apps\\mobile\\App.tsx\n | import \"react-native\"\n\n apps\\mobile\\index.js\n | import \"./App\"\n\n \n | import \"./apps/mobile/index\"\n","filename":null,"targetModuleName":"invariant","originModulePath":"apps\\mobile\\node_modules\\react-native\\index.js"}
+{"_e":"metro:bundling:started","_t":1792840486827,"id":"8","platform":"android","environment":null,"entry":"apps\\mobile\\index.js"}
+{"_e":"metro:bundling:failed","_t":1792840495209,"id":"8","message":"Unable to resolve \"memoize-one\" from \"apps\\mobile\\node_modules\\react-native\\Libraries\\Lists\\FlatList.js\"\n  23 | import View from '../Components/View/View';\n  24 | import VirtualizedLists from '@react-native/virtualized-lists';\n> 25 | import memoizeOne from 'memoize-one';\n     |                         ^\n  26 | import * as React from 'react';\n  27 |\n  28 | const StyleSheet = require('../StyleSheet/StyleSheet').default;","importStack":"Import stack (2000):\n\n apps\\mobile\\node_modules\\react-native\\Libraries\\Lists\\FlatList.js\n | import \"memoize-one\"\n\n apps\\mobile\\node_modules\\react-native\\index.js\n | import \"./Libraries/Lists/FlatList\"\n\n apps\\mobile\\App.tsx\n | import \"react-native\"\n\n apps\\mobile\\index.js\n | import \"./App\"\n\n \n | import \"./apps/mobile/index\"\n","filename":null,"targetModuleName":"memoize-one","originModulePath":"apps\\mobile\\node_modules\\react-native\\Libraries\\Lists\\FlatList.js"}
+{"_e":"root:init","_t":1792840873796,"format":"v0-jsonl","version":"57.0.32"}
+{"_e":"env:mode","_t":1792840873848,"nodeEnv":"development","babelEnv":"development","mode":"development"}
+{"_e":"env:load","_t":1792840873861,"mode":"development","files":[],"env":{}}
+{"_e":"devserver:start","_t":1792840885908,"mode":"development","web":true,"baseUrl":"","asyncRoutes":false,"routerRoot":"../..\\..\\app","serverComponents":false,"serverActions":false,"serverRendering":false,"apiRoutes":false,"exporting":false}
+{"_e":"metro:config","_t":1792840901759,"serverRoot":"../..\\..\\..\\..","projectRoot":"../..\\..","exporting":false,"flags":{"autolinkingModuleResolution":true,"serverActions":false,"serverComponents":false,"reactCompiler":false,"optimizeGraph":false,"treeshaking":false,"logbox":false}}
+{"_e":"expo:dev-tools-plugin:load","_t":1792840907507,"plugins":[]}
+{"_e":"metro:instantiate","_t":1792840928129,"atlas":false,"workers":6,"host":"::","port":8081}
