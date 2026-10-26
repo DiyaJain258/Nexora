@@ -161,16 +161,16 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
     if (onLoginSuccess) {
       onLoginSuccess(newSession);
     }
-    // Automatically launch the movie they intended to watch
-    if (pendingMovieForAuth) {
-      setSelectedMovieForOtt(pendingMovieForAuth);
-      setIsOttPlayerOpen(true);
-      setPendingMovieForAuth(null);
-    }
+    // Automatically launch the movie they intended to watch, or fallback to top 4K blockbuster
+    const movieToPlay = pendingMovieForAuth || MOCK_CONTENT[0];
+    setSelectedMovieForOtt(movieToPlay);
+    setIsOttPlayerOpen(true);
+    setPendingMovieForAuth(null);
   };
 
   const handleOpenSignInFromPaywall = () => {
     setIsPaywallOpen(false);
+    // Keep pendingMovieForAuth preserved so when subscriber logs in, the movie launches automatically!
     setAuthDefaultTab('subscriber');
     setIsAuthOpen(true);
   };
